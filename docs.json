@@ -1,0 +1,98 @@
+{
+  "$schema": "https://mintlify.com/schema/docs.json",
+  "name": "AutoSurvey",
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "favicon": "/favicon.png",
+  "theme": "mint",
+  "colors": {
+    "primary": "#2563eb",
+    "light": "#3b82f6",
+    "dark": "#1e40af"
+  },
+  "seo": {
+    "title": "AutoSurvey Documentation",
+    "description": "Documentation for AutoSurvey — build surveys and forms deployed as polished Salesforce Screen Flows.",
+    "keywords": "AutoSurvey, Salesforce, Screen Flows, surveys, forms, Salesforce automation"
+  },
+  "topbarLinks": [
+    {
+      "name": "Website",
+      "url": "https://autosurvey.app"
+    },
+    {
+      "name": "Book a demo",
+      "url": "https://calendly.com/mindshare-demo/autosurvey"
+    }
+  ],
+  "navbar": [
+    {
+      "group": "Guides",
+      "pages": [
+        "introduction",
+        "quickstart",
+        {
+          "group": "Workflows",
+          "pages": [
+            "workflows/prompt-to-flow",
+            "workflows/sheets-to-flow",
+            "workflows/deploy-and-verify"
+          ]
+        },
+        {
+          "group": "Concepts",
+          "pages": [
+            "concepts/data-and-reporting",
+            "concepts/question-library-and-versioning",
+            "concepts/matrix-programs",
+            "concepts/runtime-modes"
+          ]
+        },
+        {
+          "group": "Admin",
+          "pages": [
+            "admin/installation-and-permissions",
+            "admin/objects-permissions-layouts",
+            "admin/security-and-privacy"
+          ]
+        },
+        {
+          "group": "Support",
+          "pages": [
+            "support/faq",
+            "support/troubleshooting",
+            "support/release-notes"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "API Reference",
+      "pages": [
+        "api/overview"
+      ]
+    }
+  ],
+  "footerSocials": {
+    "website": "https://autosurvey.app",
+    "twitter": "https://twitter.com/mindsharestudio",
+    "linkedin": "https://linkedin.com/company/mindshare-studio"
+  },
+  "footer": [
+    {
+      "group": "Company",
+      "pages": [
+        {
+          "name": "Privacy Policy",
+          "url": "https://autosurvey.app/privacy.html"
+        },
+        {
+          "name": "Terms of Service",
+          "url": "https://autosurvey.app/terms.html"
+        }
+      ]
+    }
+  ]
+}
