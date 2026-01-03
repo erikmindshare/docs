@@ -19,6 +19,14 @@
     {
       "name": "Website",
       "url": "https://autosurvey.app"
+    },
+    {
+      "name": "Privacy",
+      "url": "https://autosurvey.app/privacy.html"
+    },
+    {
+      "name": "Terms",
+      "url": "https://autosurvey.app/terms.html"
     }
   ],
   "topbarCtaButton": {
