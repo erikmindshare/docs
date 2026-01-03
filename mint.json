@@ -83,20 +83,5 @@
     "website": "https://autosurvey.app",
     "twitter": "https://twitter.com/mindsharestudio",
     "linkedin": "https://linkedin.com/company/mindshare-studio"
-  },
-  "footer": [
-    {
-      "group": "Legal",
-      "pages": [
-        {
-          "name": "Privacy Policy",
-          "url": "https://autosurvey.app/privacy.html"
-        },
-        {
-          "name": "Terms of Service",
-          "url": "https://autosurvey.app/terms.html"
-        }
-      ]
-    }
-  ]
+  }
 }
