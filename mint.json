@@ -1,75 +1,79 @@
 {
-  "$schema": "https://mintlify.com/schema/docs.json",
+  "$schema": "https://mintlify.com/schema",
   "name": "AutoSurvey",
   "logo": {
     "light": "/logo/light.svg",
     "dark": "/logo/dark.svg"
   },
   "favicon": "/favicon.svg",
-  "theme": "mint",
   "colors": {
     "primary": "#2563eb",
     "light": "#3b82f6",
-    "dark": "#1e40af"
-  },
-  "seo": {
-    "title": "AutoSurvey Documentation",
-    "description": "Documentation for AutoSurvey — build surveys and forms deployed as polished Salesforce Screen Flows.",
-    "keywords": "AutoSurvey, Salesforce, Screen Flows, surveys, forms, Salesforce automation"
+    "dark": "#1e40af",
+    "anchors": {
+      "from": "#2563eb",
+      "to": "#1e40af"
+    }
   },
   "topbarLinks": [
     {
       "name": "Website",
       "url": "https://autosurvey.app"
-    },
-    {
-      "name": "Book a demo",
-      "url": "https://calendly.com/mindshare-demo/autosurvey"
     }
   ],
-  "navbar": [
+  "topbarCtaButton": {
+    "name": "Book a Demo",
+    "url": "https://calendly.com/mindshare-demo/autosurvey"
+  },
+  "tabs": [
     {
-      "group": "Guides",
+      "name": "API Reference",
+      "url": "api"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Getting Started",
       "pages": [
         "introduction",
-        "quickstart",
-        {
-          "group": "Workflows",
-          "pages": [
-            "workflows/prompt-to-flow",
-            "workflows/sheets-to-flow",
-            "workflows/deploy-and-verify"
-          ]
-        },
-        {
-          "group": "Concepts",
-          "pages": [
-            "concepts/data-and-reporting",
-            "concepts/question-library-and-versioning",
-            "concepts/matrix-programs",
-            "concepts/runtime-modes"
-          ]
-        },
-        {
-          "group": "Admin",
-          "pages": [
-            "admin/installation-and-permissions",
-            "admin/objects-permissions-layouts",
-            "admin/security-and-privacy"
-          ]
-        },
-        {
-          "group": "Support",
-          "pages": [
-            "support/faq",
-            "support/troubleshooting",
-            "support/release-notes"
-          ]
-        }
+        "quickstart"
       ]
     },
     {
-      "group": "API Reference",
+      "group": "Workflows",
+      "pages": [
+        "workflows/prompt-to-flow",
+        "workflows/sheets-to-flow",
+        "workflows/deploy-and-verify"
+      ]
+    },
+    {
+      "group": "Concepts",
+      "pages": [
+        "concepts/data-and-reporting",
+        "concepts/question-library-and-versioning",
+        "concepts/matrix-programs",
+        "concepts/runtime-modes"
+      ]
+    },
+    {
+      "group": "Admin",
+      "pages": [
+        "admin/installation-and-permissions",
+        "admin/objects-permissions-layouts",
+        "admin/security-and-privacy"
+      ]
+    },
+    {
+      "group": "Support",
+      "pages": [
+        "support/faq",
+        "support/troubleshooting",
+        "support/release-notes"
+      ]
+    },
+    {
+      "group": "API Documentation",
       "pages": [
         "api/overview"
       ]
@@ -82,7 +86,7 @@
   },
   "footer": [
     {
-      "group": "Company",
+      "group": "Legal",
       "pages": [
         {
           "name": "Privacy Policy",
