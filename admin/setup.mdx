@@ -1,0 +1,226 @@
+---
+title: Setup Home Guide
+description: Complete reference for every check, status, and repair action on the AutoSurvey Setup Home page.
+---
+
+# AutoSurvey Setup Home
+
+This guide explains every item on the **AutoSurvey Setup Home** page: what it checks, why it matters, and how to fix issues quickly.
+
+## Quick Start
+
+After installing AutoSurvey, open the **AutoSurvey** app and click the **Setup** tab.
+
+The Setup Home page runs automated checks and shows what is ready versus what still needs attention. Most issues can be repaired with a single button click.
+
+## Required Checks
+
+All required checks must pass before AutoSurvey can function correctly.
+
+If a required check fails:
+- The progress indicator reflects it.
+- A repair action appears.
+
+### Admin Access
+
+| Item | Details |
+| --- | --- |
+| **What it checks** | Whether the current user has the `ASVY_Full_Admin` permission set group (preferred) or all three admin permission sets: `AutoSurvey_Admin`, `ASVY_Deploy_Admin`, and `AutoSurvey_Survey_Admin`. |
+| **Why it matters** | Without admin permissions, you cannot configure surveys, deploy flows, or manage suite settings. |
+| **How to fix** | Click **Assign Admin Access to Me**. AutoSurvey assigns `ASVY_Full_Admin` when available; otherwise it falls back to assigning required individual permission sets. |
+| **Troubleshooting** | If assignment fails, a System Administrator can manually assign permission sets in **Setup -> Permission Sets**. |
+
+### Internal Connection
+
+| Item | Details |
+| --- | --- |
+| **What it checks** | Whether the `AutoSurvey_Self_Org` Named Credential exists and points to your current org domain. |
+| **Why it matters** | AutoSurvey uses this connection for internal API and metadata operations (including flow deployment). |
+| **How to fix** | Click **Repair Internal Connection** to create or update the Named Credential to your current org URL. |
+| **After sandbox refresh** | This is the most common check to fail after refresh because org domain URLs change. |
+| **Technical detail** | AutoSurvey uses `ConnectApi.NamedCredentials` with current `URL.getOrgDomainUrl()` and `AutoSurvey_Self_Org` external credential access. |
+
+### Control Plane Connection / Google Credentials
+
+This check behaves differently by org type.
+
+#### Subscriber Orgs (most customers)
+
+| Item | Details |
+| --- | --- |
+| **What it checks** | Whether your org is connected to the AutoSurvey control plane (secure intermediary for Google API operations). |
+| **Why it matters** | AutoSurvey needs Google Sheets and Drive access for survey definitions and suite sheet operations. |
+| **How to fix** | Click **Connect to Control Plane** for one-time bootstrap registration. |
+| **Troubleshooting** | Verify outbound HTTPS callouts are allowed and check the `AutoSurvey_Control_Plane` Named Credential configuration. |
+| **Technical detail** | Bootstrap generates/stores HMAC keys (`ASVY_Bootstrap_Secret__c`) and registers org identity for signed control-plane requests. |
+
+#### Control Plane Orgs (AutoSurvey hosting/dev org)
+
+| Item | Details |
+| --- | --- |
+| **What it checks** | Whether `Autosurvey_Salesforce_Bot_Google` external credential and Google Named Credentials are configured. |
+| **Why it matters** | The control plane org connects directly to Google APIs through service-account-backed credentials. |
+| **How to fix** | Click **Deploy Google Credentials** to create credentials and required permission set. |
+
+### Google Sheets Access (control plane orgs only)
+
+| Item | Details |
+| --- | --- |
+| **What it checks** | Whether the current user has `Autosurvey_Salesforce_Bot_Google_Access`. |
+| **Why it matters** | Users making Google API callouts need principal access to the external credential. |
+| **How to fix** | Click **Fix Google Access** to assign the permission set to your user. |
+| **Note** | Subscriber orgs do not need this because Google calls route through the control plane. |
+
+### Connection Verification
+
+| Item | Details |
+| --- | --- |
+| **What it checks** | Live connectivity test to Google APIs (direct or via control plane). |
+| **Why it matters** | Verifies end-to-end runtime path, not just static configuration. |
+| **How to fix** | Click **Test Connection** (or **Re-verify**). |
+| **Status values** | **Pass** = successful API response. **Fail** = request returned error. **Not Tested** = no verification run yet. |
+| **Troubleshooting** | Ensure prior checks pass, inspect detail error message/status code, and contact support if control plane errors persist. |
+
+## Permission Sets
+
+Setup Home shows installed AutoSurvey permission sets, assignment counts, and assignment details.
+
+| Permission Set | Purpose |
+| --- | --- |
+| **AutoSurvey_Admin** | Core admin access to AutoSurvey objects and settings. |
+| **ASVY_Deploy_Admin** | Deployment/schema permissions, including `ASVY_Deploy` custom permission. |
+| **AutoSurvey_Survey_Admin** | Runtime survey administration and management access. |
+| **ASVY_Super_User** | Elevated troubleshooting and diagnostic access. |
+| **ASVY_Self_Org_Access** | Access to `AutoSurvey_Self_Org` Named Credential for self-org callouts. |
+| **AutoSurvey_Guest_Access** | Minimum access for Experience Cloud guest users taking surveys. |
+
+> Tip: For most admins, assign **ASVY_Full_Admin** (permission set group) instead of individual sets.
+
+## Control Plane Security
+
+This section appears for subscriber orgs after control plane connection succeeds.
+
+### HMAC Key Rotation
+
+| Item | Details |
+| --- | --- |
+| **What it does** | Rotates the HMAC key used for org-to-control-plane request signing. |
+| **When to rotate** | Periodically (for example quarterly) or immediately if key compromise is suspected. |
+| **Grace period** | Previous key remains valid for 7 days to avoid service interruption. |
+| **Key ID** | Setup displays current key ID and rotation timestamp. |
+
+## Recommended Checks
+
+### Survey Submission Record Page
+
+| Item | Details |
+| --- | --- |
+| **What it checks** | Whether the packaged `Survey_Submission__c` Lightning Record Page is activated. |
+| **Why it matters** | Without activation, users see default layout instead of AutoSurvey submission experience. |
+| **How to fix** | Click **Open Lightning Record Pages**, locate the AutoSurvey page, and activate as needed. |
+
+## Public Survey Access
+
+Enable this option if surveys should run for unauthenticated respondents via Experience Cloud.
+
+### Experience Cloud Site Setup
+
+To support guest respondents:
+
+1. Create/activate an Experience Cloud site (**Digital Experiences -> All Sites** or **Setup -> Sites**).
+2. Assign `AutoSurvey_Guest_Access` to the site guest user.
+3. Deploy a survey flow and publish an Experience page containing the flow.
+
+### Your Experience Sites
+
+Setup automatically detects sites and readiness:
+- **Ready**: Guest user has required access.
+- **Not configured**: Guest user still missing required access.
+- **Active survey flows**: Count of active AutoSurvey flows in org.
+
+### CAPTCHA Configuration
+
+AutoSurvey uses **Google reCAPTCHA v2** ("I'm not a robot") for bot protection on public surveys.
+
+#### Set up CAPTCHA
+
+1. Open [Google reCAPTCHA admin console](https://www.google.com/recaptcha/admin/create).
+2. Create a key using **reCAPTCHA v2 -> I'm not a robot Checkbox**.
+3. Add your Experience Cloud domain.
+4. Paste Site Key and Secret Key into Setup Home.
+
+#### CAPTCHA status indicators
+
+| Status | Meaning |
+| --- | --- |
+| **Keys not configured** | No keys saved; no CAPTCHA protection active. |
+| **Keys configured, hostname not set** | CAPTCHA works, but hostname verification not enforced. |
+| **Keys configured and hostname set** | Full configuration with hostname verification. |
+
+#### Secret key verification
+
+When keys are saved, AutoSurvey verifies Secret Key with Google:
+- **Secret key verified**: Key accepted.
+- **Secret key rejected**: Invalid key.
+
+#### Expected hostname (optional)
+
+Set hostname to your Experience Cloud domain to enforce origin validation.
+
+> Note: Required CSP and Remote Site entries for reCAPTCHA are package-provided.
+
+## Optional Integrations
+
+### OpenAI BYOK (Bring Your Own Key)
+
+Optional for orgs that want customer-managed OpenAI credentials for AI features.
+
+## AI Tier Profiles
+
+Manage default/custom AI tiers for generation, naming, and shortening workflows.
+
+## Diagnostics
+
+### Show System Details
+
+Displays:
+- Package Version
+- Org ID
+- Namespace
+
+### Copy Diagnostic Info
+
+Copies a support bundle with check states and org configuration. Use this when contacting support.
+
+## Sandbox Considerations
+
+After sandbox refresh:
+
+1. Post-install automation does not re-run.
+2. Internal connection usually needs repair.
+3. Control plane bootstrap may need to be re-run.
+4. Connection verification should be run again.
+
+Setup shows a sandbox reminder banner in sandbox environments.
+
+## Troubleshooting
+
+### "Page not found" for Digital Experiences
+
+Register Salesforce Sites domain first in **Setup -> Sites and Domains -> Sites**, then create Experience site.
+
+### Setup checks show UNKNOWN
+
+Open details, retry repair, and use **Copy Diagnostic Info** for support.
+
+### Internal connection fails after sandbox refresh
+
+Expected behavior due to org domain URL changes. Run **Repair Internal Connection**.
+
+### CAPTCHA says hostname missing
+
+Refresh the page after saving keys. Status should update from persisted config.
+
+### Control plane connection fails
+
+Confirm outbound HTTPS callouts are allowed and verify `AutoSurvey_Control_Plane` Named Credential.

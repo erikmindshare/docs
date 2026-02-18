@@ -67,6 +67,7 @@
     {
       "group": "Admin",
       "pages": [
+        "admin/setup",
         "admin/installation-and-permissions",
         "admin/objects-permissions-layouts",
         "admin/security-and-privacy"
