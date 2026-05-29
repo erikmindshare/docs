@@ -1,14 +1,72 @@
 ---
 title: Runtime Modes
-description: Polished UI default vs Flow‑Builder Friendly mode.
+description: Choose how your survey renders at runtime — the polished AutoSurvey UI (default) or a Flow‑Builder‑friendly layout — without changing what you build.
 ---
 
-# Runtime Modes (stub)
+Every AutoSurvey survey is deployed as a **native Salesforce Screen Flow**. *Runtime mode* controls how each question is rendered inside that flow. It changes the look and feel only — the questions, logic, and response data are identical either way.
 
-## Polished runtime UI (default)
-Respondent-friendly experience with better styling/layout.
+Runtime mode is set per survey by the **Layout Style** configuration value.
 
-## Flow‑Builder Friendly
-More standard Flow feel for admins who want to extend immediately.
+## The two modes
 
-> TODO: Add side-by-side screenshots.
+### Styled — Polished runtime UI (default)
+
+The respondent‑friendly experience. Each question is rendered inside the AutoSurvey question wrapper, which adds:
+
+- Consistent label formatting and professional spacing/typography
+- Question number prefixes (for example `Q1.`, `Q2.`) when enabled
+- Inline helper text and tooltips
+- Validation messaging such as "N more characters required"
+
+Choose **Styled** when the survey is respondent‑facing and you want a clean, branded feel out of the box.
+
+### Basic — Flow‑Builder‑friendly
+
+A standard Flow look. Questions render as native Flow screen components with no AutoSurvey wrapper; helper text uses a Display Text element. The result feels like a hand‑built Screen Flow.
+
+Choose **Basic** when admins want to open the generated flow in **Flow Builder** and extend it immediately, or when you prefer the stock Salesforce screen styling.
+
+> A third value, **None**, renders the bare input with no wrapper or helper scaffolding. It is intended for advanced/edge cases.
+
+## Side‑by‑side
+
+| Aspect | Styled (default) | Basic (Flow‑Builder‑friendly) |
+| --- | --- | --- |
+| Question wrapper | AutoSurvey wrapper component | None — native Flow component |
+| Question prefixes (`Q1.`, `Q2.`) | Supported | Rendered directly in the label |
+| Helper text / tooltips | Inline text and/or tooltip in the wrapper | Display Text element + component help |
+| Validation messaging | Polished inline messages | Standard Flow validation |
+| Best for | Respondent‑facing surveys | Admin extension in Flow Builder |
+| Underlying metadata | Native Screen Flow | Native Screen Flow |
+
+## Related setting — Component Source
+
+Layout Style controls the *wrapper*; **Component Source** controls *which input components* are used:
+
+| Component Source | What it uses | When to use |
+| --- | --- | --- |
+| **NativePlusThirdParty** (default) | Enhanced AutoSurvey catalog (Quick Choice, enhanced text area, progress bar, and more) | Best UX and the most control options |
+| **NativeOnly** | Standard Salesforce Flow inputs only (Text, Picklist, Radio, Checkbox, …) | Orgs with strict security policies or minimal LWC dependencies |
+
+Layout Style and Component Source are independent. For example, you can pair **Basic** layout with **NativeOnly** components for a flow that is closest to stock Salesforce, or **Styled** layout with **NativePlusThirdParty** for the most polished experience.
+
+## Where it runs
+
+Both modes deploy as native Screen Flows, so a survey runs anywhere a Screen Flow runs:
+
+- Behind login for internal users
+- For Experience Cloud / portal users
+- In public, unauthenticated patterns (see [Campaign Survey Distribution](/admin/campaign-distribution))
+
+## How to choose the mode
+
+Layout Style is part of a survey's configuration.
+
+1. Open your survey's **Config** sheet (or the suite configuration).
+2. Set **Layout Style** to `Styled`, `Basic`, or `None`.
+3. (Optional) Set **Component Source** to `NativePlusThirdParty` or `NativeOnly`.
+4. Deploy the survey. The choice is baked into the generated Screen Flow.
+
+> Layout Style is an advanced setting edited in the Config sheet rather than the sidebar wizard. The default (`Styled` + `NativePlusThirdParty`) is recommended for most surveys.
+
+See [Deploy & Verify](/workflows/deploy-and-verify) for the deployment workflow and [Data and Reporting](/concepts/data-and-reporting) for what gets stored regardless of runtime mode.

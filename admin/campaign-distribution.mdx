@@ -1,0 +1,123 @@
+---
+title: Campaign Survey Distribution
+description: Send a survey to the members of a Salesforce Campaign using unique, single-use invitation links, and track responses back on the Campaign.
+---
+
+Campaign Survey Distribution lets you send an AutoSurvey survey to the members of a Salesforce **Campaign**. Each eligible member gets a **unique, single-use invitation link**, and their progress (started, completed, abandoned) rolls back up to the Campaign and its members.
+
+The whole experience lives on a panel on the Campaign record page inside the **AutoSurvey** app.
+
+## Before you begin
+
+| Requirement | Why |
+| --- | --- |
+| **AutoSurvey Setup Home is healthy** | The panel depends on a working org. Open the **Setup** tab and confirm required checks pass first. See the [Setup Home Guide](/admin/setup). |
+| **Admin permissions** | You need `ASVY_Deploy_Admin` (or the `ASVY_Full_Admin` group). The panel is hidden from guest users and non-admins. |
+| **A deployed survey form** | The Campaign is linked to a **Form**, which belongs to a survey **Suite**. Create and deploy a survey first. |
+| **(Public surveys) An Experience Cloud site** | To collect responses from unauthenticated respondents, publish the survey flow on an Experience page and assign `AutoSurvey_Guest_Access` to the site guest user. See [Setup Home → Public Survey Access](/admin/setup). |
+
+## Open the panel
+
+1. Switch to the **AutoSurvey** app (App Launcher → AutoSurvey).
+2. Click the **Campaigns** tab and open (or create) a Campaign.
+3. The **AutoSurvey Campaign Distribution** panel appears on the record page.
+
+> The custom Campaign record page is applied **only inside the AutoSurvey app**. Your organization's default Campaign page in other apps is not changed.
+
+Every field on the panel has an inline help icon (the small circled **i**). Hover or click it for a quick explanation.
+
+## Step 1 — Configure delivery
+
+| Field | What it does |
+| --- | --- |
+| **Form** | The survey form sent to this campaign's members. Each eligible member receives a unique, single-use link to this form. Changing the form after links exist starts a new survey for members who have not completed the old one. |
+| **Delivery Enabled** | Turn **on** to allow this campaign to generate invitation links and deliver surveys. Turn **off** to pause delivery without losing existing links or responses. |
+| **Save Settings** | Saves the selected Form and Delivery Enabled values to the Campaign record. |
+
+After you pick a form and click **Save Settings**, the **Suite** for that form is shown under Distribution status.
+
+## Distribution status
+
+A live snapshot of this campaign's survey progress. Counts refresh after links are generated and after the nightly sync.
+
+| Metric | Meaning |
+| --- | --- |
+| **Suite** | The survey suite that contains the selected form. |
+| **Members** | Total campaign members. Members without a Contact or Lead, or who have opted out of email, are skipped when generating links. |
+| **Tokens** | Members who already have an invitation link generated for the selected form. |
+| **Started** | Members who have opened their invitation and begun the survey. |
+| **In Progress** | Members with a saved but not-yet-completed submission. |
+| **Completed** | Members who finished the survey. |
+| **Abandoned** | Drafts whose invitation expired before completion (partial answers are kept). |
+
+## Step 2 — Build the survey link
+
+This section assembles a merge-ready link for public (unauthenticated) distribution.
+
+| Field | What it does |
+| --- | --- |
+| **Experience Site Domain** | The public Experience Cloud site that hosts your survey page. Sites marked **Ready** have the `AutoSurvey_Guest_Access` permission assigned to their guest user. |
+| **Survey Page Path** | The path to the Experience page that runs the survey flow, for example `/survey/s/run`. Combined with the site domain to build the full link. |
+| **Merge-ready URL Template** | A copy-ready link for your email or merge tool. The `{!Survey_Invitation__c.Invite_Token__c}` placeholder is replaced with each member's unique token at send time. |
+
+> The template uses your email platform's merge syntax. Paste it into the campaign email so each recipient receives their own tokenized link.
+
+## Generate invitation links
+
+Click **Generate Links** to create a unique invitation for each eligible campaign member.
+
+What happens:
+
+- One `Survey_Invitation__c` is created per eligible member, each with its own single-use token and a 14‑day expiration.
+- Members are **skipped** when they:
+  - Have **no Contact or Lead** identity on the campaign member.
+  - Have **opted out of email** (`HasOptedOutOfEmail`).
+  - Already have an **active invitation for the same form from another campaign** (duplicate suppression).
+- Members who already have a link for this form are **reused**, never re-tokenized — existing links keep working.
+
+After generation, a summary shows how many invitations were **created, reused, suppressed,** and **opt-out skipped**.
+
+### How responses are attributed
+
+When a respondent opens their link and clicks **Start**, AutoSurvey:
+
+1. Resolves the token to the campaign member, campaign, and the form recorded on the invitation (the link cannot be swapped to a different form).
+2. Creates or resumes a single submission and links it to the invitation.
+3. Stamps the first-opened time and tracks status as **In Progress → Completed**.
+
+A nightly sync rolls each member's status, completion time, and latest invitation up to the **Campaign Member**, and updates the Campaign's **Total Completed**, **Completion Rate**, and **Last Sync** rollups.
+
+## Validate the survey URL
+
+Click **Validate URL** once after publishing your Experience page. AutoSurvey opens the survey link with a one-time validation code and confirms the page loads the **correct flow**, then marks the form's URL as **validated** with a timestamp. This catches broken paths, wrong sites, or unpublished pages before you send.
+
+## Reporting
+
+AutoSurvey ships custom report types for distribution analysis:
+
+| Report type | Use it for |
+| --- | --- |
+| **Survey Invitations with Campaign and Form** | Invitation funnel: sent → opened → completed, by campaign and form. |
+| **Campaigns with Campaign Members and Survey Status** | Per-member status across a campaign. |
+| **Survey Submissions with Answers** | Detailed answer-level analysis, including drop-off by screen. |
+
+See [Data and Reporting](/concepts/data-and-reporting) for the underlying objects.
+
+## Privacy and retention
+
+- Invitation tokens are single-use and expire (default 14 days).
+- A scheduled job marks expired, incomplete drafts as **Abandoned** while preserving partial answers.
+- Resume secrets are stored hashed at rest.
+
+For the full data-handling model, see [Security and Privacy](/admin/security-and-privacy).
+
+## Troubleshooting
+
+| Symptom | Cause / fix |
+| --- | --- |
+| **"Campaign must be linked to a form…"** | Select a **Form** and click **Save Settings** before generating links. |
+| **Many members suppressed** | Members already have an active invitation for the same form from another campaign, or have opted out of email. Review the generation summary. |
+| **No Experience sites listed / all "Not configured"** | Assign `AutoSurvey_Guest_Access` to the site guest user. See [Setup Home → Public Survey Access](/admin/setup). |
+| **Validate URL fails** | Confirm the Experience page is published, the path is correct, and the page runs the matching survey flow. |
+| **Panel not visible on the Campaign** | Confirm you are in the **AutoSurvey** app and have admin permissions (`ASVY_Deploy_Admin`). |
+| **Counts look stale** | Rollups refresh after generation and on the nightly sync; allow a sync cycle to elapse. |

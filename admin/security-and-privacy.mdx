@@ -1,19 +1,79 @@
 ---
 title: Security & Privacy
-description: What stays in Salesforce vs what is sent to an AI API.
+description: How AutoSurvey secures public survey execution with least-privilege access and tokenized sessions.
 ---
 
-# Security & Privacy (stub)
+# Security & Privacy
 
-## Data residency
-Response data stored in Salesforce objects.
-Runtime execution happens in Salesforce.
+AutoSurvey is designed so you can run public-facing surveys on Salesforce without exposing broad guest access to your data model.
 
-## AI generation
-Prompt/spec generation uses an AI API call.
-Be explicit about what content is sent.
+Public Experience Cloud pages and Screen Flows can become risky when access controls drift over time. AutoSurvey's default architecture reduces that risk by separating public survey execution from internal admin and reporting paths.
 
-## Access control
-Controlled by permission sets, FLS, sharing.
+## Secure-by-default approach
 
-> TODO: Full security architecture + review status.
+### 1) Token-gated public sessions (no record IDs in URLs)
+
+- Public sessions use unguessable tokens.
+- Tokens are validated server-side.
+- The browser is not given "swap-able" record IDs that can be used to access someone else's data.
+
+### 2) Public survey runtime with least privilege
+
+- Public respondents do not need broad CRUD access to runtime objects.
+- Survey writes happen through controlled server-side operations.
+- Admin and setup actions are gated by explicit custom permissions.
+
+### 3) Reporting access stays separate from public runtime
+
+Reporting is handled through read-only permission sets, not by opening runtime objects to unauthenticated users.
+
+- Suite-scoped reporting permissions for a single suite
+- Optional global read-only reporting permissions across suites
+- Super-user/admin permissions scoped to AutoSurvey artifacts (not broad org-wide access)
+
+### 4) Safe deployment patterns
+
+- Metadata deployment is generated server-side from known, allowlisted inputs.
+- Deploy/setup capabilities are restricted to users with explicit deploy permissions.
+- AutoSurvey avoids client-side "upload arbitrary metadata ZIP" deployment patterns.
+
+### 5) Secret handling and logging hygiene
+
+- API keys and secrets are stored using Salesforce-recommended patterns (for example Named Credentials / External Credentials).
+- Secrets are never returned to the browser.
+- Logging is sanitized to avoid exposing sensitive values.
+
+## Designed for AppExchange-grade controls
+
+AutoSurvey's architecture is intentionally designed to reduce common classes of security risk, including:
+
+- Record access bypass patterns (for example IDOR)
+- CRUD/FLS bypass patterns
+- Overbroad permission assignments
+- Secret exposure risks
+- Unauthenticated admin/setup endpoints
+
+## Practical customer benefits
+
+- Faster go-live for public surveys
+- Lower chance of accidental data exposure via guest configuration
+- Clear role-based permissioning for admins, deployers, and analysts
+- Easier audit and security review conversations
+
+## What AutoSurvey does not claim
+
+- It cannot prevent every org-level misconfiguration outside the product.
+- It does not replace customer governance, compliance, or security policy.
+- It reduces common exposure paths by default and provides clearer security boundaries.
+
+## Recommended secure setup checklist
+
+- Keep runtime/public access minimal.
+- Use read-only reporting permission sets for analysts.
+- Restrict deploy/setup permissions to a small admin group.
+- Do not expose sensitive token fields in reports or list views.
+- Use supported credential patterns (BYOK/Named Credential where applicable), not ad-hoc key storage.
+
+## Positioning line
+
+"AutoSurvey helps you publish public surveys on Salesforce with AppExchange-grade guardrails: tokenized sessions, least-privilege reporting access, and safe deployment patterns."
