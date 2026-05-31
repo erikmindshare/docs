@@ -57,7 +57,7 @@ This section assembles a merge-ready link for public (unauthenticated) distribut
 | Field | What it does |
 | --- | --- |
 | **Experience Site Domain** | The public Experience Cloud site that hosts your survey page. Sites marked **Ready** have the `AutoSurvey_Guest_Access` permission assigned to their guest user. |
-| **Survey Page Path** | The path to the Experience page that runs the survey flow, for example `/survey/s/run`. Combined with the site domain to build the full link. |
+| **Survey Page Path** | The path to the Experience page that hosts the Survey Runner LWC, for example `/survey`. Combined with the site domain to build the full link. |
 | **Merge-ready URL Template** | A copy-ready link for your email or merge tool. The `{!Survey_Invitation__c.Invite_Token__c}` placeholder is replaced with each member's unique token at send time. |
 
 > The template uses your email platform's merge syntax. Paste it into the campaign email so each recipient receives their own tokenized link.
@@ -76,6 +76,9 @@ What happens:
 - Members who already have a link for this form are **reused**, never re-tokenized — existing links keep working.
 
 After generation, a summary shows how many invitations were **created, reused, suppressed,** and **opt-out skipped**.
+
+You can also click **Copy Member Links** to copy a tab-separated export
+(`Member Name`, `Email`, `Survey Status`, `Survey URL`) for the campaign.
 
 ### How responses are attributed
 
@@ -103,6 +106,74 @@ AutoSurvey ships custom report types for distribution analysis:
 
 See [Data and Reporting](/concepts/data-and-reporting) for the underlying objects.
 
+## Email delivery in Phase 1
+
+Phase 1 uses native Salesforce sending or export workflows. AutoSurvey does not
+send campaign emails directly in this phase.
+
+Recommended flow:
+
+1. Generate links from the campaign panel.
+2. Use a Campaign Member email template with `{!CampaignMember.Survey_Link__c}`.
+3. Send via List Email from the Campaign.
+
+Fallback flow:
+
+1. Copy/export member links (`Survey Link`) from the panel/report.
+2. Send through your external email platform.
+
+Important caveats:
+
+- Prefer **Classic** templates for reliable Campaign Member merge behavior.
+- List Email send limits and org deliverability policies still apply.
+- If a member has blank `Survey_Link__c`, the merged email can contain no URL.
+
+For Apex-based test sends, confirm **Setup -> Deliverability** is set to
+**All email**. In scratch/dev orgs, **System email only** often causes sends to
+"succeed" in code but never deliver to inboxes.
+
+## Send survey emails (Phase 3)
+
+Phase 3 adds direct bulk send from the Campaign Distribution panel.
+
+Prerequisites:
+
+- Campaign has a saved **Form**
+- **Delivery Enabled** is on
+- Invitation links were generated
+- Org deliverability is **All email**
+
+Workflow:
+
+1. Review the audience summary (`eligible`, `already sent`, `completed`,
+   `opted out`, `no identity`, `suppressed`, `missing email`, `need links`).
+2. Enter subject + body.
+3. Include `%%LINK%%` in the body where each member-specific survey URL should
+   be inserted (AutoSurvey appends the link if the placeholder is missing).
+4. Pick an Organization-Wide From address (optional).
+5. Click **Send Emails**.
+
+Default send policy:
+
+- Already-sent invitations are skipped by default.
+- Turn on **Resend to all eligible** to include already-sent invitations.
+- If one or more members are in **need links**, Send is blocked to prevent a
+  partial batch. Click **Generate links for missing members** first, then send.
+
+Tracking fields:
+
+- `Survey_Invitation__c.Sent_At__c`
+- `Survey_Invitation__c.Send_Count__c`
+- `Survey_Invitation__c.Last_Send_Error__c`
+- `Campaign.Total_Sent__c`
+- `Campaign.Last_Send_At__c`
+
+Important caveats:
+
+- Salesforce daily/org email limits still apply.
+- Opted-out members are excluded from send eligibility.
+- Missing `Survey_URL__c` means no send target for that member until links are generated.
+
 ## Privacy and retention
 
 - Invitation tokens are single-use and expire (default 14 days).
@@ -117,7 +188,7 @@ For the full data-handling model, see [Security and Privacy](/admin/security-and
 | --- | --- |
 | **"Campaign must be linked to a form…"** | Select a **Form** and click **Save Settings** before generating links. |
 | **Many members suppressed** | Members already have an active invitation for the same form from another campaign, or have opted out of email. Review the generation summary. |
-| **No Experience sites listed / all "Not configured"** | Assign `AutoSurvey_Guest_Access` to the site guest user. See [Setup Home → Public Survey Access](/admin/setup). |
+| **No Experience sites listed / all "Not configured"** | The site must be **Active** (publish and activate it in Experience setup — use the **Open Experience setup** link by the Experience Site Domain field), and the guest user must have `AutoSurvey_Guest_Access` assigned. Newly created sites are inactive until you activate them. See [Setup Home → Public Survey Access](/admin/setup). |
 | **Validate URL fails** | Confirm the Experience page is published, the path is correct, and the page runs the matching survey flow. |
 | **Panel not visible on the Campaign** | Confirm you are in the **AutoSurvey** app and have admin permissions (`ASVY_Deploy_Admin`). |
 | **Counts look stale** | Rollups refresh after generation and on the nightly sync; allow a sync cycle to elapse. |
