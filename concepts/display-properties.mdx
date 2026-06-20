@@ -1,0 +1,93 @@
+---
+title: Display Properties
+description: The Display Properties column fine-tunes a question — star count, slider range, currency code, section card style, and an "Other (please specify)" option.
+---
+
+**Display Properties** (the `Display Properties` column in the Questions sheet) is optional per-question
+tuning. What it accepts depends on the question's [Display Type](/concepts/display-types) — usually a
+small JSON object, sometimes a plain keyword. Leave it blank for the default behavior.
+
+<Tip>
+You don't have to hand-write JSON. The AutoSurvey sidebar in Google Sheets has a **Display Properties
+Builder**: select a question row, and it shows the right fields for that question's type and writes the
+value for you. (Open the sidebar from the **AutoSurvey** menu.)
+</Tip>
+
+## By display type
+
+### Star — rating scale
+
+```json
+{"maxRating": 5}
+```
+
+Add half-star input with `step`:
+
+```json
+{"maxRating": 5, "step": 0.5}
+```
+
+If omitted, the star count falls back to the `Max` column on the DisplayTypes tab, then to **5**.
+
+### Slider / Scale — numeric track
+
+```json
+{"min": 0, "max": 10, "step": 1}
+```
+
+Each key falls back independently to the DisplayTypes tab (`Min` / `Max` / `Step`), then to **0 / 10 / 1**.
+Generated Flow sliders are whole-number; fractional `step` applies in the LWC runner.
+
+### Currency — ISO code
+
+```json
+{"currencyCode": "USD"}
+```
+
+Sets the currency for the amount. If omitted, AutoSurvey resolves it from the record's currency, then
+the user's default.
+
+### Section — card style
+
+For a `Section` row, choose how the group is framed (plain keyword, not JSON):
+
+| Value | Effect |
+| --- | --- |
+| `SectionCard` | Render the section as a card |
+| `WithCard` | Card around the question(s) |
+| `NoCard` | No card framing |
+
+(Blank = the default block layout.)
+
+### DisplayText — heading level
+
+For a `DisplayText` row, a heading keyword sets the emphasis: `Heading 1`, `Heading 2`, `Heading 3`, or `Normal`.
+
+## "Other (please specify)"
+
+To add an **Other** choice that reveals a free-text box when selected, add the `allowOther` token to a
+choice question's Display Properties:
+
+```text
+allowOther
+```
+
+To customize the label, append `otherLabel=`:
+
+```text
+allowOther; otherLabel=Other — please describe
+```
+
+This works on single- and multi-select choice questions. (The reserved choice key `__OTHER__` powers it —
+see [Option Sets](/concepts/option-sets).)
+
+<Note>
+Text Area questions can cap their height from the **Option Set** column (e.g. `lines:10`) — that one is
+set on Option Set, not Display Properties.
+</Note>
+
+## Related
+
+- [Display Types](/concepts/display-types) — which control each question uses
+- [Option Sets](/concepts/option-sets) — choice lists and the "Other" option
+- [Conditional Visibility](/concepts/conditional-visibility) — show/hide a question based on an answer

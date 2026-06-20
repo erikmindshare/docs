@@ -27,6 +27,10 @@
     {
       "name": "Terms",
       "url": "https://autosurvey.app/terms.html"
+    },
+    {
+      "name": "DPA",
+      "url": "https://autosurvey.app/dpa.html"
     }
   ],
   "topbarCtaButton": {
@@ -51,6 +55,7 @@
       "group": "Workflows",
       "pages": [
         "workflows/prompt-to-flow",
+        "workflows/design-with-ai",
         "workflows/sheets-to-flow",
         "workflows/deploy-and-verify"
       ]
@@ -60,6 +65,10 @@
       "pages": [
         "concepts/data-and-reporting",
         "concepts/question-library-and-versioning",
+        "concepts/display-types",
+        "concepts/display-properties",
+        "concepts/option-sets",
+        "concepts/conditional-visibility",
         "concepts/matrix-programs",
         "concepts/runtime-modes"
       ]

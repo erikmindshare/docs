@@ -1,0 +1,201 @@
+---
+title: Design with an AI Chatbot
+description: Use ChatGPT, Claude, or Gemini to draft survey questions that drop straight into AutoSurvey, with a copy‑paste prompt tuned to AutoSurvey's question types and limits.
+---
+
+AutoSurvey has its own AI generator (see [Prompt → Flow](/workflows/prompt-to-flow)), but you can also design your survey in **any** general‑purpose chatbot — ChatGPT, Claude, or Gemini — and bring the result back. The chatbot does the creative "what should we ask?" work; AutoSurvey turns the result into a deployable Screen Flow.
+
+The trick is handing the chatbot a prompt that already knows AutoSurvey's question types and limits, so its output drops in cleanly. That prompt is below.
+
+<Note>
+Two ways to use the result, and the prompt produces both: paste it into AutoSurvey's in‑app **AI generation** step, or import it as a [Questions sheet](/workflows/sheets-to-flow).
+</Note>
+
+## Pick your prompt: Full or Lite
+
+There are two versions of the prompt. Match it to the model you're using.
+
+<CardGroup cols={2}>
+  <Card title="Full — for capable models" icon="gauge-high">
+    Frontier / flagship models handle the full toolkit, including matrix grids, NPS, star, slider, and same‑screen conditional logic.
+
+    **e.g.** ChatGPT (GPT‑4o, GPT‑4.1, GPT‑5, o‑series) · Claude (Opus, Sonnet) · Gemini (1.5 / 2.5 Pro, Advanced)
+  </Card>
+  <Card title="Lite — for lighter models" icon="feather">
+    Smaller, faster, free, or older models are far more reliable kept to the simple question types (single / multi choice, rating, text).
+
+    **e.g.** ChatGPT free default / GPT‑4o mini / 3.5 · Claude Haiku · Gemini Flash / Nano · small local models (Llama, Mistral, Phi)
+  </Card>
+</CardGroup>
+
+<Tip>
+Rule of thumb: a paid flagship or reasoning model → **Full**; a free, "mini", "flash", or "lite" model → **Lite**. (This mapping is a best guess and will be refined over time — when unsure, prefer Lite: a correct simple survey beats a broken advanced one.)
+</Tip>
+
+## The prompt
+
+Fill in the bracketed lines at the top, then send it to your chatbot.
+
+<CodeGroup>
+```text Full prompt
+You are an expert survey designer. Design a complete, well-structured survey that I will build in AutoSurvey (a Salesforce app that turns a list of questions into a deployable Screen Flow). Follow AutoSurvey's question types and limits exactly so your output drops in cleanly.
+
+MY SURVEY
+- Topic / goal: [DESCRIBE WHAT YOU WANT TO LEARN]
+- Audience / respondents: [WHO IS TAKING THIS]
+- Approx length: [E.G. 10-15 QUESTIONS ACROSS 2-3 SCREENS]
+- Must include: [ANYTHING REQUIRED, E.G. AN NPS QUESTION AND A COMMENT BOX]
+(If I left any of these blank, ask me before generating.)
+
+QUESTION TYPES YOU MAY USE (these are AutoSurvey "Display Types" - use these exact names)
+- Text - one line of open text. Text Area - a paragraph; Text Area (Long) for longer free text.
+- Radio Vertical - single choice, options stacked. Picklist - single choice as a dropdown (better for long lists).
+- Checkbox Vertical - multi-select ("select all that apply"). MultiPicklist - multi-select as a compact picklist.
+- Radio Horizontal - a 1-5 scale shown as a horizontal row; pair it with a rating Option Set. (There is NO "Likert" type - a Likert scale is just an Option Set like "Likert5" used on a Radio Horizontal question.)
+- NPS - the classic 0-10 "how likely are you to recommend..." question. Use AT MOST ONCE. No Option Set.
+- Star - a 1-5 star rating for satisfaction or quality. No Option Set.
+- Slider - a number on a 0-10 track for intensity or magnitude. No Option Set.
+- Matrix - 3+ items rated on the SAME scale, shown as a grid. Every row shares ONE Section (the grid title), ONE Option Set (the shared column scale), and ONE Screen.
+- When they fit the question, you may also use: Number, Currency, Date, Email, Phone, URL.
+Prefer NPS / Star / Slider / Matrix when a question genuinely fits that pattern - but don't force them where a plain choice or scale is the honest fit.
+
+STRUCTURE RULES (must follow)
+- Group questions into a few logical screens (pages). Aim for 3-5 questions per screen, 7 maximum. Keep related questions together; put optional open-text follow-ups at the end of a screen.
+- Screen names must be 35 characters or fewer.
+- Every Radio / Picklist / Checkbox / Matrix question needs a named Option Set (a reusable choice list, e.g. "Satisfaction5"). Reuse the same set whenever the scale is identical.
+- Conditional follow-ups (Show If): a question may be shown based on an earlier answer ONLY IF the controlling question is on the SAME screen. Express it as: ControllerApiName = 'OptionValue' (use != for "is not"; you may also use IN ('A','B')). Cross-screen conditions are NOT supported - keep the trigger and the dependent question on the same screen. Use it only for genuine branching (e.g. ask "What went wrong?" only when Satisfaction = "Dissatisfied").
+
+WRITING RULES
+- One idea per question - no double-barreled questions.
+- Neutral, non-leading, professional wording.
+- No redundant or overlapping questions; progress logically from general to specific.
+- Keep the survey appropriately short.
+
+OUTPUT - give me BOTH of the following:
+
+(A) A numbered list, grouped by screen. For each question show the question text, the Display Type, and the answer options (when relevant). Mark any conditional question with "(show only if ...)". I will paste this into AutoSurvey's in-app AI step.
+
+(B) Two import tables.
+Questions table - columns, in this order:
+API Name | Question | Display Type | Screen | Section | Option Set | Required | Show If
+- Display Type must be one of the exact names listed above.
+- Section is ONLY for Matrix rows (the shared grid title); leave it blank otherwise.
+- Option Set is the NAME of the choice list for Radio / Picklist / Checkbox / Matrix rows; leave it blank for Text, NPS, Star, Slider, Number, Date, etc.
+- Required is TRUE or FALSE.
+- Show If (optional) is a same-screen condition like ControllerApiName = 'OptionValue'; leave it blank for always-visible questions.
+- API Name: a short unique identifier using letters, numbers and underscores, starting with a letter (e.g. Recommend_Likelihood).
+
+Option Sets table - columns, in this order:
+Option Set | Label | Key | Score
+- One row per option. Label is what the respondent sees; Key is the stored value (defaults to the Label if blank); Score is an optional number for analytics (e.g. 5,4,3,2,1 for a 5-point scale). Reuse the same Option Set name across questions that share a scale.
+
+Do not invent Display Types or columns beyond those listed above.
+```
+
+```text Lite prompt
+You are an expert survey designer. Design a complete, well-structured survey that I will build in AutoSurvey (a Salesforce app that turns a list of questions into a deployable Screen Flow). Keep to the simple question types below - this version is tuned for lighter AI models, so do not use matrix grids, NPS, star, slider, or conditional (show-if) logic.
+
+MY SURVEY
+- Topic / goal: [DESCRIBE WHAT YOU WANT TO LEARN]
+- Audience / respondents: [WHO IS TAKING THIS]
+- Approx length: [E.G. 10-15 QUESTIONS ACROSS 2-3 SCREENS]
+- Must include: [ANYTHING REQUIRED]
+(If I left any of these blank, ask me before generating.)
+
+QUESTION TYPES YOU MAY USE (AutoSurvey "Display Types" - use these exact names, and ONLY these)
+- Text - one line of open text. Text Area - a paragraph of open text.
+- Radio Vertical - single choice (pick one). Picklist - single choice as a dropdown for long lists.
+- Checkbox Vertical - multi-select ("select all that apply").
+- Radio Horizontal - a 1-5 rating shown as a horizontal row; pair it with a rating Option Set (e.g. "Likert5"). There is no separate "Likert" type.
+Do NOT use Matrix, NPS, Star, Slider, or Show If (conditional) logic.
+
+STRUCTURE RULES (must follow)
+- Group questions into a few logical screens (pages). Aim for 3-5 questions per screen, 7 maximum. Put optional open-text follow-ups at the end of a screen.
+- Screen names must be 35 characters or fewer.
+- Every Radio / Picklist / Checkbox question needs a named Option Set (a reusable choice list, e.g. "Satisfaction5"). Reuse the same set whenever the scale is identical.
+
+WRITING RULES
+- One idea per question - no double-barreled questions.
+- Neutral, non-leading, professional wording.
+- No redundant or overlapping questions; progress logically from general to specific.
+- Keep the survey appropriately short.
+
+OUTPUT - give me BOTH of the following:
+
+(A) A numbered list, grouped by screen. For each question show the question text, the Display Type, and the answer options (when relevant). I will paste this into AutoSurvey's in-app AI step.
+
+(B) Two import tables.
+Questions table - columns, in this order:
+API Name | Question | Display Type | Screen | Option Set | Required
+- Display Type must be one of: Text, Text Area, Radio Vertical, Picklist, Checkbox Vertical, Radio Horizontal.
+- Option Set is the NAME of the choice list for Radio / Picklist / Checkbox rows; leave it blank for Text and Text Area.
+- Required is TRUE or FALSE.
+- API Name: a short unique identifier using letters, numbers and underscores, starting with a letter (e.g. Recommend_Likelihood).
+
+Option Sets table - columns, in this order:
+Option Set | Label | Key | Score
+- One row per option. Label is what the respondent sees; Key is the stored value (defaults to the Label if blank); Score is an optional number for analytics. Reuse the same Option Set name across questions that share a scale.
+
+Do not invent Display Types or columns beyond those listed above.
+```
+</CodeGroup>
+
+## Bring the result into AutoSurvey
+
+<Steps>
+  <Step title="Paste the list (easiest)">
+    Copy **output (A)** — the numbered list grouped by screen — into AutoSurvey's in‑app **AI generation** step set to **Standard**. It structures the questions you already designed rather than re‑inventing them; then you review and deploy. See [Prompt → Flow](/workflows/prompt-to-flow).
+  </Step>
+  <Step title="…or import the tables (direct)">
+    Copy **output (B)** — the Questions and Option Sets tables — into the matching tabs and run [Sheets → Flow](/workflows/sheets-to-flow). The importer validates every column and flags anything to fix.
+  </Step>
+</Steps>
+
+## Staying within what AutoSurvey supports
+
+The prompt already encodes these rules, but here's where each is documented in full — handy if you want to tweak the prompt or sanity‑check the chatbot's output:
+
+<CardGroup cols={2}>
+  <Card title="Display Types" icon="table-cells" href="/concepts/display-types">
+    The exact control names: `Text`, `Picklist`, `Radio Horizontal/Vertical`, `Checkbox Vertical`, `NPS`, `Star`, `Slider`, `Matrix`, and more. (No `Likert` type — use a `Radio Horizontal` with a `Likert5` Option Set.)
+  </Card>
+  <Card title="Option Sets" icon="list" href="/concepts/option-sets">
+    Choice, rating, and matrix questions reference a named, reusable choice list (e.g. `Likert5`).
+  </Card>
+  <Card title="Conditional Visibility" icon="code-branch" href="/concepts/conditional-visibility">
+    A Show If can only depend on another answer **on the same screen** — keep the trigger and the follow‑up together.
+  </Card>
+  <Card title="Matrix programs" icon="table-cells-large" href="/concepts/matrix-programs">
+    A grid of rows sharing one Screen, one Section (the grid title), and one column Option Set.
+  </Card>
+</CardGroup>
+
+<Warning>
+The biggest gotcha for an AI: **conditional ("Show If") logic only works within a single screen.** A survey can't show or hide a question based on an answer from an earlier page — it's a built‑in limit of Salesforce Flow. The Full prompt tells the chatbot this; if you edit the prompt, keep that rule. See [Conditional Visibility](/concepts/conditional-visibility).
+</Warning>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Which chatbot should I use?">
+    Any capable general‑purpose assistant — ChatGPT, Claude, or Gemini. The prompt is self‑contained, so the model just needs to follow instructions and write clean text. If one model's wording feels off, paste the same prompt into another.
+  </Accordion>
+  <Accordion title="Why does the Lite prompt drop matrix and conditional logic?">
+    Those features carry structural rules — a matrix shares one screen / section / option set, and a Show If must stay on one screen. Lighter models often get those rules wrong, producing output that fails import. Keeping Lite to simple controls makes its output reliable. Use Full on a capable model when you need the richer controls.
+  </Accordion>
+  <Accordion title="Can I just send my chatbot this page instead of the prompt?">
+    Yes. You can paste this page's URL and ask it to follow the guide, or append `.md` to the page URL for a clean, text‑only version. Either way, point the chatbot at the prompt above.
+  </Accordion>
+  <Accordion title="Do I have to write API names myself?">
+    Only for the direct import (output B), and the prompt asks the chatbot to propose sensible ones. If you paste output (A) into the in‑app AI step, AutoSurvey handles naming.
+  </Accordion>
+  <Accordion title="What if the chatbot invents a question type AutoSurvey doesn't have?">
+    The prompt limits it to supported [Display Types](/concepts/display-types). If something slips through (say a "ranking" question), map it to the closest supported control — usually single choice, multi choice, or a matrix — or ask the chatbot to redo that question within the allowed types.
+  </Accordion>
+</AccordionGroup>
+
+## Related
+
+- [Prompt → Flow](/workflows/prompt-to-flow) — AutoSurvey's built‑in AI generator
+- [Sheets → Flow](/workflows/sheets-to-flow) — importing the Questions and Option Sets tables
+- [Display Types](/concepts/display-types) · [Option Sets](/concepts/option-sets) · [Display Properties](/concepts/display-properties) · [Conditional Visibility](/concepts/conditional-visibility) · [Matrix programs](/concepts/matrix-programs)

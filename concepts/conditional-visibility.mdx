@@ -1,0 +1,112 @@
+---
+title: Conditional Visibility (Show If)
+description: Show or hide a question based on an earlier answer — and the one rule to remember, that a Show If can only depend on another answer on the same screen.
+---
+
+A **Show If** rule (the `Visibility` column in the Questions sheet) lets a question or section appear only when an earlier answer meets a condition — for example, *show "How many employees?" only when "Are you a business?" = Yes*.
+
+<Note>
+**The one rule to remember:** a Show If can only reference another answer **on the same screen** (page) as the question it controls.
+</Note>
+
+## Writing a Show If
+
+The easiest way is the **Show-If Builder** in the AutoSurvey sidebar (in Google Sheets, open the
+**AutoSurvey** menu → sidebar). Pick the controlling question — it only lists questions on the **same
+screen** — choose a condition, pick the value(s) from that question's own choices, and it writes a
+valid rule into the `Show If` cell for you.
+
+If you prefer to type it, the syntax is small:
+
+| Operator | Meaning | Example |
+| --- | --- | --- |
+| `=` | equals | `Role__c = 'Manager'` |
+| `!=` | not equals | `Status__c != 'Closed'` |
+| `IN (…)` | matches any of | `Role__c IN ('Manager', 'Lead')` |
+| `NOT IN (…)` | matches none of | `Region__c NOT IN ('US', 'CA')` |
+| `ISBLANK(x)` | x has no answer | `ISBLANK(Comments__c)` |
+| `ISNOTBLANK(x)` | x has an answer | `ISNOTBLANK(Email__c)` |
+
+A bare field name is shorthand for `= true` — handy for a checkbox: `Opted_In__c`.
+
+A few rules:
+
+- Quote text values with single quotes (`'Manager'`); leave numbers and `true` / `false` unquoted.
+- Combine conditions with **all `AND`** or **all `OR`** — don't mix the two in one rule. To match
+  several values of the same question, use `IN (…)` instead of an `OR` chain.
+- Ordering comparisons (`<`, `>`, `<=`, `>=`) aren't supported — answers are compared as text.
+
+<Tip>
+Build it in the sidebar and you can't get these wrong: it only offers same-screen controllers, the
+supported operators, and the controlling question's choices as values.
+</Tip>
+
+## Why same‑screen only
+
+Every AutoSurvey survey runs as a native **Salesforce Screen Flow**, and a Screen Flow shows **one screen at a time**. Salesforce evaluates a question's show/hide condition using only the values present on the screen the respondent is currently looking at.
+
+That means an answer from an **earlier** screen isn't available to drive show/hide on a **later** screen — by the time the later screen renders, the earlier answer lives outside what the screen's visibility check can see. This is a built‑in characteristic of Salesforce Flow, not an AutoSurvey limitation, so AutoSurvey can't work around it. Rather than let a rule import and then silently never fire, AutoSurvey catches it up front.
+
+## What you'll see
+
+If a Show If points at a question on a different screen, the import is blocked with a message like:
+
+> Visibility rule references **"Is_Business\_\_c"** on screen **"About you"**, but this question is on screen **"Company details"**. A survey can only show or hide a question from another answer on the **same screen** — it is a built‑in limit of Salesforce Flow, not an AutoSurvey restriction. Put both questions on the same screen, or remove the rule.
+
+## How to fix it
+
+You have two straightforward options:
+
+1. **Put both questions on the same screen.** Give the controlling question and the question it shows/hides the same `Screen` value. This is usually what you want — the respondent answers the trigger and immediately sees the follow‑up appear on the same page.
+2. **Remove the Show If** if the questions genuinely belong on different screens and you don't need the conditional behavior.
+
+<Tip>
+Questions that leave the `Screen` column blank are all treated as one implicit screen, so a Show If between two blank‑`Screen` rows is fine — they're on the same screen.
+</Tip>
+
+## Example
+
+Say you want to ask for a company size only when the respondent is a business.
+
+**✅ Works — same screen**
+
+| API Name | Question | Screen | Show If |
+| --- | --- | --- | --- |
+| `Is_Business__c` | Are you a business? | About you | |
+| `Company_Size__c` | How many employees? | About you | `Is_Business__c = 'Yes'` |
+
+Both questions share the **About you** screen, so the follow‑up shows or hides reactively as the respondent answers.
+
+**❌ Blocked — different screens**
+
+| API Name | Question | Screen | Show If |
+| --- | --- | --- | --- |
+| `Is_Business__c` | Are you a business? | About you | |
+| `Company_Size__c` | How many employees? | Company details | `Is_Business__c = 'Yes'` |
+
+Here the trigger is on **About you** but the follow‑up is on **Company details** — a different screen — so the import is rejected. Move `Company_Size__c` onto the **About you** screen to fix it.
+
+## Beyond the DSL: a custom Flow
+
+Show If is intentionally simple. If you need logic it can't express — cross-screen branching,
+calculations, callouts, custom validation — remember the survey **is** a normal, unmanaged Salesforce
+**Screen Flow** in your org. A power user can:
+
+1. **Clone** the generated Flow in Flow Builder under a new name and edit the clone freely.
+2. Point the survey's **Form** record at the clone via the **Custom Flow Developer Name** field — the
+   shareable survey link then runs your clone.
+3. Optionally check **Skip Autogen Flow Regen** on that Form so re-importing the sheet won't
+   regenerate the original Flow.
+
+AutoSurvey only ever regenerates the original auto-generated Flow, so your hand-edited clone is never
+overwritten. Two caveats: the flow-free LWC runner reflects only Show If rules (not custom Flow logic),
+so distribute the **Flow** link for a customized survey; and future sheet edits flow to the
+auto-generated Flow, not your clone.
+
+## Related
+
+- [Display Types](/concepts/display-types) — the control each question uses
+- [Display Properties](/concepts/display-properties) — per-type tuning
+- [Option Sets](/concepts/option-sets) — choice lists for the values you compare against
+- [Sheets → Flow](/workflows/sheets-to-flow) — how the Questions sheet becomes a Screen Flow
+- [Runtime Modes](/concepts/runtime-modes) — how questions render inside the flow

@@ -153,12 +153,31 @@ Workflow:
 4. Pick an Organization-Wide From address (optional).
 5. Click **Send Emails**.
 
+Delivery visibility:
+
+- The panel includes a **Delivery log** table (invitation-level) with:
+  - member/email
+  - invitation status
+  - sent timestamp
+  - send count
+  - first opened timestamp
+  - expiration timestamp
+  - last send error
+- Use filter chips for **All / Sent / Not sent / Errors / Completed**.
+- Row actions:
+  - **Resend invitation**
+  - **Copy link**
+  - **Open invitation record**
+- Use **Download Delivery Log (CSV)** for external review.
+
 Default send policy:
 
 - Already-sent invitations are skipped by default.
 - Turn on **Resend to all eligible** to include already-sent invitations.
 - If one or more members are in **need links**, Send is blocked to prevent a
   partial batch. Click **Generate links for missing members** first, then send.
+- You can resend only specific invitations with **Resend selected (N)**, or use
+  the row-level **Resend invitation** action.
 
 Tracking fields:
 
@@ -173,6 +192,9 @@ Important caveats:
 - Salesforce daily/org email limits still apply.
 - Opted-out members are excluded from send eligibility.
 - Missing `Survey_URL__c` means no send target for that member until links are generated.
+- Targeted resend still skips invitations that are completed, opted out,
+  expired, missing email, or missing URL (skip reasons are written to
+  `Survey_Invitation__c.Last_Send_Error__c`).
 
 ## Privacy and retention
 

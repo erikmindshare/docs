@@ -1,0 +1,90 @@
+---
+title: Display Types
+description: The Display Type column picks the input control for each question — text, choices, ratings, dates, and structural rows like Section and Screen.
+---
+
+Every row in the **Questions** sheet has a **Display Type** — the kind of control the respondent
+sees and the kind of value it collects. You pick it from the dropdown in the `Display Type` column
+(the allowed values live on the **DisplayTypes** tab).
+
+<Note>
+Some display types need a list of choices — set that with the **Option Set** column. See
+[Option Sets](/concepts/option-sets). Per-type tuning (star count, slider range, currency, card
+style) is set with the **Display Properties** column. See [Display Properties](/concepts/display-properties).
+</Note>
+
+## Text
+
+| Display Type | Collects | Option Set? |
+| --- | --- | --- |
+| `Text` | Single line of text | No |
+| `Text Area` | Multiple lines (short) | No |
+| `Text Area (Long)` | Long free text | No |
+| `Text Area (Rich)` | Formatted (rich) text | No |
+| `Text (Encrypted)` | Masked text input | No |
+
+<Warning>
+`Text (Encrypted)` masks the input in the survey, but the answer is stored as plain text unless the
+mapped reporting field is itself an encrypted Salesforce field. Don't use it to collect regulated
+secrets expecting encryption at rest. See [Security & Privacy](/admin/security-and-privacy).
+</Warning>
+
+## Numbers, dates & contact info
+
+| Display Type | Collects | Option Set? |
+| --- | --- | --- |
+| `Number` | A number | No |
+| `Percent` | A percentage | No |
+| `Currency` | A money amount (see Display Properties for the ISO code) | No |
+| `Date` | A date | No |
+| `DateTime` | A date and time | No |
+| `Time` | A time of day | No |
+| `Email` / `Phone` / `URL` | Contact info, with light format validation | No |
+| `Checkbox` *(no Option Set)* | A single yes/no toggle | No |
+
+## Choice questions (need an Option Set)
+
+These render your **Option Set** as the choices:
+
+| Display Type | UX | Select |
+| --- | --- | --- |
+| `Picklist` | Dropdown | One |
+| `Radio Horizontal` / `Radio Vertical` | Radio buttons | One |
+| `MultiPicklist` | Multi-select picklist | Many |
+| `Checkbox Horizontal` / `Checkbox Vertical` | Checkbox group ("select all that apply") | Many |
+| `Checkbox` *(with an Option Set)* | Checkbox group | Many |
+
+<Tip>
+There's no `Likert` display type — a Likert scale is just a reusable Option Set (e.g. `Likert5`)
+referenced from a `Radio Horizontal` (or `Matrix`) question.
+</Tip>
+
+## Ratings
+
+| Display Type | Collects | Notes |
+| --- | --- | --- |
+| `NPS` | 0–10 Net Promoter scale | No Option Set needed; powers the Suite Insights NPS tile |
+| `Star` | 1..N stars | Set `N` (and optional half-stars) in Display Properties |
+| `Slider` / `Scale` | A number on a track | Set min / max / step in Display Properties |
+
+## Structure & layout
+
+| Display Type | Purpose |
+| --- | --- |
+| `Screen` | Starts a new page in the flow. (You can also just reuse a `Screen` value across rows.) |
+| `Section` | Groups questions inside a screen under a heading/card. |
+| `DisplayText` | Static text shown to the respondent (no answer collected) — instructions, headings. |
+| `Matrix` | A "multiple-choice grid": a `Section` of `Matrix` rows that share one column Option Set. See [Matrix programs](/concepts/matrix-programs). |
+
+## Aliases
+
+The importer normalizes common variants to the canonical name — e.g. `Long Text` → `Text Area (Long)`,
+`Radio` → `Radio Horizontal`, `Percentage` → `Percent`, `Radio Matrix` → `Matrix`. If you type a value
+that isn't recognized at all, validation flags it as `INVALID_DISPLAY_TYPE` so you can correct it.
+
+## Related
+
+- [Option Sets](/concepts/option-sets) — choice lists for picklist/radio/checkbox/matrix questions
+- [Display Properties](/concepts/display-properties) — per-type tuning (stars, sliders, currency, cards)
+- [Conditional Visibility](/concepts/conditional-visibility) — show/hide a question based on an answer
+- [Sheets → Flow](/workflows/sheets-to-flow) — how the Questions sheet becomes a Screen Flow

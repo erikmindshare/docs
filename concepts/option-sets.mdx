@@ -1,0 +1,63 @@
+---
+title: Option Sets
+description: Option Sets are reusable choice lists — define them once on the Option Sets tab and reference them from any picklist, radio, checkbox, or matrix question.
+---
+
+An **Option Set** is a named, reusable list of choices (e.g. `YesNo`, `Likert5`, `Satisfaction`).
+Define it once on the **Option Sets** tab, then point any choice question at it with the
+**Option Set** column on the Questions sheet.
+
+<Note>
+Choice [display types](/concepts/display-types) — `Picklist`, `Radio Horizontal/Vertical`,
+`MultiPicklist`, `Checkbox Horizontal/Vertical`, and `Checkbox` (with a set) — **require** an Option
+Set. If one is missing, import is blocked with `MISSING_OPTION_SET`.
+</Note>
+
+## The Option Sets tab
+
+Each row is one choice in a set:
+
+| Column | Required | Meaning |
+| --- | --- | --- |
+| `Option Set` | Yes | The set name. Repeat it on every row that belongs to the set. |
+| `Label` | Yes | The text the respondent sees. |
+| `Key` | No | A stable stored value. Defaults to the Label if blank. |
+| `Score` | No | A numeric value for analytics/scoring. |
+
+**Example — a 5-point agreement scale:**
+
+| Option Set | Label | Key | Score |
+| --- | --- | --- | --- |
+| `Agreement5` | Strongly disagree | SD | 1 |
+| `Agreement5` | Disagree | D | 2 |
+| `Agreement5` | Neutral | N | 3 |
+| `Agreement5` | Agree | A | 4 |
+| `Agreement5` | Strongly agree | SA | 5 |
+
+Then on the Questions sheet, set `Option Set` = `Agreement5` for any question that uses it.
+
+## Rules
+
+- **Labels must be unique within a set** (case-insensitive) — duplicates are blocked
+  (`DUPLICATE_OPTION_LABEL`).
+- Every option row needs both an `Option Set` name and a `Label`.
+- A label can be at most 252 characters; a set name at most 80.
+
+## Reuse
+
+The point of Option Sets is reuse: define `Likert5` once and reference it from a dozen questions (or
+every row of a [matrix](/concepts/matrix-programs)). Editing the set updates every question that uses
+it on the next import.
+
+## "Other (please specify)"
+
+The choice key **`__OTHER__`** is reserved. You don't add it to the Option Set yourself — instead turn
+on an Other option with the `allowOther` token in the question's
+[Display Properties](/concepts/display-properties). When selected, it reveals a free-text box.
+Import will block any Option Set row whose key resolves to `__OTHER__`.
+
+## Related
+
+- [Display Types](/concepts/display-types) — which questions need an Option Set
+- [Display Properties](/concepts/display-properties) — enabling an "Other" choice
+- [Matrix programs](/concepts/matrix-programs) — grids that share one column Option Set
