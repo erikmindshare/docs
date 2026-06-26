@@ -89,23 +89,24 @@ instructions. The legal pack below states our commitments in full.
 - **Survey responses stay in your own Salesforce org.** They are stored in AutoSurvey's managed
   objects (and an optional customer-owned reporting object you map). Responses are **not** sent to
   Mindshare Studio, are **not** stored on our control plane, and are **not** sent to any AI service.
-- **Survey design content** (the questions you author) is hosted in Google Sheets in our managed
-  Google Workspace and synced to your org.
+- **Survey design content** (the questions you author, whether via AI generation in Salesforce or
+  the Google Sheets add-on) is processed in your org and, where the Sheets add-on is used, hosted in
+  our managed Google Workspace.
 - **Account, licensing, and AI-usage metadata** is held in our hosted control plane (org ID,
   domain, plan, AI keys, token/spend telemetry).
 
 ### AI features
 
 The optional AI features (question generation, field-name suggestions) send only the **survey
-design content you author** to an AI provider (OpenAI, or Google Gemini where selected) — never
-respondent answers. Analytics ("Insights") and export run inside your org with no AI. In **BYOK**
-mode, AI calls go directly from your org to your provider; in **hosted** mode they are proxied and
-metered through our control plane.
+design content you author** to an AI provider (OpenAI or Anthropic, depending on the model selected)
+— never respondent answers. Analytics ("Insights") and export run inside your org with no AI. In
+**BYOK** mode, AI calls go directly from your org to your provider; in **hosted** mode AutoSurvey
+uses our managed key and meters token usage through our control plane.
 
 ### Sub-processors
 
-Salesforce, Inc. (control-plane hosting), Google LLC (Sheets/Drive; optional Gemini), and
-OpenAI, L.L.C. (AI authoring). See the DPA for the maintained list.
+Salesforce, Inc. (control-plane hosting), Google LLC (Sheets/Drive hosting), OpenAI, L.L.C. and
+Anthropic, PBC (AI authoring). See the DPA for the maintained list.
 
 ### On uninstall
 
