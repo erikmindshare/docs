@@ -1,0 +1,114 @@
+---
+title: Distribution Settings
+description: How a survey is sent, who gets identified, what respondents see afterward, and what AutoSurvey creates in your CRM — the four Distribution settings groups, in plain language.
+---
+
+Distribution settings govern **how a survey is delivered**: whether respondents are asked who they
+are, what they see after submitting, when the results report is sent, and what AutoSurvey writes into
+your CRM for people who aren't already there.
+
+<Note>
+**Where this lives.** Open a suite's workspace → **Distribute** → the **⚙️ Distribution settings**
+drawer. Each control has an **ⓘ** help bubble whose **Learn more** link points back to the matching
+section on this page.
+</Note>
+
+## At a glance
+
+| Group | What it decides | Default |
+| --- | --- | --- |
+| [Identify respondent](#identify-respondent) | Whether respondents are asked who they are | **Optional** |
+| [Respondent-facing results](#respondent-facing-results) | Whether respondents see an aggregate after submitting | **Off** |
+| [Report contract](#report-contract) | The close date that unlocks email capture and the results report | **Required for email capture** |
+| [Materialization policy](#materialization-policy) | What AutoSurvey creates in CRM for unmatched recipients | **Lead** (admin) / **None** (self-serve) |
+
+<Tip>
+**Scope is shown honestly.** Every group displays its **scope owner** — org, suite, per-form, or
+per-send — and renders **"Mixed"** rather than a single fabricated value when the setting differs
+across the forms or sends in scope. A per-send policy is never displayed as if it were one global
+switch.
+</Tip>
+
+## Identify respondent
+
+Controls whether a respondent is asked to identify themselves, and when.
+
+| Option | What the respondent experiences | Anonymity |
+| --- | --- | --- |
+| **Off** | Never asked who they are. | Fully anonymous. |
+| **Optional** *(default)* | Asked **after** they finish. Answers stay anonymous **unless** they choose *"identify my response."* | Anonymous by default; respondent opts in. |
+| **Required** | Must identify **before** they can start. | Identified. |
+
+**Linkage is always disclosed on screen.** When identification is optional, the default *results
+subscription* stores the respondent's email **unlinked** from their answers — so someone can subscribe
+to the results report without deanonymizing their response.
+
+<Warning>
+**Gated by close date.** *Optional* and *Required* both capture respondent email, so they stay
+**disabled until a [close date](#report-contract) is declared** under Report contract. *Off* captures
+no email and is always available.
+</Warning>
+
+## Respondent-facing results
+
+Optionally shows respondents a snapshot of everyone's answers **after** they submit.
+
+- **Show respondents an aggregate** — after submitting, the respondent sees a **frozen "largest group"
+  teaser**: a simple summary of how everyone answered. It's a snapshot, not a live-updating dashboard.
+- **Hero question** — picks **which** question that teaser summarizes. It's **overridable before the
+  first publish only**, then **locked**, so the teaser can't silently change meaning after respondents
+  have already seen it.
+
+<Note>
+**Default off.** The master switch defaults **off**, and **sensitive templates lock it off** so
+aggregate results can never be exposed for a survey that shouldn't share them.
+</Note>
+
+## Report contract
+
+The **close date** is the linchpin that unlocks email capture and schedules the results report.
+
+- A **declared close date** lets AutoSurvey **capture respondent email** and **send the results report
+  at close**.
+- **No respondent email is captured** without a declared close date or cadence — this is why the
+  email-capturing [Identify](#identify-respondent) modes gate on it.
+- **Cancelling** a close date means AutoSurvey either **auto-sends** the report or
+  **notifies-and-purges** captured contact data, so email never lingers without a contract to justify
+  it.
+
+<Tip>
+**Default: required for email capture.** You can run a fully anonymous, no-email survey with no close
+date. The moment you want to email respondents or send a results report, a close date becomes
+mandatory.
+</Tip>
+
+## Materialization policy
+
+Decides **what AutoSurvey creates in your CRM** for each recipient who isn't already there. This is a
+**per-send** policy with an org default — not a single global switch.
+
+| Option | For an unmatched recipient, AutoSurvey creates… |
+| --- | --- |
+| **Lead** *(admin-send default)* | a **Lead**. |
+| **Contact** | a **Contact**. |
+| **None** *(self-registration default)* | **nothing** — the response is recorded without a CRM record. |
+
+**Create Leads from self-registrations** is a separate toggle, **off by default**, with its own consent
+copy and volume caps — because self-service sign-ups are a different trust boundary than a list you
+sent to.
+
+<Warning>
+**Never silent.** Admin-send Lead creation is always previewed: the **Add & Send** step shows
+**"will create N Leads"** before anything is written, so the count is never a surprise.
+</Warning>
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Campaign Survey Distribution" icon="paper-plane" href="/admin/campaign-distribution">
+    Send a survey to the members of a Salesforce Campaign with unique, single-use links.
+  </Card>
+  <Card title="Setup Home Guide" icon="gear" href="/admin/setup">
+    Every check, status, and repair action on the AutoSurvey Setup Home page.
+  </Card>
+</CardGroup>

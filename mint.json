@@ -77,6 +77,7 @@
       "group": "Admin",
       "pages": [
         "admin/setup",
+        "admin/distribution-settings",
         "admin/campaign-distribution",
         "admin/installation-and-permissions",
         "admin/objects-permissions-layouts",

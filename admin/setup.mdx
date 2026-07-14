@@ -119,6 +119,37 @@ This section appears for subscriber orgs after control plane connection succeeds
 | **Why it matters** | Without activation, users see default layout instead of AutoSurvey submission experience. |
 | **How to fix** | Click **Open Lightning Record Pages**, locate the AutoSurvey page, and activate as needed. |
 
+### Raw Response Access
+
+Raw-response reports and CSV/ZIP exports show **individual** survey responses. Aggregate Insights apply
+disclosure floors so small groups can't be re-identified; individual responses have no such floor, so
+they are gated to authorized **raw-response administrators** only.
+
+| Item | Details |
+| --- | --- |
+| **What it checks** | Whether the raw-response report folder is shared with the right users and the raw-response permission set is assigned. |
+| **Why it matters** | Reveals individual, potentially identifying responses. Access is deliberately narrow so raw exports don't leak past the people entitled to see them. |
+| **How to fix** | This is an **instructional** check, not a one-click repair — the **folder share and the permission set only work together**, and neither is safe to change automatically. Share the raw-response report folder with your raw-response administrators, then assign them the raw-response permission set. |
+| **Status values** | **Not Tested** is expected here — the card is guidance, not an automated verification. |
+
+<Warning>
+Raw-response access exposes individual answers. Grant it only to users who are entitled to see
+identifying data, and prefer aggregate Insights (which enforce disclosure floors) for everyone else.
+</Warning>
+
+### Survey Reports Access
+
+The packaged **"AutoSurvey Survey Reports"** folder holds the aggregate/summary reports meant for
+**every internal user**. Its metadata ships as `PublicInternal`, but Salesforce **ignores packaged
+report-folder shares at install**, so the folder lands **hidden** until an admin shares it once.
+
+| Item | Details |
+| --- | --- |
+| **What it checks** | Whether the packaged **AutoSurvey Survey Reports** folder is shared with internal users. |
+| **Why it matters** | Without the share, the summary reports are invisible even though they're intended for the whole org — a packaging quirk, not a permissions decision you made. |
+| **How to fix** | Click **Share the Survey Reports folder**. The one-click action grants internal-user access; the button disappears once the folder is shared. |
+| **Status values** | **Pass** = folder shared with internal users. **Not Tested** / **Fail** = still hidden — click the share button. |
+
 ## Public Survey Access
 
 Enable this option if surveys should run for unauthenticated respondents via Experience Cloud.
