@@ -106,35 +106,11 @@ AutoSurvey ships custom report types for distribution analysis:
 
 See [Data and Reporting](/concepts/data-and-reporting) for the underlying objects.
 
-## Email delivery in Phase 1
+## Send survey emails
 
-Phase 1 uses native Salesforce sending or export workflows. AutoSurvey does not
-send campaign emails directly in this phase.
-
-Recommended flow:
-
-1. Generate links from the campaign panel.
-2. Use a Campaign Member email template with `{!CampaignMember.Survey_Link__c}`.
-3. Send via List Email from the Campaign.
-
-Fallback flow:
-
-1. Copy/export member links (`Survey Link`) from the panel/report.
-2. Send through your external email platform.
-
-Important caveats:
-
-- Prefer **Classic** templates for reliable Campaign Member merge behavior.
-- List Email send limits and org deliverability policies still apply.
-- If a member has blank `Survey_Link__c`, the merged email can contain no URL.
-
-For Apex-based test sends, confirm **Setup -> Deliverability** is set to
-**All email**. In scratch/dev orgs, **System email only** often causes sends to
-"succeed" in code but never deliver to inboxes.
-
-## Send survey emails (Phase 3)
-
-Phase 3 adds direct bulk send from the Campaign Distribution panel.
+AutoSurvey sends campaign invitation emails directly from the Campaign
+Distribution panel — no external email tool or Salesforce List Email is
+required.
 
 Prerequisites:
 
@@ -195,6 +171,33 @@ Important caveats:
 - Targeted resend still skips invitations that are completed, opted out,
   expired, missing email, or missing URL (skip reasons are written to
   `Survey_Invitation__c.Last_Send_Error__c`).
+- Confirm **Setup -> Deliverability** is set to **All email**. In scratch/dev
+  orgs, **System email only** often causes sends to "succeed" in the panel
+  (or in Apex test sends) but never deliver to inboxes.
+
+## Alternative: native Salesforce List Email
+
+Direct send above covers most cases, but you can still generate links only
+and send through Salesforce's native List Email or your own email platform
+instead — useful if your org's email approval process requires List Email,
+or you want tighter control over the merge template.
+
+Recommended flow:
+
+1. Generate links from the campaign panel (skip **Send Emails**).
+2. Use a Campaign Member email template with `{!CampaignMember.Survey_Link__c}`.
+3. Send via List Email from the Campaign.
+
+Fallback flow:
+
+1. Copy/export member links (`Survey Link`) from the panel/report.
+2. Send through your external email platform.
+
+Important caveats:
+
+- Prefer **Classic** templates for reliable Campaign Member merge behavior.
+- List Email send limits and org deliverability policies still apply.
+- If a member has blank `Survey_Link__c`, the merged email can contain no URL.
 
 ## Privacy and retention
 
