@@ -92,7 +92,7 @@ A nightly sync rolls each member's status, completion time, and latest invitatio
 
 ## Validate the survey URL
 
-Click **Validate URL** once after publishing your Experience page. AutoSurvey opens the survey link with a one-time validation code and confirms the page loads the **correct flow**, then marks the form's URL as **validated** with a timestamp. This catches broken paths, wrong sites, or unpublished pages before you send.
+The **Survey Link** step checks your link configuration automatically — no manual step required. It runs when you open the step and re-runs automatically after you click **Save Settings**. When everything resolves correctly, it shows **"Link points to a live, published survey (`<suite>` / `<form>`)."** If something's wrong (for example, the selected form is missing a suite or form code, or the survey base URL isn't configured in Setup), it shows **"Link configuration needs attention"** with the specific issues listed. Use the passive **Re-check** button to run the check again on demand, such as after fixing an issue elsewhere in Setup.
 
 ## Reporting
 
@@ -214,6 +214,6 @@ For the full data-handling model, see [Security and Privacy](/admin/security-and
 | **"Campaign must be linked to a form…"** | Select a **Form** and click **Save Settings** before generating links. |
 | **Many members suppressed** | Members already have an active invitation for the same form from another campaign, or have opted out of email. Review the generation summary. |
 | **No Experience sites listed / all "Not configured"** | The site must be **Active** (publish and activate it in Experience setup — use the **Open Experience setup** link by the Experience Site Domain field), and the guest user must have `AutoSurvey_Guest_Access` assigned. Newly created sites are inactive until you activate them. See [Setup Home → Public Survey Access](/admin/setup). |
-| **Validate URL fails** | Confirm the Experience page is published, the path is correct, and the page runs the matching survey flow. |
+| **"Link configuration needs attention"** | Check the listed issues: confirm a form is selected, that it (or its suite) has both a suite code and form code, and that the survey base URL is configured in Setup. Click **Re-check** after fixing an issue. |
 | **Panel not visible on the Campaign** | Confirm you are in the **AutoSurvey** app and have admin permissions (`ASVY_Deploy_Admin`). |
 | **Counts look stale** | Rollups refresh after generation and on the nightly sync; allow a sync cycle to elapse. |
