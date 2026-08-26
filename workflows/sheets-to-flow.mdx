@@ -1,16 +1,126 @@
 ---
-title: Sheets → Flow
-description: Use the Sheets spec for bulk editing and repeatable deployments.
+title: "Sheets to Survey"
+description: "Write your survey in Google Sheets, validate it in the sidebar, and import it into Salesforce — the bulk-editing and version-control path."
 ---
 
-# Sheets → Flow
-The Sheet is your bulk editor and versioning surface.
 
-## What goes in the Sheet (stub)
-- Pages/screens
-- Questions/fields
-- Requiredness + help text
-- Validations
-- (Optional) Audience × Wave mapping
+Every AutoSurvey suite is bound to a **Google Sheet**. The sheet is where the survey is written:
+one row per question, per section heading, per page break. It is the fastest way to build something
+long, to change fifty questions at once, and to see the whole survey on one screen.
 
-> TODO: Link “Copy an example spec”
+## The tabs
+
+AutoSurvey reads five tabs:
+
+| Tab | What it holds |
+| --- | --- |
+| **Questions** | The survey itself — one row per question or structural row. [Full column reference](/concepts/questions-sheet) |
+| **Option Sets** | Reusable choice lists. [Option Sets](/concepts/option-sets) |
+| **Display Types** | The controls the `Display Type` dropdown offers, and their type-level defaults. A fresh workbook starts with a common subset of the [full list](/concepts/display-types) |
+| **Config** | Suite-level settings |
+| **Audience Round Matrix** | Optional. Which audiences get which waves. [Matrix programs](/concepts/matrix-programs) |
+
+<Warning>
+  Any other tab is ignored — including a **Surveys**, **Survey Content** or **Assignments** tab left
+  over from an older workbook. Nothing warns you, so if audience targeting isn't taking effect,
+  check you're using the Audience Round Matrix and its per-wave columns rather than an Assignments
+  tab. See [Matrix programs](/concepts/matrix-programs).
+</Warning>
+
+<Note>
+  Only **three** columns on the Questions tab are required: `API Name`, `Question` and
+  `Display Type`. Everything else is optional, column order doesn't matter, and your own working
+  columns are ignored rather than rejected.
+</Note>
+
+## The Config tab
+
+The **Config** tab is a list of `Key` / `Value` pairs, and **AutoSurvey writes most of it for you** —
+identifiers, column presets and bookkeeping. You don't normally edit it.
+
+A few keys are yours:
+
+| Key | What it sets |
+| --- | --- |
+| `Survey Title` | The survey's name |
+| `Response Object Api Name` | The Salesforce object responses are stored on |
+| `Has Audiences` / `Has Rounds` | Whether this suite runs as a [matrix program](/concepts/matrix-programs) |
+| `Max Question Length` | The cap applied to question text |
+| `Auto Fix Validation` | Whether the sidebar may apply its own fixes |
+
+<Warning>
+  **A key AutoSurvey no longer reads is left in place, not deleted.** If your workbook predates a
+  change, keys like `Layout Style`, `Screen Width`, `Show Navigator`, `Logo URL`, `Favicon URL` or
+  `Background Image URL` may still be sitting there doing nothing. The import raises a
+  `RETIRED_CONFIG_KEY` warning naming each one — and, where there's a successor, where the setting
+  went. It's a warning rather than an error, so nothing breaks; the value is simply ignored.
+</Warning>
+
+## The loop
+
+Building a survey in the sheet is a three-step loop you'll run many times:
+
+<Steps>
+  <Step title="Write">
+    Add or edit rows on the **Questions** tab. Use the **AutoSurvey** menu → sidebar for the
+    **Show-If Builder** and the **Display Properties Builder** rather than hand-writing either — both
+    write valid values for you.
+  </Step>
+  <Step title="Validate">
+    In the sidebar, click **Run Validation**. It checks your workbook: missing columns, blank API
+    names, display types that aren't on your Display Types tab, option sets that don't resolve.
+    Some findings are auto-fixable and the sidebar offers to apply them.
+  </Step>
+  <Step title="Import">
+    Import the suite into Salesforce. This is the stricter check — it sees the whole survey, not just
+    the workbook, and it's where problems like an unreachable page or a rule pointing forward in time
+    are caught.
+  </Step>
+</Steps>
+
+<Warning>
+  **A clean sidebar is not a promise the import will succeed.** The two checks look at different
+  things and share only a handful of errors between them. Always import before you consider a survey
+  validated — see [Troubleshooting](/support/troubleshooting).
+</Warning>
+
+## Importing never goes live
+
+An import always lands as **Unpublished changes**. Nothing reaches a respondent until you publish,
+so you can import as often as you like while you're working. See
+[Publish & Share](/workflows/deploy-and-verify).
+
+## A worked example — a two-page feedback survey
+
+| API Name | Question | Screen | Display Type | Option Set | Required | Show If |
+| --- | --- | --- | --- | --- | --- | --- |
+| `Attended__c` | Did you attend the workshop? | About you | `YesNo` | | `TRUE` | |
+| `Sessions__c` | Which sessions did you join? | About you | `CheckboxVertical` | `Sessions` | | `Attended__c` |
+| `Recommend__c` | How likely are you to recommend us? | Feedback | `NPS` | | `TRUE` | |
+| `Improve__c` | What should we change? | Feedback | `Text Area (Long)` | | | |
+
+Two `Screen` values make two pages. `Sessions__c` appears only for people who attended — and because
+a rule may depend on any earlier answer, that would still work if the two questions were on
+different pages.
+
+<Note>
+  A fresh workbook's **Display Types** tab starts with a subset of the full list, and `NPS` isn't
+  on it yet — so **Run Validation** may flag the `Recommend__c` row. The import accepts `NPS`
+  regardless, so you can import anyway; to keep the sidebar clean, add an `NPS` row to your
+  Display Types tab, or use a type the tab already lists.
+</Note>
+
+## When the sheet is the wrong tool
+
+Use the sheet for **volume and repeatability**: long surveys, bulk edits, a survey you'll clone next
+quarter, a change you want to review before it lands.
+
+Reach for [Prompt to Survey](/workflows/prompt-to-flow) when you have no draft yet, and for the
+in-app editor when you're changing one thing.
+
+## Related
+
+* [The Questions Sheet](/concepts/questions-sheet) — every column, in full
+* [Display Types](/concepts/display-types) · [Display Properties](/concepts/display-properties) · [Option Sets](/concepts/option-sets)
+* [Conditional Visibility](/concepts/conditional-visibility) — the `Show If` column
+* [Publish & Share](/workflows/deploy-and-verify) · [Troubleshooting](/support/troubleshooting)

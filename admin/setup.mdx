@@ -40,11 +40,9 @@ If a required check fails:
 | **After sandbox refresh** | This is the most common check to fail after refresh because org domain URLs change. |
 | **Technical detail** | AutoSurvey uses `ConnectApi.NamedCredentials` with current `URL.getOrgDomainUrl()` and `AutoSurvey_Self_Org` external credential access. |
 
-### Control Plane Connection / Google Credentials
+### Control Plane Connection
 
-This check behaves differently by org type.
-
-#### Subscriber Orgs (most customers)
+This check appears in subscriber orgs (most customers). In control plane orgs, the same slot appears as **Google Credentials** instead — see the next section.
 
 | Item | Details |
 | --- | --- |
@@ -54,7 +52,9 @@ This check behaves differently by org type.
 | **Troubleshooting** | Verify outbound HTTPS callouts are allowed and check the `AutoSurvey_Control_Plane` Named Credential configuration. |
 | **Technical detail** | Bootstrap generates/stores HMAC keys (`ASVY_Bootstrap_Secret__c`) and registers org identity for signed control-plane requests. |
 
-#### Control Plane Orgs (AutoSurvey hosting/dev org)
+### Google Credentials
+
+This check appears in control plane orgs (the AutoSurvey hosting/dev org), which call Google APIs directly instead of routing through the control plane.
 
 | Item | Details |
 | --- | --- |
@@ -62,7 +62,9 @@ This check behaves differently by org type.
 | **Why it matters** | The control plane org connects directly to Google APIs through service-account-backed credentials. |
 | **How to fix** | Click **Deploy Google Credentials** to create credentials and required permission set. |
 
-### Google Sheets Access (control plane orgs only)
+### Google Sheets Access
+
+This check appears in control plane orgs only.
 
 | Item | Details |
 | --- | --- |
@@ -81,6 +83,17 @@ This check behaves differently by org type.
 | **Status values** | **Pass** = successful API response. **Fail** = request returned error. **Not Tested** = no verification run yet. |
 | **Troubleshooting** | Ensure prior checks pass, inspect detail error message/status code, and contact support if control plane errors persist. |
 
+### Response Owner Queue
+
+Shown on Setup Home as **Guest Response Queue**.
+
+| Item | Details |
+| --- | --- |
+| **What it checks** | Whether the `AutoSurvey_Response_Owners` queue exists and can own every guest-written survey object. |
+| **Why it matters** | Public (guest / Experience Cloud) survey responses are owned by this queue so anonymous visitors cannot read each other's data. Queues cannot ship inside a managed package, so it is created at setup time. Without it, guest survey saves fail. |
+| **How to fix** | Click **Create Response Owner Queue**. The action is idempotent — safe to re-run, and it also repairs a queue that exists but is missing objects. |
+| **Status values** | **Pass** = queue exists and owns all guest survey objects. **Fail** = queue is missing, or exists but cannot own some objects (the detail lists which). |
+
 ## Permission Sets
 
 Setup Home shows installed AutoSurvey permission sets, assignment counts, and assignment details.
@@ -95,6 +108,16 @@ Setup Home shows installed AutoSurvey permission sets, assignment counts, and as
 | **AutoSurvey_Guest_Access** | Minimum access for Experience Cloud guest users taking surveys. |
 
 > Tip: For most admins, assign **ASVY_Full_Admin** (permission set group) instead of individual sets.
+
+## Prepare for Uninstall
+
+The **Uninstall Preparation** card readies the org for uninstalling the AutoSurvey package. Clicking **Prepare for Uninstall** removes every removable AutoSurvey permission set and permission set group assignment for **all users in the org**, then scans for uninstall blockers it cannot clear for you (such as a custom object of yours with a relationship field pointing at an AutoSurvey object) and lists them with instructions.
+
+<Warning>
+This action is destructive and org-wide: it revokes AutoSurvey access for every user, not just you. And uninstalling the package afterward permanently deletes all survey response data stored in the package's objects. Export responses first — the card shows how many submissions are affected and requires you to acknowledge the export before the button enables.
+</Warning>
+
+The result reports what was removed, any profile-owned assignments Salesforce requires you to clear manually, and remaining blockers to clear by hand before the uninstall will run. **Ready** means no known blockers remain — a scan, not a guarantee: an unpublished Experience Builder draft or a deleted-but-not-erased custom object can still block the uninstall without being visible to any check.
 
 ## Control Plane Security
 
@@ -118,6 +141,15 @@ This section appears for subscriber orgs after control plane connection succeeds
 | **What it checks** | Whether the packaged `Survey_Submission__c` Lightning Record Page is activated. |
 | **Why it matters** | Without activation, users see default layout instead of AutoSurvey submission experience. |
 | **How to fix** | Click **Open Lightning Record Pages**, locate the AutoSurvey page, and activate as needed. |
+
+### Publishing Health
+
+| Item | Details |
+| --- | --- |
+| **What it checks** | The last 7 days of publishing activity: reporting-field setup steps that failed during survey publishes (the `Metadata_Deploy_Request__c` deploy transport) and survey responses that failed to write back to their reporting fields. |
+| **Why it matters** | A publish whose reporting setup failed, or a response that never copied into reporting fields, leaves reports and exports incomplete even though responses themselves are captured safely. |
+| **How to fix** | On failure, the check lists each affected survey or response with its error text. For failed reporting-setup steps, use the [reporting drift repair](#reporting-drift-repair) further down the page — the **Go to reporting repair** button jumps straight to it. For failed write-backs, open that survey in Survey Suites and click **Retry** on the **Reporting copy incomplete** card at the top of the page. |
+| **Status values** | **Pass** = no failed publishes or write-backs in the last 7 days. **Fail** = failures found; each is listed. **Not Tested** = responses are still pending write-back — usually resolves within a few minutes. |
 
 ### Raw Response Access
 
@@ -149,6 +181,12 @@ report-folder shares at install**, so the folder lands **hidden** until an admin
 | **Why it matters** | Without the share, the summary reports are invisible even though they're intended for the whole org — a packaging quirk, not a permissions decision you made. |
 | **How to fix** | Click **Share the Survey Reports folder**. The one-click action grants internal-user access; the button disappears once the folder is shared. |
 | **Status values** | **Pass** = folder shared with internal users. **Not Tested** / **Fail** = still hidden — click the share button. |
+
+## Reporting Drift Repair
+
+The **Check every live survey for reporting drift** card scans all live surveys for reporting setup that did not finish — missing reporting fields or missing field access. Responses are always captured safely even when reporting drifts; drift only affects reports and exports. This is the remedy [Publishing Health](#publishing-health) points at when reporting-setup steps fail.
+
+Click **Scan** to list any drifted surveys, each with a one-line summary. **Review & repair** opens the same disclosure used by the publish flow: you see exactly which fields and permissions will change before the repair re-runs reporting setup for that survey.
 
 ## Public Survey Access
 
@@ -200,6 +238,12 @@ Set hostname to your Experience Cloud domain to enforce origin validation.
 
 > Note: Required CSP and Remote Site entries for reCAPTCHA are package-provided.
 
+### Default Favicon
+
+Sets the org-wide default browser-tab icon for public survey links. Each survey resolves its favicon in three tiers: the survey's own favicon setting, then this org default, then the built-in AutoSurvey icon — so the org default applies to every survey that has not set its own.
+
+Enter a public http(s) URL or a root-relative `/path` (up to 255 characters) and click **Save Favicon URL**. Leave blank to use the AutoSurvey default icon.
+
 ## Optional Integrations
 
 ### OpenAI BYOK (Bring Your Own Key)
@@ -209,6 +253,18 @@ Optional for orgs that want customer-managed OpenAI credentials for AI features.
 ## AI Tier Profiles
 
 Manage default/custom AI tiers for generation, naming, and shortening workflows.
+
+## Respondent Confidentiality Note
+
+An org-wide confidentiality policy controlling whether surveys open with a soft confidentiality reassurance on their Welcome message (for example, "Your responses are confidential and will be used only to help us improve.").
+
+| Policy | Effect |
+| --- | --- |
+| **Off** (default) | No confidentiality note is added. New surveys start with a blank welcome unless the author writes one. |
+| **On by default** (`OnByDefault`) | The note is seeded onto each new survey's Welcome message. Authors can reword or remove it per survey. |
+| **Required** | The note is seeded **and enforced**: every survey always shows the confidentiality note on its welcome screen, even if an author clears or replaces the welcome. |
+
+The wording is an editable org-wide default (up to 255 characters); leave it blank to use the built-in text. The note is a soft reassurance respondents see once — it is not a legal guarantee and not a substitute for a Consent question.
 
 ## Diagnostics
 

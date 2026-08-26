@@ -1,0 +1,121 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "AutoSurvey",
+  "colors": {
+    "primary": "#2563eb",
+    "light": "#3b82f6",
+    "dark": "#1e40af"
+  },
+  "favicon": "/favicon.svg",
+  "navigation": {
+    "groups": [
+      {
+        "group": "Getting Started",
+        "pages": [
+          "introduction",
+          "quickstart",
+          "concepts/the-autosurvey-app"
+        ]
+      },
+      {
+        "group": "Building a Survey",
+        "pages": [
+          "workflows/sheets-to-flow",
+          "workflows/prompt-to-flow",
+          "workflows/design-with-ai",
+          "concepts/questions-sheet",
+          "workflows/import-an-existing-survey"
+        ]
+      },
+      {
+        "group": "Question Authoring",
+        "pages": [
+          "concepts/display-types",
+          "concepts/display-properties",
+          "concepts/option-sets",
+          "concepts/validation",
+          "concepts/conditional-visibility",
+          "concepts/piping",
+          "concepts/matrix-programs"
+        ]
+      },
+      {
+        "group": "Design & Publishing",
+        "pages": [
+          "concepts/themes-and-design",
+          "workflows/deploy-and-verify",
+          "concepts/question-library-and-versioning"
+        ]
+      },
+      {
+        "group": "Distribution",
+        "pages": [
+          "admin/distribution-settings",
+          "admin/campaign-distribution"
+        ]
+      },
+      {
+        "group": "Data",
+        "pages": [
+          "concepts/data-and-reporting",
+          "api/overview"
+        ]
+      },
+      {
+        "group": "Administration",
+        "pages": [
+          "admin/setup",
+          "admin/installation-and-permissions",
+          "admin/objects-permissions-layouts",
+          "admin/security-and-privacy"
+        ]
+      },
+      {
+        "group": "Support",
+        "pages": [
+          "support/troubleshooting",
+          "support/error-reference",
+          "support/faq",
+          "support/release-notes"
+        ]
+      }
+    ]
+  },
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Website",
+        "href": "https://autosurvey.app"
+      },
+      {
+        "label": "Privacy",
+        "href": "https://autosurvey.app/privacy.html"
+      },
+      {
+        "label": "Terms",
+        "href": "https://autosurvey.app/terms.html"
+      },
+      {
+        "label": "DPA",
+        "href": "https://autosurvey.app/dpa.html"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Book a Demo",
+      "href": "https://calendly.com/mindshare-demo/autosurvey"
+    }
+  },
+  "footer": {
+    "socials": {
+      "website": "https://autosurvey.app",
+      "twitter": "https://twitter.com/mindsharestudio",
+      "linkedin": "https://linkedin.com/company/mindshare-studio"
+    }
+  }
+}

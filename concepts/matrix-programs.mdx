@@ -1,17 +1,97 @@
 ---
-title: Matrix Programs
-description: Audience × Wave programs without version-control chaos.
+title: "Matrix Programs (Audience × Wave)"
+description: "Run the same question set across several audiences and several rounds without maintaining a separate survey for each combination."
 ---
 
-# Matrix Programs (Audience × Wave)
 
-Define once, map to:
-- Audiences (e.g., Member vs Supervisor)
-- Waves/Rounds (e.g., Baseline, Month 3)
+Longitudinal and multi-audience research has the same shape everywhere: one bank of questions, asked
+of several groups, several times. **Members** and **supervisors**. **Baseline**, **month three**,
+**month twelve**. Twelve variants of nearly the same survey.
 
-AutoSurvey generates a targeted Flow per combination.
+Maintaining those as twelve separate surveys is where survey programmes go wrong — a wording fix
+lands in nine of them, and by wave three you can no longer compare anything.
 
-Optional:
-- Audience×Wave-specific page layouts (when enabled)
+A **matrix program** keeps one question bank and marks which questions belong to which
+audience × wave combination.
 
-> TODO: Add naming conventions and examples.
+## How it works
+
+Two tabs, working together — once the [Config tab](/workflows/sheets-to-flow#the-config-tab)
+switches matrix mode on. Set `Has Audiences` or `Has Rounds` to `TRUE` there. Sheets exported by
+AutoSurvey set these keys for you; in a workbook you build by hand you must add them yourself —
+without them, the import ignores the matrix silently and builds a single form from the `Active`
+column instead.
+
+### 1. The Audience Round Matrix tab
+
+Rows are your audiences, columns are your rounds, and each cell says whether that combination exists
+at all:
+
+| Audience \ Round | R1 | R2 | R3 |
+| --- | --- | --- | --- |
+| Member | `TRUE` | `TRUE` | `TRUE` |
+| Supervisor | `FALSE` | `TRUE` | `TRUE` |
+
+Here supervisors join at round two — there is no Supervisor R1 survey, and never will be.
+
+### 2. Per-combination columns on the Questions tab
+
+Every `TRUE` cell above gives you one extra column on the **Questions** tab, named
+`<Audience> <Round>`. Mark each question `TRUE` in the combinations it belongs to:
+
+| API Name | Question | Display Type | Member R1 | Member R2 | Supervisor R2 |
+| --- | --- | --- | --- | --- | --- |
+| `Goal__c` | What is your main goal? | `Text Area` | `TRUE` | `TRUE` | `FALSE` |
+| `Progress__c` | How much progress since we last spoke? | `Slider` | `FALSE` | `TRUE` | `TRUE` |
+| `Support__c` | How well supported do you feel? | `Likert5` | `TRUE` | `TRUE` | `TRUE` |
+
+`Goal__c` is asked of members in both rounds and never of supervisors. `Progress__c` only makes
+sense from round two, since there is nothing to compare against at baseline.
+
+<Note>
+  Underscores work too — `Member_R2` and `Member R2` are the same column. Use whichever reads better
+  in your sheet; audience and round names with spaces in them (`Wave 1`) are fine.
+</Note>
+
+## Why this beats separate surveys
+
+* **One place to fix a question.** Reword `Support__c` once and every combination that uses it
+  changes together.
+* **The same field, across every wave.** Because it is one question with one API Name, all its
+  answers land in the same reporting field — so a trend across three rounds is a report, not a data
+  project.
+* **Adding a wave is a column.** Not a new survey to build and keep in step.
+
+## Naming
+
+The combination column header must match the audience and round names exactly as written in the
+matrix. Beyond that, two habits are worth having:
+
+* **Name rounds for what they are, not when they are** — `R1` / `Baseline` / `Month3` outlive
+  `Jan2026`, which is wrong the moment the programme slips.
+* **Keep audience names short.** They become part of every combination column header, and a wide
+  Questions tab is hard to read.
+
+## Getting started
+
+Flip the switch first: on the **Config** tab, set `Has Audiences` or `Has Rounds` to `TRUE` — in a
+hand-built workbook, a matrix without that key is silently ignored.
+
+Then start with the audiences and rounds you are sure of. The matrix is not a commitment — adding a round
+later is a new column in the matrix and a new column on the Questions tab, and existing responses
+are unaffected.
+
+<Warning>
+  **An older workbook may have an "Assignments" tab.** It is no longer read. If audience targeting
+  is not taking effect, check that the Config tab sets `Has Audiences` or `Has Rounds` to `TRUE`,
+  and that you are using the Audience Round Matrix and its per-combination columns — a populated
+  Assignments tab is ignored silently, with no warning, and every question then goes to every
+  combination.
+</Warning>
+
+## Related
+
+* [The Questions Sheet](/concepts/questions-sheet) — the fixed columns, alongside your combination columns
+* [Sheets to Survey](/workflows/sheets-to-flow) — the build loop
+* [Question Library & Versioning](/concepts/question-library-and-versioning) — reusing questions over time
+* [Data & Reporting](/concepts/data-and-reporting) — comparing waves once the answers are in

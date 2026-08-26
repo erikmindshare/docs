@@ -1,32 +1,38 @@
 ---
-title: Display Types
-description: The Display Type column picks the input control for each question — text, choices, ratings, dates, and structural rows like Section and Screen.
+title: "Display Types"
+description: "The Display Type column picks the input control for each question — text, choices, ratings, uploads, signatures, and structural rows like Section, Screen and Terminal Screen."
 ---
+
 
 Every row in the **Questions** sheet has a **Display Type** — the kind of control the respondent
 sees and the kind of value it collects. You pick it from the dropdown in the `Display Type` column
 (the allowed values live on the **DisplayTypes** tab).
 
 <Note>
-Some display types need a list of choices — set that with the **Option Set** column. See
-[Option Sets](/concepts/option-sets). Per-type tuning (star count, slider range, currency, card
-style) is set with the **Display Properties** column. See [Display Properties](/concepts/display-properties).
+  Some display types need a list of choices — set that with the **Option Set** column. See
+  [Option Sets](/concepts/option-sets). Per-type tuning (star count, slider range, upload limits,
+  consent wording) is set with the **Display Properties** column. See
+  [Display Properties](/concepts/display-properties).
 </Note>
 
 ## Text
 
 | Display Type | Collects | Option Set? |
 | --- | --- | --- |
-| `Text` | Single line of text | No |
+| `ShortText` · `Text` | Single line of text | No |
 | `Text Area` | Multiple lines (short) | No |
-| `Text Area (Long)` | Long free text | No |
+| `Text Area (Long)` · `LongText` | Long free text | No |
 | `Text Area (Rich)` | Formatted (rich) text | No |
-| `Text (Encrypted)` | Masked text input | No |
+| `Masked Text` *(alias `Text (Encrypted)`)* | Masked text input | No |
+
+`ShortText` and `Text` are separate display types that render the same single-line control — as are
+`Text Area (Long)` and `LongText` for long free text. Use whichever name reads better in your sheet;
+both are kept as written.
 
 <Warning>
-`Text (Encrypted)` masks the input in the survey, but the answer is stored as plain text unless the
-mapped reporting field is itself an encrypted Salesforce field. Don't use it to collect regulated
-secrets expecting encryption at rest. See [Security & Privacy](/admin/security-and-privacy).
+  `Masked Text` masks the input in the survey, but the answer is stored as plain text unless the
+  mapped reporting field is itself an encrypted Salesforce field. Don't use it to collect regulated
+  secrets expecting encryption at rest. See [Security & Privacy](/admin/security-and-privacy).
 </Warning>
 
 ## Numbers, dates & contact info
@@ -35,12 +41,13 @@ secrets expecting encryption at rest. See [Security & Privacy](/admin/security-a
 | --- | --- | --- |
 | `Number` | A number | No |
 | `Percent` | A percentage | No |
-| `Currency` | A money amount (see Display Properties for the ISO code) | No |
+| `Currency` | A money amount (set the ISO code in Display Properties) | No |
 | `Date` | A date | No |
 | `DateTime` | A date and time | No |
 | `Time` | A time of day | No |
 | `Email` / `Phone` / `URL` | Contact info, with light format validation | No |
-| `Checkbox` *(no Option Set)* | A single yes/no toggle | No |
+| `YesNo` *(aliases `Boolean`, `yes no`, `true/false`)* | A single yes/no toggle | No |
+| `Checkbox` *(no Option Set)* | A single tick box | No |
 
 ## Choice questions (need an Option Set)
 
@@ -48,43 +55,178 @@ These render your **Option Set** as the choices:
 
 | Display Type | UX | Select |
 | --- | --- | --- |
-| `Picklist` | Dropdown | One |
-| `Radio Horizontal` / `Radio Vertical` | Radio buttons | One |
+| `Picklist` *(aliases `Dropdown`, `Choice`, `Select`)* | Dropdown | One |
+| `Radio` · `RadioHorizontal` · `RadioVertical` | Radio buttons | One |
+| `Likert5` *(alias `Likert`)* | A 1–5 agreement scale | One |
 | `MultiPicklist` | Multi-select picklist | Many |
-| `Checkbox Horizontal` / `Checkbox Vertical` | Checkbox group ("select all that apply") | Many |
+| `Multi` | Multi-select | Many |
+| `CheckboxHorizontal` · `CheckboxVertical` | Checkbox group ("select all that apply") | Many |
 | `Checkbox` *(with an Option Set)* | Checkbox group | Many |
 
 <Tip>
-There's no `Likert` display type — a Likert scale is just a reusable Option Set (e.g. `Likert5`)
-referenced from a `Radio Horizontal` (or `Matrix`) question.
+  `Likert5` ships as its own display type with a 1–5 range. You can also build any other scale as a
+  reusable Option Set (e.g. a 7-point agreement list) referenced from a `RadioHorizontal` or
+  `Matrix` question — use whichever is closer to what you want.
 </Tip>
 
-## Ratings
+<Note>
+  Option layout is set **twice over**: by the display type name (`RadioHorizontal` vs
+  `RadioVertical`) *or* by the `orientation` Display Property on a bare `Radio` / `Checkbox`. Both
+  work. If you set neither, the survey decides from how many options there are.
+</Note>
+
+## Ratings & ordering
 
 | Display Type | Collects | Notes |
 | --- | --- | --- |
 | `NPS` | 0–10 Net Promoter scale | No Option Set needed; powers the Suite Insights NPS tile |
-| `Star` | 1..N stars | Set `N` (and optional half-stars) in Display Properties |
-| `Slider` / `Scale` | A number on a track | Set min / max / step in Display Properties |
+| `Star` | 1..N stars | Set the count (and half-stars) in Display Properties |
+| `Slider` *(alias `Scale`)* | A number on a track | Set min / max / step in Display Properties |
+| `Ranking` | The respondent's preferred **order** of the options | **Needs an Option Set.** Drag to reorder |
+
+<Note>
+  A `Ranking` answer is stored as one answer record **per option**, carrying that option's 1-based
+  position. Reports read the position, not a single field.
+</Note>
+
+## Uploads & signatures
+
+| Display Type | Collects | Option Set? |
+| --- | --- | --- |
+| `FileUpload` | File attachments, stored as Salesforce Files | No |
+| `Signature` | A drawn signature, stored as an image | No |
+
+Tune uploads with `multiple`, `maxSizeMb` and `accept` in Display Properties:
+
+```json
+{"multiple": true, "maxSizeMb": 10, "accept": ".pdf,.png"}
+```
+
+<Warning>
+  **A `maxFiles` property is accepted, but not currently enforced.** Setting it is not an error —
+  it just doesn't limit anything yet: neither the upload control nor the save rejects extra files.
+  The only file-count limit that is enforced is a fixed cap of **25 files per submission**. If a
+  particular count matters to you, say so in the question's help text. `multiple`, `maxSizeMb` and
+  `accept` all work as described.
+</Warning>
+
+<Note>
+  The reporting field for a `FileUpload` question holds a **filename summary**, not the file. The
+  files themselves are attached to the submission record like any other Salesforce file, and follow
+  your org's sharing and storage rules. A `Signature` is stored as an image in the answer itself.
+</Note>
+
+## Consent
+
+| Display Type | Collects | Option Set? |
+| --- | --- | --- |
+| `Consent` | An explicit agreement, with the terms and version recorded | No |
+
+Set the wording and the link in Display Properties:
+
+```json
+{"agreeText": "I agree to the", "termsLabel": "Privacy Notice",
+ "termsUrl": "https://example.com/privacy", "consentVersion": "2026-08"}
+```
+
+<Warning>
+  **A `Consent` question is always mandatory.** Unlike an ordinary yes/no question — where "no" is a
+  valid answer — an unticked consent blocks submission whether or not you mark the row Required.
+  There is no way for a respondent to finish without agreeing.
+</Warning>
+
+<Tip>
+  `consentVersion` is stored with the response, so you can tell which wording someone agreed to after
+  you've changed it. Set it before you launch, not after.
+</Tip>
 
 ## Structure & layout
 
 | Display Type | Purpose |
 | --- | --- |
-| `Screen` | Starts a new page in the flow. (You can also just reuse a `Screen` value across rows.) |
-| `Section` | Groups questions inside a screen under a heading/card. |
-| `DisplayText` | Static text shown to the respondent (no answer collected) — instructions, headings. |
-| `Matrix` | A "multiple-choice grid": a `Section` of `Matrix` rows that share one column Option Set. See [Matrix programs](/concepts/matrix-programs). |
+| `Screen` | Starts a new page in the survey |
+| `Section` | Groups questions inside a screen under a heading or card |
+| `DisplayText` *(alias `Label`)* | Static text shown to the respondent — instructions, headings |
+| `Image` | A picture shown to the respondent. Collects no answer |
+| `Matrix` *(alias `Radio Matrix`)* | A "multiple-choice grid": `Matrix` rows sharing one column Option Set. See [Matrix programs](/concepts/matrix-programs) |
+| `Terminal Screen` | **Ends the survey here**, and records whether they finished or were screened out |
 
-## Aliases
+### Terminal Screens — ending early and screening out
 
-The importer normalizes common variants to the canonical name — e.g. `Long Text` → `Text Area (Long)`,
-`Radio` → `Radio Horizontal`, `Percentage` → `Percent`, `Radio Matrix` → `Matrix`. If you type a value
-that isn't recognized at all, validation flags it as `INVALID_DISPLAY_TYPE` so you can correct it.
+A `Terminal Screen` is an end page. Its `status` Display Property records *why* the survey ended:
+
+| Value | Recorded outcome |
+| --- | --- |
+| `complete` *(default)* | The respondent finished |
+| `screened_out` | They didn't qualify |
+
+Put a **Show If** rule on the Terminal Screen row to control when a respondent lands there — the
+same rule syntax as any other row. That is how you screen someone out:
+
+| Question | Display Type | Display Properties | Show If |
+| --- | --- | --- | --- |
+| Thanks — you're not eligible | `Terminal Screen` | `{"status": "screened_out"}` | `q_role = "Contractor"` |
+
+<Tip>
+  You don't have to write this JSON by hand. The **Display Properties Builder** in the sidebar
+  offers an **"Ends the survey as"** choice on Terminal Screen rows — pick **Completed** or
+  **Screened out** and it writes the value for you.
+</Tip>
+
+<Warning>
+  If you do author the JSON yourself, write it exactly as shown: the values are lower-case with an
+  underscore, and only `complete` and `screened_out` are accepted — anything else stops the import.
+  (Older sheets that wrote the key as `terminalStatus` are still read.)
+</Warning>
+
+<Note>
+  A `screened_out` terminal screen may only carry display content — `DisplayText`, `Image` and `Section` rows.
+  Putting an answerable question on it stops the import (`TERMINAL_SCREEN_HAS_ANSWERABLE_CONTENT`): arriving at it is what finalizes the submission, so it cannot also collect
+  the answer.
+</Note>
+
+<Note>
+  Screened-out responses are still saved, and are recorded with a distinct outcome. You keep the
+  record of who was turned away and why.
+</Note>
+
+## Aliases and unrecognized values
+
+The importer normalizes common variants to the canonical name — `Long Text` → `LongText`,
+`Dropdown` / `Choice` / `Select` → `Picklist`, `Percentage` → `Percent`, `Radio Matrix` → `Matrix`,
+`Boolean` / `true/false` → `YesNo`, `Label` → `DisplayText`.
+
+If you type a value nothing recognizes, **two different checks can catch it, at two different
+moments** — and they are not checking the same list:
+
+| Where | Code | What it checks |
+| --- | --- | --- |
+| The **sidebar** in Google Sheets | `INVALID_DISPLAY_TYPE` | Whether the value appears **exactly** on **your sheet's DisplayTypes tab** — alias spellings don't pass |
+| **Import into Salesforce** | `UNKNOWN_DISPLAY_TYPE` | Whether **AutoSurvey can actually draw a control** for it |
+
+Both stop the import. They agree on an untouched sheet — but they are different lists, so if you
+edit the **DisplayTypes** tab they can disagree in either direction: a row you added there passes
+the sidebar and fails the import, and a name you deleted fails the sidebar even though the import
+would have accepted it.
+
+<Note>
+  The two checks also treat a recognized-but-non-canonical spelling differently. The **import**
+  normalizes it and moves on. The **sidebar** blocks it: an alias spelling isn't exactly on the
+  DisplayTypes tab, so it draws a blocking `INVALID_DISPLAY_TYPE` — alongside an auto-fixable
+  `NON_CANONICAL_DISPLAY_TYPE` hint that offers to rewrite it to the canonical name. Accept the fix
+  and both go away: `Long Text` becomes `LongText`.
+</Note>
+
+<Warning>
+  The import's check is the one that matters in the end, and deliberately so: a question with a
+  display type nothing can draw renders **no input control at all**. If that question is Required, the
+  respondent can never finish it. The error names the offending value and lists every accepted
+  display type.
+</Warning>
 
 ## Related
 
-- [Option Sets](/concepts/option-sets) — choice lists for picklist/radio/checkbox/matrix questions
-- [Display Properties](/concepts/display-properties) — per-type tuning (stars, sliders, currency, cards)
-- [Conditional Visibility](/concepts/conditional-visibility) — show/hide a question based on an answer
-- [Sheets → Flow](/workflows/sheets-to-flow) — how the Questions sheet becomes a Screen Flow
+* [Option Sets](/concepts/option-sets) — choice lists for picklist, radio, checkbox, matrix and ranking questions
+* [Display Properties](/concepts/display-properties) — per-type tuning, by display type
+* [Conditional Visibility](/concepts/conditional-visibility) — show/hide a row based on an answer
+* [Themes & Design](/concepts/themes-and-design) — how the survey looks at run time

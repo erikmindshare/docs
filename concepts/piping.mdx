@@ -1,0 +1,113 @@
+---
+title: "Piping Answers into Questions"
+description: "Repeat an earlier answer back to the respondent — or merge in a field from the Salesforce record the survey is about."
+---
+
+
+**Piping** puts an earlier answer into a later question:
+
+```text
+And what did you like most about %%Product__c%%?
+```
+
+A respondent who chose *Standing Desk* reads *"And what did you like most about Standing Desk?"*
+
+## Where it works
+
+| Surface | Piping |
+| --- | --- |
+| Question text | ✅ |
+| Help text | ✅ |
+| Option labels | ✅ |
+| `DisplayText` rows | ✕ |
+| Welcome, completion and closed screens | ✕ |
+
+<Note>
+  The surfaces that don't support piping are the ones that accept formatted text. Mixing a
+  respondent's own words into formatted content is a security risk we deliberately don't take.
+</Note>
+
+## The rules
+
+**Only earlier questions.** A pipe can reference a question the respondent has already reached. A
+reference to a later question, or to itself, is left on screen exactly as you typed it.
+
+**A mistake is visible, not silent.** If a token can't be resolved — a misspelled API name, a
+forward reference — the survey shows the raw `%%Token%%` rather than quietly rendering nothing. You
+will see it immediately in preview.
+
+**An unanswered question pipes as blank.** A token that resolves correctly but has no answer yet —
+skipped, or hidden by a Show If — collapses to nothing rather than showing an error.
+
+<Tip>
+  Those two behaviours are different on purpose. Raw `%%Token%%` on screen means *you* made a
+  mistake; blank means the respondent simply hasn't answered that one.
+</Tip>
+
+## Picking one item from a multi-answer question
+
+Add `:N` to take the Nth selection, ranked or in order:
+
+```text
+Tell us more about %%Priorities__c:1%%
+```
+
+On a ranking question that's their first choice. On a multi-select it's their first selection. Out
+of range pipes as blank.
+
+## Writing a literal `%%`
+
+Escape it with a backslash:
+
+```text
+\%%Not_A_Pipe%%
+```
+
+## What a piped value looks like
+
+Answers are shown the way a respondent would recognise them, not as stored:
+
+| Question type | Pipes as |
+| --- | --- |
+| Text, Email, Phone, URL | The text they typed |
+| Number, NPS, Star, Slider, Percent, Currency | The number |
+| Date | A readable date, e.g. `Aug 4, 2026` |
+| Single-select | The option's **label**, not its stored key |
+| Multi-select, Ranking | The labels, in their order |
+| Yes/No, Consent | The choice they made |
+| "Other" | Your Other label |
+
+<Warning>
+  **Some question types cannot be piped:** `Masked Text`, `Text Area (Rich)`, `FileUpload`,
+  `Signature` and `Matrix`. A token pointing at one of these is left on screen literally. Masked
+  Text is on that list deliberately — a masked answer must not be echoed back in plain text.
+</Warning>
+
+## Merging in CRM fields
+
+You can also pipe a field from the Salesforce record a survey is about:
+
+```text
+How did we do resolving case %%record.CaseNumber%%?
+```
+
+Related fields work too — `%%record.Owner.Name%%`.
+
+<Note>
+  **You choose which fields a survey may show.** CRM merge fields are allowlisted per survey on the
+  **Design** page, and resolved on the server. A field you have not published is not available to the
+  survey, whatever the question text asks for — so an author cannot reach a field by guessing at its
+  name.
+</Note>
+
+## A respondent can't create a pipe
+
+If someone types `%%Salary__c%%` into a free-text answer, it stays as those literal characters.
+Piped text is never re-scanned, so an answer can never become a live reference to another answer.
+
+## Related
+
+* [The Questions Sheet](/concepts/questions-sheet) — where question and help text live
+* [Conditional Visibility](/concepts/conditional-visibility) — a hidden question's answer pipes blank
+* [Option Sets](/concepts/option-sets) — labels are what pipes, keys are what's stored
+* [Themes & Design](/concepts/themes-and-design) — where CRM merge fields are published

@@ -1,21 +1,74 @@
 ---
-title: FAQ
-description: Answers to the most common questions.
+title: "FAQ"
+description: "The questions people actually ask before they commit — where the data lives, whether respondents need a login, what happens when a survey changes, and what it costs to leave."
 ---
 
-# FAQ
 
-## Does AutoSurvey generate a real Salesforce Flow?
-Yes — native Screen Flow metadata you can open and edit.
+## Where do responses actually go?
 
-## Where can the Flow run?
-Behind login, Experience/portal users, or public patterns.
+Into your own Salesforce org, as records — a custom **Response Object** with a field per question,
+plus a submission record and one record per answer. No sync, no export, no second database. See
+[Data & Reporting](/concepts/data-and-reporting).
 
-## What gets created on deploy?
-Flow metadata + Response object/fields + permissions + layouts (optional variants).
+## Do respondents need a Salesforce login?
+
+No. A survey can be answered by anyone with the link, by community members signed in to your
+Experience site, or by internal users only — your choice, per survey.
+
+<Tip>
+  Test a public link in a **private window**. You are signed in, so the link will work for you even
+  if public access isn't set up correctly — which is the most common way a launch goes wrong.
+</Tip>
 
 ## Do I have to use Google Sheets?
-No. Sheets are optional and best for bulk editing/versioning.
 
-## How does reporting work?
-Salesforce reporting-ready: fields for dashboards, answer records for analysis.
+No. Every suite is bound to a sheet, and it's the fastest way to write or bulk-edit a long survey —
+but you can [describe a survey in plain language](/workflows/prompt-to-flow) instead, or
+[import one you already run](/workflows/import-an-existing-survey) in Typeform, Google Forms,
+SurveyMonkey or GetFeedback.
+
+## What does publishing change in my org?
+
+On first publish: the Response Object, a reporting field per question, and a page layout. After
+that, publishing only ever **adds** fields.
+
+## If I delete a question, does its data go away?
+
+**No — and this catches people out.** Because publishing only adds, removing a question from your
+sheet leaves its reporting field and every answer already collected exactly where they are. If you
+must remove collected data, that's an ordinary Salesforce admin task. See
+[What AutoSurvey Creates in Your Org](/admin/objects-permissions-layouts).
+
+## Can I change a survey that's already collecting responses?
+
+Yes. Reword questions, change scales, add new ones. What you must not do is change a question's
+**API Name** — that creates a *second* question with a second field rather than renaming the first.
+See [Questions, Versions & Releases](/concepts/question-library-and-versioning).
+
+## Can a question depend on an answer from an earlier page?
+
+Yes. A **Show If** rule can use any answer the respondent has already given. The only thing it can't
+do is depend on an answer they haven't reached yet. See
+[Conditional Visibility](/concepts/conditional-visibility).
+
+## Is any of my data sent to an AI provider?
+
+Only the **survey design content you write**, and only if you use the optional AI authoring
+features. **Respondent answers are never sent to an AI service.** Analytics and export run entirely
+inside your org. See [Security & Privacy](/admin/security-and-privacy).
+
+## Does AutoSurvey have an API?
+
+It doesn't need one — your responses are Salesforce records, so you integrate with Salesforce. See
+[Integrating with AutoSurvey](/api/overview).
+
+## What happens if we uninstall?
+
+AutoSurvey's own objects and the responses in them are removed, as with any managed package. Your
+**customer-owned reporting object and its data remain**, carrying responder identity, timestamps and
+the full answer set. **Export anything you want to keep before uninstalling.**
+
+## Related
+
+* [Quickstart](/quickstart) · [The AutoSurvey App](/concepts/the-autosurvey-app)
+* [Troubleshooting](/support/troubleshooting) · [Error Reference](/support/error-reference)

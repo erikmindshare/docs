@@ -1,25 +1,93 @@
 ---
-title: Data & Reporting
-description: How AutoSurvey stays Salesforce reporting-friendly without tradeoffs.
+title: "Data & Reporting"
+description: "Where your responses land, which of the three grains to report on, and the reports and dashboard that ship ready to run."
 ---
 
-# Data & Reporting
-AutoSurvey is **Salesforce reporting-ready: fields for dashboards, answer records for analysis.**
 
-## Dashboard fields
-Best for operational reporting:
-- Completion rate by audience
-- KPIs and dashboards
-- Simple filters and groupings
+Responses are Salesforce records the moment they're submitted. There's no sync, no export, and
+nothing to unpack before you can report.
 
-## Answer records
-Best for analysis:
-- Longitudinal trends over time
-- Changing question sets without schema churn
-- Drop-off analysis by screen/question
+## Three grains, and every response writes all of them
 
-## Example: completion rate by audience
-- Dashboard fields: group by Audience, chart % Completed using Status/Completed
-- Answer records: still group by Audience, then analyze drop-off points and abandonment drivers
+You don't choose a storage model up front. Every submission lands in all three, so you pick the one
+that suits the question you're asking:
 
-> TODO: Add example reports.
+| Grain | One row per | Reach for it when |
+| --- | --- | --- |
+| **Your Response Object** | Response, with a field per question | Ordinary reports, dashboards, roll-ups, list views |
+| **Survey Submission** | Response — who, when, which release, what state | Completion rates, operational reporting, funnels |
+| **Survey Answer** | Answer | Comparing across surveys, tracking a question over time, drop-off |
+
+<Tip>
+  **Start with the Response Object.** One field per question is what Salesforce reporting is good
+  at, and most questions are answered there. Move to Survey Answer only when your question spans
+  surveys or waves — that's where the wide layout stops helping.
+</Tip>
+
+## What ships ready to run
+
+### Report types
+
+Five custom report types, so you can build your own without joining anything by hand:
+
+| Report type | Grain |
+| --- | --- |
+| **Survey Submissions with Answers** | Submissions with their answers, including the drop-off screen ordinal |
+| **ASA Cross-Survey Answers** | Every answer across every survey — for pivots, trends and cross-survey comparison |
+| **AutoSurvey CX Submissions (Scored)** | One row per submission with its stamped score, band, type, channel and program |
+| **Survey Invitations with Campaign and Form** | The distribution funnel, by invitation |
+| **Campaigns with Campaign Members and Survey Status** | Campaign funnel, with member survey rollups |
+
+### Reports and a dashboard
+
+| Folder | Contains |
+| --- | --- |
+| **AutoSurvey Survey Reports** | Completion by suite, submission status summary, answers in long format, campaign member status |
+| **AutoSurvey CX Analytics** | Average NPS by channel, average NPS by month, NPS band distribution, and a detractor worklist — plus the **CX Analytics dashboard** built on them |
+| **AutoSurvey Raw Response Reports** | Suite submissions and suite answers, at the individual-response level |
+
+<Warning>
+  The **Raw Response Reports** folder is deliberately restricted. It shows individual, unaggregated
+  responses, so it needs the **Raw Response Access** permission — see
+  [Installation & Permissions](/admin/installation-and-permissions). Aggregate reporting doesn't
+  require it.
+</Warning>
+
+## Two things worth doing early
+
+### Drop-off
+
+**Survey Submissions with Answers** carries the **drop-off screen ordinal** — the page a respondent
+stopped on. Grouping abandoned submissions by it tells you which page is costing you completions,
+which is usually a more actionable number than the completion rate itself.
+
+### Scores
+
+The score and band stamped onto the submission — the ones the CX reports read — come from the one
+question you designate as the form's **primary metric**: add `*` after its Metric Type in the
+Questions Sheet (`NPS*`; `(Primary)` works too), at most one per form. A Metric Type on its own
+(NPS, CSAT, CES or Rating) folds that answer into the submission's **Combined Score %** average, but
+it doesn't stamp the primary score — and with no primary marked, the CX reports have nothing to show
+for that submission. Marking your headline question is worth the thirty seconds. See
+[The Questions Sheet](/concepts/questions-sheet).
+
+## As surveys change
+
+Reporting fields are only ever added, never removed — so a report built against last quarter's
+survey keeps working after you edit it. The honest flip side: a question you delete keeps its field
+and its collected answers. See
+[What AutoSurvey Creates in Your Org](/admin/objects-permissions-layouts).
+
+<Note>
+  This is what makes the **Survey Answer** grain valuable over a long programme. Because it's one row
+  per answer rather than one column per question, a question set that changes between waves doesn't
+  change the shape of the data — so a three-wave trend is a report rather than a data project. See
+  [Matrix programs](/concepts/matrix-programs).
+</Note>
+
+## Related
+
+* [What AutoSurvey Creates in Your Org](/admin/objects-permissions-layouts) — the objects behind these reports
+* [Matrix programs](/concepts/matrix-programs) — comparing audiences and waves
+* [The Questions Sheet](/concepts/questions-sheet) — Metric Type and scoring
+* [Installation & Permissions](/admin/installation-and-permissions) — who can see raw responses

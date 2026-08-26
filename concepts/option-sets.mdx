@@ -1,63 +1,126 @@
 ---
-title: Option Sets
-description: Option Sets are reusable choice lists — define them once on the Option Sets tab and reference them from any picklist, radio, checkbox, or matrix question.
+title: "Option Sets"
+description: "Reusable choice lists — define them once on the Option Sets tab, control their order, and give options pictures."
 ---
+
 
 An **Option Set** is a named, reusable list of choices (e.g. `YesNo`, `Likert5`, `Satisfaction`).
 Define it once on the **Option Sets** tab, then point any choice question at it with the
 **Option Set** column on the Questions sheet.
 
 <Note>
-Choice [display types](/concepts/display-types) — `Picklist`, `Radio Horizontal/Vertical`,
-`MultiPicklist`, `Checkbox Horizontal/Vertical`, and `Checkbox` (with a set) — **require** an Option
-Set. If one is missing, import is blocked with `MISSING_OPTION_SET`.
+  Choice [display types](/concepts/display-types) — `Picklist`, `Radio`, `MultiPicklist`, the
+  `Checkbox` group types, `Likert5`, `Matrix` and `Ranking` — **require** an Option Set. If one is
+  missing, import is blocked with `MISSING_OPTION_SET`.
 </Note>
 
 ## The Option Sets tab
 
-Each row is one choice in a set:
+Each row is one choice in a set.
 
 | Column | Required | Meaning |
 | --- | --- | --- |
-| `Option Set` | Yes | The set name. Repeat it on every row that belongs to the set. |
-| `Label` | Yes | The text the respondent sees. |
-| `Key` | No | A stable stored value. Defaults to the Label if blank. |
-| `Score` | No | A numeric value for analytics/scoring. |
+| `Option Set` | Yes | The set name. Repeat it on every row that belongs to the set |
+| `Label` | Yes | The text the respondent sees |
+| `Key` | No | The stable value that gets stored. Defaults to the Label if blank. Also accepted as `Value` |
+| `Score` | No | Accepted but **currently has no effect** — the value isn't stored, and nothing reads it. Numeric scoring and analytics come from the `Key` (or the Label, when `Key` is blank), so put scores in the `Key` column |
+| `Is Default` | No | Accepted (also as `Is_Default`) but **currently has no effect** — the value isn't stored, and nothing pre-selects from it. To pre-select an answer, use the `Default Value` column on the Questions sheet |
+| `Order` | No | The position of this choice in the list |
+| `Image URL` | No | An absolute image URL, to render this choice as a picture. Also accepted as `Image_URL`. Not in the shipped template — add the column yourself |
 
-**Example — a 5-point agreement scale:**
+**Example — a 5-point agreement scale, scored 1–5 through its keys:**
 
-| Option Set | Label | Key | Score |
+| Option Set | Label | Key | Order |
 | --- | --- | --- | --- |
-| `Agreement5` | Strongly disagree | SD | 1 |
-| `Agreement5` | Disagree | D | 2 |
-| `Agreement5` | Neutral | N | 3 |
-| `Agreement5` | Agree | A | 4 |
-| `Agreement5` | Strongly agree | SA | 5 |
+| `Agreement5` | Strongly disagree | 1 | 1 |
+| `Agreement5` | Disagree | 2 | 2 |
+| `Agreement5` | Neutral | 3 | 3 |
+| `Agreement5` | Agree | 4 | 4 |
+| `Agreement5` | Strongly agree | 5 | 5 |
+
+The `Key` is what gets stored and reported on, so the score lives there — a numeric reporting
+column receives 1–5 while respondents read the labels.
 
 Then on the Questions sheet, set `Option Set` = `Agreement5` for any question that uses it.
 
+<Tip>
+  **`Label` is what the respondent reads; `Key` is what you report on.** Setting an explicit `Key`
+  means you can reword a label later without breaking existing responses or the Show If rules that
+  compare against it.
+</Tip>
+
+## Picture choices
+
+Give an option an **`Image URL`** and the whole question renders as a grid of image cards instead of
+a list. The shipped template doesn't include this column — add it to the Option Sets tab yourself,
+headed `Image URL` or `Image_URL`, and the import picks it up by header name.
+It works on any `Radio` or `Checkbox` question — there is no separate picture display type,
+and the stored answer is unchanged, so reporting, piping and Show If rules all behave exactly as
+they did.
+
+| Option Set | Label | Key | Image URL |
+| --- | --- | --- | --- |
+| `Packaging` | Slim box | slim | `https://…/slim.png` |
+| `Packaging` | Tall box | tall | `https://…/tall.png` |
+
+<Note>
+  One image is enough to switch the question to a grid — options without one still render, just
+  without a picture. The grid also overrides the `orientation` Display Property, because a picture
+  grid already wraps its own columns.
+</Note>
+
+<Warning>
+  **An `Image URL` longer than 250 characters is silently truncated on import**, which breaks the
+  link and leaves the card blank. Signed or heavily parameterised URLs run long — shorten them, or
+  host the image at a stable short path.
+</Warning>
+
 ## Rules
 
-- **Labels must be unique within a set** (case-insensitive) — duplicates are blocked
+* **Labels must be unique within a set** (case-insensitive) — duplicates are blocked
   (`DUPLICATE_OPTION_LABEL`).
-- Every option row needs both an `Option Set` name and a `Label`.
-- A label can be at most 252 characters; a set name at most 80.
+* Every option row needs both an `Option Set` name and a `Label`.
+* A label can be at most 251 characters; a set name at most 79 — validation blocks at 252 and 80.
+  Saved labels are additionally trimmed to 250 characters, silently.
+* A name in a question's `Option Set` column that has no rows on the Option Sets tab blocks the
+  import with `MISSING_OPTION_SET_DEFINITION` — usually a rename or a trailing space.
+
+<Warning>
+  **A `Key` (or, with no `Key`, a Label) that isn't a number, on a question whose reporting column
+  is numeric, loses the answer.** The suite imports, the survey runs, every respondent can answer — and the value is
+  written **empty** to that column while the write still reports success. AutoSurvey warns about
+  this at import (`NON_NUMERIC_OPTION_VALUE_FOR_NUMERIC_COLUMN`), and that warning is the only
+  notice you get. If a set feeds a numeric question, keep its keys numeric.
+</Warning>
+
+<Note>
+  A choice question whose set has no rows imports with a warning (`OPTIONLESS_CHOICE_QUESTION`) and
+  is then shown as "no options configured" and skipped. Its Required flag is ignored, so respondents
+  aren't trapped — but nobody can answer it either.
+</Note>
 
 ## Reuse
 
-The point of Option Sets is reuse: define `Likert5` once and reference it from a dozen questions (or
-every row of a [matrix](/concepts/matrix-programs)). Editing the set updates every question that uses
-it on the next import.
+The point of Option Sets is reuse: define `Likert5` once and reference it from a dozen questions, or
+from every row of a [matrix](/concepts/matrix-programs). Editing the set updates every question that
+uses it on the next import.
 
 ## "Other (please specify)"
 
-The choice key **`__OTHER__`** is reserved. You don't add it to the Option Set yourself — instead turn
-on an Other option with the `allowOther` token in the question's
+The choice key **`__OTHER__`** is reserved. Don't add it to the Option Set yourself — instead turn on
+an Other option with the `allowOther` token in the question's
 [Display Properties](/concepts/display-properties). When selected, it reveals a free-text box.
-Import will block any Option Set row whose key resolves to `__OTHER__`.
+Import blocks any Option Set row whose key resolves to `__OTHER__`.
+
+<Note>
+  The **Option Set** column on the Questions tab does one unrelated job: on a Text Area question it
+  carries the height, written as `lines:10`. That is the only case where the column holds something
+  other than a set name.
+</Note>
 
 ## Related
 
-- [Display Types](/concepts/display-types) — which questions need an Option Set
-- [Display Properties](/concepts/display-properties) — enabling an "Other" choice
-- [Matrix programs](/concepts/matrix-programs) — grids that share one column Option Set
+* [Display Types](/concepts/display-types) — which questions need an Option Set
+* [Display Properties](/concepts/display-properties) — enabling an "Other" choice
+* [Conditional Visibility](/concepts/conditional-visibility) — comparing against option keys
+* [Matrix programs](/concepts/matrix-programs) — grids that share one column Option Set

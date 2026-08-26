@@ -1,21 +1,144 @@
 ---
-title: Deploy & Verify
-description: What deploy does and how to confirm success.
+title: "Publish & Share"
+description: "What publishing actually does, why your survey goes live before reporting setup finishes, and how to share the link with people who have no Salesforce login."
 ---
 
-# Deploy & Verify (stub)
 
-## Deploy includes
-- Flow metadata
-- Response data model (object + fields)
-- Permissions
-- Layouts
+Importing a survey never makes it live. **Releasing** does — and it takes effect immediately.
 
-## Verify checklist
-- Flow exists in Setup → Flows
-- Flow runs for intended user
-- Response records write
-- Layout is present
-- Reports/dashboards work
+Open your suite from the **Survey Suites** tab and go to the **Publish & Share** panel.
 
-> TODO: Add known errors + fixes.
+## Step 1 — See what will change
+
+The panel shows three things before you commit to anything:
+
+| | |
+| --- | --- |
+| **Current release** | What's live now — its label, when it published, and who published it. Blank if nothing has gone live yet |
+| **Unpublished changes** | Appears when anything is waiting to go live — a new import, settings-only changes, or sheet edits you haven't re-imported yet |
+| **Reporting-field summary** | How many new fields this release will add to your Response Object |
+
+<Tip>
+  If the new-field count looks higher than you expect, check the Questions tab for accidental extra
+  rows before you release — each question row mints exactly one reporting field, so stray rows
+  inflate the count. That number is the cheapest early warning the panel gives you.
+</Tip>
+
+## Step 2 — The Response Object (first release only)
+
+Responses are stored in a Salesforce custom object — the **Response Object**. Each completed survey
+creates a record, and each question gets a reporting field on it.
+
+| What the summary says | What happens |
+| --- | --- |
+| The object doesn't exist | It's created by your first release |
+| The object exists, all fields present | Nothing changes |
+| The object exists, N fields missing | This release adds N fields |
+
+<Warning>
+  **The Response Object is locked after the first release**, so responses already collected can't be
+  orphaned by a later change. Decide where responses should live before that first release, not
+  after.
+</Warning>
+
+## Step 3 — Release
+
+Review the summary and click **Release suite** — the button reads **Release v2**, **Release v3** and
+so on when a staged version is waiting. A **Review changes before releasing** dialog recaps exactly
+what this release will do; its **Release** button mints the new release, which becomes live
+immediately.
+
+<Note>
+  **Going live never waits on reporting setup.** The release is live the moment you click **Release**;
+  provisioning the new reporting fields happens in the background afterwards, usually within a
+  minute. Respondents can start answering straight away.
+</Note>
+
+### If reporting setup needs attention
+
+Occasionally the background field setup doesn't finish first time. When that happens the panel
+warns: *"Reporting setup didn’t start — your release is live, but responses may not appear in
+reports yet. Use “Review & repair reporting” from Get responses to retry."* A banner also stays on
+the release panel until it's fixed, with the full reason and fix guidance for known failures.
+
+The important part: **the survey stays live and every response is still captured.** Reporting-field
+state does not affect whether answers are saved — it affects where they show up for reporting.
+**Repair reporting…** (which opens the **Review & repair reporting** dialog) is safe to run as many
+times as you like; it re-checks what's needed and starts provisioning again.
+
+## Step 4 — Share it
+
+Once a release is live, the **Public link** row of the **Get responses** band gives you the link: a
+**Copy link** button, and a **QR ▾** menu with an on-screen scannable preview plus **Download PNG**
+and **Copy image** for print or in-person use. The confirmation you see right after releasing offers
+**Copy public link** too.
+
+### If respondents don't have a Salesforce login
+
+Most surveys go to people outside your org. The **Public link** row's readiness checks cover
+everything a public link needs — an Experience site bound, the runner page reachable on it, guest
+access granted, and this survey serving a live release — and tell you which piece isn't ready.
+**Public link setup** in the release panel is where you pick the Experience site that serves the
+link. (CAPTCHA is configured org-wide on the **Setup** tab, not per survey.)
+
+<Warning>
+  **A public survey that isn't fully set up fails for the respondent, not for you.** You are logged
+  in, so the link works when you test it. Use the **Public link** row's readiness checks, or open
+  the link in a private window, before you send it to anyone.
+</Warning>
+
+## Nudging people who haven't answered
+
+For surveys sent to people inside your org, the **Follow-up reminders** line on the Get responses
+surface opens a **reminder schedule** — one per suite, with its own cadence, audience and copy. You
+can preview exactly who is due right now before anything sends.
+
+<Warning>
+  **Reminders don't actually send until the user the reminder job runs as has the Reminders Live
+  permission.** Granting it to anyone else changes nothing — the check is on the scheduled job's
+  running user. Without it the schedule still works and **Send now** still runs — but it only writes
+  a dry-run record and emails nobody. The panel shows a banner whenever live sending is off. If
+  reminders "aren't arriving", check that permission first. See
+  [Installation & Permissions](/admin/installation-and-permissions).
+</Warning>
+
+## Who can stop and come back
+
+Whether a respondent who leaves mid-survey can pick up where they were depends on how they arrived:
+
+* **Signed in to your org or site** — yes. Coming back to the survey finds their in-progress draft
+  and offers to continue rather than restarting.
+* **Personal invitation link** — yes. The invite link itself carries what's needed to resume, so
+  reopening the same link continues where they left off.
+* **Anonymous, via the public link** — no. The runner has no way to recognise a returning guest: a
+  fresh visit to the public link always starts a new draft, and nothing is saved on the
+  respondent's device. Anonymous respondents should finish in one sitting.
+
+<Note>
+  Worth knowing when you read your completion numbers: a partly-finished response already exists as a
+  submission, so an in-progress count is people mid-survey, not people who failed to start.
+</Note>
+
+## Verifying a release
+
+1. The **Current release** row shows your new release, with today's date.
+2. Open the live link — in a private window if the survey is public.
+3. Submit one test response.
+4. Confirm the record on the Response Object.
+
+## Releasing again after changes
+
+Edit the sheet, import, and the panel shows **Unpublished changes** again. Release when you're ready.
+The previously live release stays as history.
+
+<Note>
+  Releasing again on a survey that already has responses is safe. Existing responses keep the fields
+  they were collected with; a release only ever adds reporting fields, never removes them.
+</Note>
+
+## Related
+
+* [Sheets to Survey](/workflows/sheets-to-flow) — getting changes into the suite
+* [Data & Reporting](/concepts/data-and-reporting) — what to do with the responses
+* [Objects, Permissions, Layouts](/admin/objects-permissions-layouts) — what publishing creates in your org
+* [Troubleshooting](/support/troubleshooting)

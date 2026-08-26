@@ -37,48 +37,63 @@
     "name": "Book a Demo",
     "url": "https://calendly.com/mindshare-demo/autosurvey"
   },
-  "tabs": [
-    {
-      "name": "API Reference",
-      "url": "api"
-    }
-  ],
   "navigation": [
     {
       "group": "Getting Started",
       "pages": [
         "introduction",
-        "quickstart"
+        "quickstart",
+        "concepts/the-autosurvey-app"
       ]
     },
     {
-      "group": "Workflows",
+      "group": "Building a Survey",
       "pages": [
+        "workflows/sheets-to-flow",
         "workflows/prompt-to-flow",
         "workflows/design-with-ai",
-        "workflows/sheets-to-flow",
-        "workflows/deploy-and-verify"
+        "concepts/questions-sheet",
+        "workflows/import-an-existing-survey"
       ]
     },
     {
-      "group": "Concepts",
+      "group": "Question Authoring",
       "pages": [
-        "concepts/data-and-reporting",
-        "concepts/question-library-and-versioning",
         "concepts/display-types",
         "concepts/display-properties",
         "concepts/option-sets",
+        "concepts/validation",
         "concepts/conditional-visibility",
-        "concepts/matrix-programs",
-        "concepts/runtime-modes"
+        "concepts/piping",
+        "concepts/matrix-programs"
       ]
     },
     {
-      "group": "Admin",
+      "group": "Design & Publishing",
+      "pages": [
+        "concepts/themes-and-design",
+        "workflows/deploy-and-verify",
+        "concepts/question-library-and-versioning"
+      ]
+    },
+    {
+      "group": "Distribution",
+      "pages": [
+        "admin/distribution-settings",
+        "admin/campaign-distribution"
+      ]
+    },
+    {
+      "group": "Data",
+      "pages": [
+        "concepts/data-and-reporting",
+        "api/overview"
+      ]
+    },
+    {
+      "group": "Administration",
       "pages": [
         "admin/setup",
-        "admin/distribution-settings",
-        "admin/campaign-distribution",
         "admin/installation-and-permissions",
         "admin/objects-permissions-layouts",
         "admin/security-and-privacy"
@@ -87,15 +102,10 @@
     {
       "group": "Support",
       "pages": [
-        "support/faq",
         "support/troubleshooting",
+        "support/error-reference",
+        "support/faq",
         "support/release-notes"
-      ]
-    },
-    {
-      "group": "API Documentation",
-      "pages": [
-        "api/overview"
       ]
     }
   ],

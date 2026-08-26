@@ -1,17 +1,113 @@
 ---
-title: Question Library & Versioning
-description: Reuse questions across versions, audiences, and rounds.
+title: "Questions, Versions & Releases"
+description: "How AutoSurvey keeps a question the same question while its wording changes — and how to name questions so a three-wave trend still works."
 ---
 
-# Question Library & Versioning (stub)
 
-## The pain
-Surveys evolve. If every change means new fields, reports break and admin time explodes.
+Surveys change. Wording gets sharpened, a scale gets rethought, a question moves to a different
+page. If every change made a new field, your reports would break every time you improved a question.
 
-## What AutoSurvey provides
-- Reusable question library concept
-- Versioning across time
-- Many surveys built from the same questions
-- Safer iteration and comparison over time
+AutoSurvey separates **what a question is** from **where it sits** and **what has been published**,
+so that doesn't happen.
 
-> TODO: Add recommended keying strategy.
+## The recommended keying strategy
+
+<Note>
+  **The `API Name` is the key, and it is the only thing you should be careful about.** It names the
+  reporting field, it is what Show If rules reference, and it is what makes a question *the same
+  question* across every wave and every survey that uses it.
+</Note>
+
+That gives you a simple rule:
+
+| You want to | Do this |
+| --- | --- |
+| Improve the wording | Change the question text. Keep the API Name |
+| Change the scale or the choices | Change them. Keep the API Name |
+| Ask a genuinely different thing | Use a **new** API Name |
+| Stop asking something | Set `Active = FALSE`, or drop it from that wave's column |
+
+**Name the API Name for what the question measures, not for how it is worded today.**
+`Onboarding_Ease__c` survives three rewordings; `How_Easy_Was_Setup__c` is wrong the first time
+someone rewrites the sentence.
+
+<Warning>
+  **Changing an API Name does not rename anything — it creates a second question.** You get a new
+  reporting field, the old one keeps its data, and a trend across the two is a manual join. If you
+  are tempted to rename one, ask whether you actually want a new question; if you don't, leave it.
+</Warning>
+
+## What forks a new version, and what doesn't
+
+A question's **content** is versioned. Its **placement** is not:
+
+| Change | Effect |
+| --- | --- |
+| Question text, help text, display type, option set, display properties | New version of the question |
+| Required, validation, error message, default value | New version |
+| Scale bounds, anchor labels, image | New version |
+| Metric Type, Inverse Score | New version |
+| Which screen or section it sits on | No new version |
+| Its order on the page | No new version |
+| Its Show If rule | No new version |
+| Whether it offers "Other" | No new version |
+
+<Tip>
+  Versions are **content-addressed**: two imports of identical content resolve to the same version
+  rather than piling up duplicates. Reverting a question to its earlier wording re-uses that earlier
+  version rather than minting a third.
+</Tip>
+
+## Reuse across surveys and waves
+
+Because a question is a thing in its own right and not a row inside one survey, the same question can
+appear in many — a member survey and a supervisor survey, baseline and month twelve — while staying
+one question with one reporting field. That is what makes a wave-over-wave comparison a report
+rather than a data project. See [Matrix programs](/concepts/matrix-programs).
+
+## Versions and releases
+
+Three things get snapshotted, and they are not the same thing:
+
+| | What it snapshots |
+| --- | --- |
+| **Import Version** | Your sheet's content at the moment you imported it |
+| **Config Version** | Your suite's settings at that moment |
+| **Publish Release** | A named, live combination of an Import Version and a Config Version |
+
+```
+Google Sheet
+    ↓
+Import Version  +  Config Version
+    ↓
+Publish Release   ← the live, shareable thing
+```
+
+<Note>
+  **Importing mints versions; publishing is what points the live survey at them.** That is why an
+  import always shows as *Unpublished changes* and why importing repeatedly is safe — the released
+  survey does not move until you publish.
+</Note>
+
+## Knowing which version a response answered
+
+Every response records the version it was collected under:
+
+| Field | Tells you |
+| --- | --- |
+| `Publish_Release_Label__c` | Which release was live when the respondent started — not when they submitted |
+| `Release_Number__c` | Which version the respondent answered — v1, v2, v3, per survey |
+| `Form_Code__c` | Which form they completed |
+
+<Tip>
+  A respondent who started before you republished keeps the version number they began on, so
+  mid-flight publishes don't corrupt a comparison. Group by `Release_Number__c` when you want a
+  clean before-and-after around a change.
+</Tip>
+
+## Related
+
+* [The Questions Sheet](/concepts/questions-sheet) — the `API Name` and `Active` columns
+* [Matrix programs](/concepts/matrix-programs) — one question bank across audiences and waves
+* [Publish & Share](/workflows/deploy-and-verify) — minting a release
+* [Data & Reporting](/concepts/data-and-reporting) — reporting across versions

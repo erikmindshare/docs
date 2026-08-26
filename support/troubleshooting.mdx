@@ -1,18 +1,147 @@
 ---
-title: Troubleshooting
-description: Common issues and what to try first.
+title: "Troubleshooting"
+description: "Why an import was refused, why a question renders nothing, why a Show If never fires — and why passing the sheet sidebar is not the same as passing the import."
 ---
 
-# Troubleshooting (stub)
 
-## First checks
-- Correct org/environment?
-- Permissions correct?
-- Any deployment errors/logs?
+## Start here: which check produced the error?
 
-## Common issues
-- Insufficient privileges
-- Naming collisions
-- Spec validation warnings
+AutoSurvey checks your survey **twice**, in two places, and they are not two runs of the same check.
 
-Support: support@autosurvey.app (stub)
+| Check | Where you see it | What it knows about |
+| --- | --- | --- |
+| **Sheet sidebar** | The AutoSurvey sidebar in Google Sheets, when you run **Run Validation** | Your workbook — its columns, its tabs, its own Display Types list |
+| **Import** | Salesforce, when you import the suite | The whole survey: how screens flow, what the runner can render, how answers map to reporting columns |
+
+<Warning>
+  **A green sidebar is not a promise the import will succeed — and a sidebar error does not always
+  mean the import would refuse.** Of the errors AutoSurvey can raise, 18 come only from the sidebar,
+  40 come only from the import, and just 5 are raised by both. The import sees things the sidebar
+  structurally cannot, like whether a screen is reachable or whether a Show If points forward in
+  time. Always run the import before you consider a survey validated.
+</Warning>
+
+Every error carries a severity:
+
+| Severity | What it does |
+| --- | --- |
+| **Blocking** | Stops the import until you fix it |
+| **Advisory** | Lets the import through, and warns you something will not behave as you intended |
+| **Info** | A suggestion. The sidebar can usually apply it for you |
+
+<Tip>
+  Advisories are worth reading, not dismissing. Most of them describe a survey that imports cleanly
+  and then behaves wrongly for a respondent — a question nobody can answer, a rule that never fires,
+  a screen nobody reaches.
+</Tip>
+
+## A question shows a label but no answer box
+
+The Display Type isn't one AutoSurvey can draw. The import blocks this
+(`UNKNOWN_DISPLAY_TYPE`) precisely because of what happens if it doesn't: the question renders its
+label and its required asterisk, no control, and — if it's Required — the respondent can never
+finish. The error names your value and lists every accepted Display Type.
+
+The sidebar's version of this check (`INVALID_DISPLAY_TYPE`) tests something different: whether the
+value is on **your workbook's Display Types tab**. If you've edited that tab, the two can disagree in
+either direction. See [Display Types](/concepts/display-types).
+
+A choice question with no options behaves similarly but is only **advisory**
+(`OPTIONLESS_CHOICE_QUESTION`): it imports, then shows "no options configured" and is skipped, and
+its Required flag is ignored so the respondent isn't trapped.
+
+## The import can't find my Option Set
+
+`MISSING_OPTION_SET_DEFINITION` — the name in the question's **Option Set** column doesn't match any
+name on the **Option Sets** tab. Both layers check this, so the sidebar usually catches it first.
+Check for a trailing space or a renamed set.
+
+Two neighbours in the same family:
+
+- `MISSING_OPTION_SET` — this Display Type needs a choice list and you haven't given it one.
+- `UNNECESSARY_OPTION_SET` *(warning)* — you gave a choice list to a type that doesn't use one.
+  Harmless, but usually a sign the Display Type isn't what you meant.
+- `RESERVED_OPTION_KEY` — `__OTHER__` is reserved for the "Other (please specify)" feature. Pick
+  another key. See [Option Sets](/concepts/option-sets).
+
+## A Show If rule never fires
+
+This is the largest family of errors, and most of them are advisory — the survey imports and then
+quietly misbehaves.
+
+| What you did | Error |
+| --- | --- |
+| Pointed at an API name no question uses | `UNKNOWN_VISIBILITY_REFERENCE` |
+| Pointed a question at itself | `SELF_REFERENCING_VISIBILITY` |
+| Pointed at an answer the respondent hasn't reached yet | `VISIBILITY_FORWARD_REFERENCE` |
+| Wrote a rule that can never be true | `SINGLE_FIELD_CONTRADICTION` |
+| Built a loop — A shows B shows A | `DEPENDENCY_CYCLE` |
+| Compared with `<` or `>` against a non-numeric question | `ORDERING_ON_NON_NUMERIC` |
+| Matched a choice value that no longer exists in the Option Set | `STALE_CHOICE_LITERAL` |
+
+<Note>
+  **A Show If can depend on any answer the respondent has already given** — including one from an
+  earlier screen. What it cannot do is depend on an answer they have not reached yet, because that
+  rule could never fire. Only that *forward* direction is rejected. See
+  [Conditional Visibility](/concepts/conditional-visibility).
+</Note>
+
+## Two screens collapsed into one, or a screen name was rejected
+
+Screen names are sanitized before they become part of the generated survey, and two different names
+can sanitize to the same thing — "Section 1" and "Section-1" collide. `SCREEN_NAME_COLLISION` names
+both rows so you can tell which. `SCREEN_NAME_TOO_LONG` caps the length; keep screen names to 35
+characters or fewer.
+
+`SCREEN_MAY_BE_EMPTY` is the subtler one, and it is blocking: **every** top-level Section or
+question on the screen carries a Show If, and at least two *different* rules are in play — so for
+some combination of answers the respondent reaches a page with nothing on it. A screen whose
+conditional components all share one identical rule (or that has only a single conditional
+component) shows and hides as one unit, never partially, so it imports cleanly. The fix, when the
+error does fire, is to give at least one component on that screen no Show If at all — a heading, an
+instruction, or the question the page is really about.
+
+## A terminal screen won't import, or ends the wrong way
+
+| Error | Meaning |
+| --- | --- |
+| `INVALID_TERMINAL_STATUS` | The `status` value isn't one of `complete` or `screened_out` |
+| `TERMINAL_SCREEN_HAS_ANSWERABLE_CONTENT` | A `screened_out` screen has a question on it. Arriving at it finalizes the submission, so it can't also collect an answer |
+| `TERMINAL_SCREEN_CONTENT_LESS` *(advisory)* | The screen has no content of its own, so the respondent sees a generic default message |
+| `UNREACHABLE_AFTER_UNCONDITIONAL_TERMINAL` *(advisory)* | A terminal screen with no Show If always ends the survey, so every screen after it is dead |
+
+<Warning>
+  A terminal screen with **no Show If rule ends the survey for everyone.** If you meant it to catch
+  only some respondents, it needs a rule. The advisory above is how you find out you've cut off the
+  rest of your survey.
+</Warning>
+
+## The Validation column was rejected
+
+Length and numeric validations apply to different question types and the import will not guess:
+
+- `len: 3..200` — text questions only (`LENGTH_ON_INCOMPATIBLE_TYPE` if used elsewhere)
+- `range: 1..5` — numeric questions only (`NUMBER_RANGE_ON_INCOMPATIBLE_TYPE` if used elsewhere)
+- `INVERTED_LENGTH_RANGE` / `INVERTED_NUMBER_RANGE` — the minimum is above the maximum
+- `INVALID_VALIDATION_REGEX` / `INVALID_VALIDATION_SYNTAX` — the expression itself doesn't parse
+
+## Scores and bands aren't what I expected
+
+Metric errors are the ones most likely to import cleanly and produce wrong numbers later.
+
+- `MULTIPLE_PRIMARY_METRICS` — a form can have at most one primary (`*`) metric, and the marker
+  applies to **every** form containing that question.
+- `MULTIPLE_METRICS_NO_PRIMARY` *(advisory)* — no primary marked, so AutoSurvey picks one by
+  fallback priority: NPS, then CSAT, then CES, then Rating. Mark one with `*` if that isn't what you
+  want.
+- `PRIMARY_REQUIRES_SCORED_METRIC` / `INVERSE_REQUIRES_SCORED_METRIC` — the marker needs a Metric
+  Type on the question.
+- `INVALID_NPS_SCALE` — NPS is a fixed 0–10 scale. Leave Scale Min/Max blank.
+
+## Everything else
+
+The complete list — all 63 errors, what each means, and which check raises it — is the
+[Error Reference](/support/error-reference).
+
+If you're still stuck, [support@autosurvey.app](mailto:support@autosurvey.app). Send the error text
+itself: every message names the row and the column it's about.

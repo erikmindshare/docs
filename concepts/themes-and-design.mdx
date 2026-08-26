@@ -1,0 +1,102 @@
+---
+title: "Themes & Design"
+description: "Choose how your survey looks — a built-in theme, a colour palette, your own brand assets — and understand why adopting one is a copy, not a link."
+---
+
+
+Every survey has a **design**: its colours, type, spacing, how options are framed, and your brand.
+You edit it on the **Design** page for that survey, and you can start from something rather than
+from nothing.
+
+## The one thing to understand first
+
+<Note>
+  **Adopting a theme or a palette is a copy, not a link.** Picking one writes its values into *your*
+  survey's design and then has no further hold on it. Your design keeps a note of which theme it
+  came from, but that is a record, not a connection — nothing flows through it later.
+</Note>
+
+Two consequences, and they run in opposite directions:
+
+* **Nothing changes under you.** A theme edited later — by you or by an update — cannot alter a
+  survey that already adopted it. What you published stays what you published.
+* **Improvements don't reach you either.** If a built-in theme is refined, surveys that already took
+  its values keep the old ones. Re-adopt it if you want the change.
+
+It also means a survey *shows* as using a theme only while its values still match that theme
+exactly. Change one colour and it becomes your own design — which is correct, not a bug.
+
+## Themes
+
+Nineteen themes ship, and they differ in structure as much as colour — how questions are framed,
+how much air there is, how the page is anchored:
+
+| | |
+| --- | --- |
+| **Card-based** | Clean Card, Soft Cards, Open Cards, Signature Tint |
+| **Editorial** | Editorial, Warm Editorial, Boxed Serif |
+| **Spacious** | Easy Read, Conversational, Full Bleed, Edge to Edge |
+| **Compact** | Dense, Field Grid, Plain Rhythm |
+| **Other** | Bold Modern, Clean Neutral, Night, Washed, Boxed |
+
+Adopt one from a survey's **Design** page. The **Theme Library** tab is a different thing: it is the
+org-level shelf — which themes this org has, and a one-click way to pull the latest. **The Library
+stocks the shelf; the Design page styles a survey.**
+
+<Tip>
+  Themes carry structure; palettes carry colour. Adopt a theme first for the shape you want, then
+  change the colour underneath it — that ordering saves the most work.
+</Tip>
+
+## Palettes
+
+Seventeen palettes set the colour slots in one move — accents, surfaces, the ground the survey sits
+on. They include ramps (`rampSky`, `rampTeal`, `rampAmber`, `rampGold`, `rampRust`, `rampViolet`),
+named schemes (`ocean`, `lagoon`, `fern`, `ember`, `iris`, `slate`, `midnight`, `dusk`, `harbour`),
+and two tuned to look like the tools people arrive from (`googleForms`, `surveyMonkey`).
+
+Like a theme, a palette is a shortcut — it writes the values and lets go.
+
+<Note>
+  Palette colours are **measured, not chosen**: each was checked for contrast so text stays legible
+  on the surface behind it. If you fine-tune a colour by hand afterwards, that guarantee is yours to
+  keep.
+</Note>
+
+## Your brand
+
+Set your **logo** and **favicon** on the Design page under **Header & text** — logo size and
+alignment sit alongside them — and your **background image** under **Colour**.
+
+<Warning>
+  **Brand assets moved here from the Config tab.** If an older workbook still has `Logo URL`,
+  `Favicon URL` or `Background Image URL` on its Config tab, those are ignored — the import raises a
+  `RETIRED_CONFIG_KEY` warning naming where the setting went. They were moved because a sheet
+  travels between orgs and those URLs are org-specific: a sheet carrying one re-stamps a dead
+  org's image everywhere it lands.
+</Warning>
+
+## Welcome and ending screens
+
+The Design page also holds the copy a respondent sees before they start and after they finish. Both
+are edited in place, with a preview.
+
+## Trying things safely
+
+| | |
+| --- | --- |
+| **Preview** | See the real survey rendered with your current design before saving |
+| **Restore your settings** | Put everything back to how it stood before you started trying themes this session |
+| **Share this design** | Take a design out — **Download .json** or **Copy** — then **Apply this design** on another survey |
+| **Save theme** | Name a design you've built and it appears in your themes, ready to apply to any other survey |
+
+<Tip>
+  **Restore is the reason to experiment freely.** It reverses a run of theme-flipping in one click —
+  so try five themes rather than agonising over the first.
+</Tip>
+
+## Related
+
+* [Display Properties](/concepts/display-properties) — per-question tuning that sits on top of the design
+* [The Questions Sheet](/concepts/questions-sheet) — content lives in the sheet, design does not
+* [Publish & Share](/workflows/deploy-and-verify) — design changes reach respondents when you publish

@@ -1,0 +1,102 @@
+---
+title: "Validation Rules"
+description: "Constrain what a respondent can enter — a length, a numeric range, or a pattern — from one column on the Questions tab."
+---
+
+
+The **Validation** column on the Questions tab constrains what a respondent may enter. One cell, and
+it holds any of three kinds of rule.
+
+## The three shapes
+
+### A range, written with two dots
+
+```text
+3..200
+```
+
+What it constrains depends on the question's [Display Type](/concepts/display-types):
+
+| Question type | `3..200` means |
+| --- | --- |
+| Number, Currency, Percent | The **value** must be between 3 and 200 |
+| Anything else | The **length** must be between 3 and 200 characters |
+
+Leave either side off to set only one bound:
+
+| | |
+| --- | --- |
+| `18..` | At least 18 |
+| `..500` | At most 500 |
+
+### A labelled rule, when you want to be explicit
+
+```text
+len: 3..200
+range: 1..5
+regex: ^[A-Z]{2}\d{4}$
+```
+
+Combine them with semicolons:
+
+```text
+len: 3..20; regex: ^[A-Za-z ]+$
+```
+
+| Label | Also accepted as | Constrains |
+| --- | --- | --- |
+| `len` | `length`, `chars`, `charcount` | Number of characters |
+| `range` | — | The numeric value |
+| `regex` | `pattern` | The text pattern |
+
+### A bare pattern
+
+A cell that is neither a range nor labelled is treated as a regular expression:
+
+```text
+^[A-Z]{2}\d{4}$
+```
+
+<Warning>
+  **Only digits work either side of `..`.** `a..z` is not a range — it contains letters, so it falls
+  through and is treated as a **regular expression** instead. If you meant a letter range, write it
+  as one: `regex: ^[a-z]$`.
+</Warning>
+
+## Custom error messages
+
+Validation says what is allowed. The **Error Message** column says what the respondent reads when
+they get it wrong. Leave it blank for the default.
+
+| Question | Display Type | Validation | Error Message |
+| --- | --- | --- | --- |
+| Employee ID | `ShortText` | `regex: ^[A-Z]{2}\d{4}$` | Two letters then four digits, e.g. `AB1234` |
+| How many staff? | `Number` | `range: 1..10000` | Enter a number between 1 and 10,000 |
+| Tell us more | `Text Area (Long)` | `50..` | Please write at least 50 characters |
+
+<Tip>
+  A rule that rejects an answer without saying why is a drop-off. If a rule is anything less than
+  obvious from the question text, write the Error Message.
+</Tip>
+
+## What the import rejects
+
+| Problem | Error |
+| --- | --- |
+| The cell doesn't parse — unknown label, non-numeric bound, malformed interval | `INVALID_VALIDATION_SYNTAX` |
+| The regular expression doesn't compile | `INVALID_VALIDATION_REGEX` |
+| A length rule on a numeric question | `LENGTH_ON_INCOMPATIBLE_TYPE` |
+| A numeric range on a text question | `NUMBER_RANGE_ON_INCOMPATIBLE_TYPE` |
+| The minimum is above the maximum | `INVERTED_LENGTH_RANGE` / `INVERTED_NUMBER_RANGE` |
+
+<Note>
+  The two "incompatible type" errors are why the labelled form is worth using when you're unsure:
+  `len:` and `range:` say what you meant, so the import can tell you plainly that you've put a
+  character limit on a Number question rather than guessing.
+</Note>
+
+## Related
+
+* [The Questions Sheet](/concepts/questions-sheet) — the `Validation` and `Error Message` columns
+* [Display Types](/concepts/display-types) — which types are numeric
+* [Troubleshooting](/support/troubleshooting) · [Error Reference](/support/error-reference)

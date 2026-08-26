@@ -1,0 +1,105 @@
+---
+title: "Import an Existing Survey"
+description: "Bring a survey you already run in Typeform, Google Forms, SurveyMonkey or GetFeedback into AutoSurvey — paste its link, review what came across, and import."
+---
+
+
+If you already run a survey somewhere else, you don't have to retype it. Paste its link and
+AutoSurvey reads the questions, the choice lists and the screen structure, and shows you what it
+found before anything is created.
+
+## What can be imported
+
+| Source | How AutoSurvey reads it |
+| --- | --- |
+| **Typeform** | From the public link |
+| **Google Forms** | From the published form link |
+| **GetFeedback** | From the public link, or connected to your account for private surveys |
+| **SurveyMonkey** | From the survey's public `/r/` link, or connected to your account for any other link |
+
+<Note>
+  **Only private imports need a connection.** A public SurveyMonkey `/r/` link imports with no
+  set-up at all. Connecting an account is needed for private GetFeedback surveys, and for
+  SurveyMonkey surveys you import from your own account instead of a public `/r/` link. That's a
+  one-time authorisation, and the permission sets are **SurveyMonkey API Access** and **GetFeedback
+  API Access** — see [Installation & Permissions](/admin/installation-and-permissions).
+</Note>
+
+<Warning>
+  Paste a **Qualtrics** or **Delighted** link and AutoSurvey will recognise which tool it is, but
+  cannot import it — there's no importer for those yet. Uploading an export file is not supported
+  either. For those, [start from a prompt](/workflows/prompt-to-flow) and paste your question
+  wording in.
+</Warning>
+
+## How it goes
+
+<Steps>
+  <Step title="Paste the link">
+    AutoSurvey works out which tool it came from. If a link is ambiguous it asks you to confirm
+    rather than guessing.
+  </Step>
+  <Step title="Review the preview">
+    Every question it found, each with a badge for the display type it will become — and, for a
+    matrix question, how many rows it expands to. The summary line at the top totals the questions
+    and screens. Notices call out anything that needs your attention.
+  </Step>
+  <Step title="Import">
+    The questions and option sets are written into your suite's Google Sheet. From there it is an
+    ordinary AutoSurvey survey — edit it, validate, publish.
+  </Step>
+</Steps>
+
+<Tip>
+  **Read the preview properly.** It is the cheapest moment to notice a question that came across as
+  the wrong type. The preview itself is read-only — you fix the type after importing, in the Display
+  Type column of your suite's sheet, which is a dropdown rather than a re-import.
+</Tip>
+
+## Branching comes across too
+
+Conditional logic is translated, not discarded. A rule that says *"show this only if they picked
+Yes"* in the original becomes a **Show If** rule in AutoSurvey, rewritten to point at the API names
+your imported questions ended up with.
+
+Jump-to-end logic translates as well — a Typeform thank-you jump or a Google Forms "submit form"
+branch becomes a [Terminal Screen](/concepts/display-types), so respondents who should finish early
+still do.
+
+<Note>
+  A rule AutoSurvey could not translate cleanly is **reported in the preview**, not dropped quietly.
+  Read the notices before importing — that is where you find out a branch needs rebuilding by hand.
+</Note>
+
+## What happens to the layout
+
+AutoSurvey matches how the original *felt*:
+
+* **Typeform** and **GetFeedback** show one question per screen, so an import from either defaults
+  to that layout.
+* **Google Forms** groups questions into pages, so its pages become your screens.
+
+You can change it afterwards — the layout is just the `Screen` column. See
+[The Questions Sheet](/concepts/questions-sheet).
+
+## What to check after importing
+
+An import gets you the content; it doesn't get you a finished survey. Worth a pass over:
+
+| | |
+| --- | --- |
+| **Display types** | Every tool has types with no exact match. Check the preview's badges, and the [Display Types](/concepts/display-types) page for what's available |
+| **Show If rules** | Branching *is* imported, but check it. A rule that couldn't be translated cleanly is reported in the preview rather than dropped silently — see [Conditional Visibility](/concepts/conditional-visibility) |
+| **Metric Type** | Mark your NPS/CSAT/CES question so scoring and [CX Analytics](/concepts/the-autosurvey-app) work |
+| **Design** | The import brings structure, not your branding. See [Themes & Design](/concepts/themes-and-design) |
+
+<Note>
+  **Responses don't come with it.** Importing brings the *survey*, not the answers people already
+  gave it. Export those from the original tool if you need them.
+</Note>
+
+## Related
+
+* [Sheets to Survey](/workflows/sheets-to-flow) — editing what came across
+* [Display Types](/concepts/display-types) · [Option Sets](/concepts/option-sets)
+* [Publish & Share](/workflows/deploy-and-verify) — taking it live

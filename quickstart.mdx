@@ -1,13 +1,120 @@
 ---
-title: Quickstart
-description: Deploy your first Flow and verify data writes.
+title: "Quickstart"
+description: "Build, publish and answer a real survey in about fifteen minutes — starting from a template rather than a blank sheet."
 ---
 
-# Quickstart (stub)
-1. Choose Prompt → Flow or Sheets → Flow
-2. Generate screens/questions
-3. Deploy to Salesforce
-4. Run the Flow
-5. Confirm Response data writes + reporting works
 
-> TODO: Add screenshots + a 60s demo link.
+The fastest way to understand AutoSurvey is to publish something and answer it yourself. This takes
+about fifteen minutes and ends with a working survey you can send to someone.
+
+<Note>
+  You need AutoSurvey installed and setup finished first. If the **Setup Home** page shows
+  outstanding checks, clear those before starting — see [Setup Home](/admin/setup).
+</Note>
+
+## 1. Create a suite
+
+Open the **Survey Suites** tab and choose **New Survey**.
+
+A *suite* is the container: it holds your questions, its own Google Sheet, its releases, and the
+responses that come back. One suite per survey programme is the usual shape.
+
+## 2. Start from a template
+
+You could start from an empty sheet — but the quickest useful survey is a template, and four ship
+with the product:
+
+| Template | What it covers |
+| --- | --- |
+| **Customer Satisfaction (CSAT)** | How happy customers are after a purchase or support interaction, and what drives it |
+| **Net Promoter Score (NPS)** | The 0–10 recommend question, the reason behind it, and a follow-up opt-in |
+| **Event Feedback** | Overall rating, what worked across sessions, venue and networking, and what people want next |
+| **New Customer Onboarding** | Friction in the first weeks — how easy setup was, and where people are stuck |
+
+Pick one. Its questions and choice lists are written into your suite's Google Sheet.
+
+<Tip>
+  Two **demos** also ship as complete, runnable surveys — no building required. **Display-Type
+  Gallery** has one question of every display type, which is the fastest way to see what each
+  control actually looks like. **Customer Satisfaction (demo)** is a complete CSAT survey. Demos
+  start with no responses, so their reports open empty — the fast path is to open the demo in the
+  runner, submit one test response yourself, then open the reports.
+</Tip>
+
+## 3. Look at it, and change one thing
+
+Open the suite's Google Sheet. Every question is a row on the **Questions** tab.
+
+Change something small so you can see the loop work — reword a question, or set one to
+`Required = TRUE`. Then open the **AutoSurvey** sidebar (the **AutoSurvey** menu) and choose
+**Run Validation**.
+
+<Note>
+  Validation checks your workbook. The stricter check happens at import, and the two look at
+  different things — so a clean sidebar isn't a guarantee. That's normal; import is the real test.
+  See [Troubleshooting](/support/troubleshooting).
+</Note>
+
+## 4. Import
+
+Import the suite into Salesforce.
+
+Importing never makes anything live. Your changes land as **Unpublished changes** and wait for you,
+which means you can import as often as you like while you're working.
+
+## 5. Publish
+
+Open the **Publish & Share** panel.
+
+Before you commit, it shows what will change — in particular how many reporting fields this publish
+will add to your Response Object. On a first publish that number is roughly your question count,
+because the object is being built.
+
+Click **Release suite** (on a later version the button reads **Release v2**, **Release v3**, and
+so on). A dialog — *Review changes before releasing* — gives you a last look; click **Release**.
+The survey is live immediately, and its public link goes live with it.
+
+<Note>
+  Reporting fields are provisioned in the background just after go-live. If you see *"Reporting
+  setup didn’t start — your release is live, but responses may not appear in reports yet. Use
+  “Review & repair reporting” from Get responses to retry."*, the survey is still live and still
+  capturing every response — run **Review & repair reporting** from **Get responses** when
+  convenient. Responses are never at risk while that runs.
+</Note>
+
+## 6. Answer your own survey
+
+In **Publish & Share**, the **Public link** row of the **Channels** band now shows the live link,
+a **Copy link** button, and a QR code (under **QR ▾**).
+
+<Warning>
+  **Open it in a private window.** You're signed in to Salesforce, so the link will work for you
+  whether or not public access is set up correctly. A private window tests what a respondent
+  actually gets — and this is the single most common way a launch goes wrong.
+</Warning>
+
+Fill it in and submit.
+
+## 7. Find the response
+
+Open your Response Object. There's one record for the survey you just completed, with a field per
+question — ordinary Salesforce data you can report on, chart, and automate against.
+
+That's the whole loop: **write → validate → import → publish → collect**.
+
+## Where to go next
+
+<CardGroup cols={2}>
+  <Card title="Write your own" href="/workflows/sheets-to-flow">
+    The Questions tab in full — screens, sections, and the three columns that are actually required.
+  </Card>
+  <Card title="Start from a prompt" href="/workflows/prompt-to-flow">
+    Describe a survey and have the questions drafted for you.
+  </Card>
+  <Card title="Show and hide questions" href="/concepts/conditional-visibility">
+    Make a question appear only when an earlier answer calls for it.
+  </Card>
+  <Card title="Send it to a list" href="/admin/campaign-distribution">
+    Invite the members of a Salesforce Campaign with single-use links.
+  </Card>
+</CardGroup>

@@ -1,25 +1,74 @@
 ---
-title: Introduction
-description: What AutoSurvey is and what it generates in Salesforce.
+title: "Introduction"
+description: "What AutoSurvey is, what it puts in your Salesforce org, and the three ways to start a survey."
 ---
 
-# AutoSurvey in one sentence
-Build surveys, forms, and applications — deployed as **polished Salesforce Screen Flows**.
 
-## Two ways to start
-- **AI Prompt**: fastest wow
-- **Google Sheets spec**: bulk editing + versioning
+## AutoSurvey in one sentence
 
-## What gets created in your org (at deploy)
-- Native Screen Flow metadata
-- Response object + fields
-- Permissions / permission sets
-- Page layout(s) (optional variant layouts for Matrix programs)
+**Build surveys, forms and applications that run inside Salesforce and write their answers straight
+into it** — no integration, no export step, no second system holding your data.
 
-## Where it runs
-Anywhere a Screen Flow runs:
-- Behind login (internal users)
-- Experience/portal users
-- Public/unauthenticated patterns (when you choose that approach)
+## What makes it different
 
-Next: **Quickstart**
+A survey tool bolted onto Salesforce gives you responses in someone else's database and a nightly
+sync. AutoSurvey doesn't have that seam:
+
+* **Responses are Salesforce records.** Each completed survey is a record on a custom object in
+  your org, with a reporting field per question. Report on it, chart it, roll it up, automate off
+  it — like any other object.
+* **It runs on your infrastructure.** Surveys are served from your org, under your sharing rules
+  and your security settings.
+* **Respondents don't need a login.** A survey can be answered by anyone with the link, by
+  community users, or only by internal staff — your choice, per survey.
+
+## Three ways to start
+
+<CardGroup cols={3}>
+  <Card title="Describe it" href="/workflows/prompt-to-flow">
+    Say what you want in plain language and AutoSurvey drafts the questions and choice lists.
+  </Card>
+  <Card title="Write it in Sheets" href="/workflows/sheets-to-flow">
+    Every suite is bound to a Google Sheet — the fastest way to build something long or edit in bulk.
+  </Card>
+  <Card title="Bring one with you" href="/workflows/sheets-to-flow">
+    Import an existing survey from Typeform, Google Forms, SurveyMonkey or GetFeedback.
+  </Card>
+</CardGroup>
+
+You can mix them: generate a draft, edit it in the sheet, and publish.
+
+## What appears in your org
+
+Nothing is created until you **publish**. Importing a survey never touches your schema.
+
+On the first publish of a suite, AutoSurvey creates:
+
+| | |
+| --- | --- |
+| **A Response Object** | The custom object your responses are stored on — one record per completed survey |
+| **A reporting field per question** | So every answer is reportable without unpacking anything |
+| **A page layout** | So the records are readable the moment they arrive |
+
+Later publishes only ever **add** reporting fields. They never remove one, so a report built last
+quarter keeps working.
+
+<Note>
+  Your survey goes live the moment you publish. Provisioning the reporting fields happens in the
+  background straight afterwards — and responses are captured either way, so a survey is never
+  waiting on schema to start collecting. See [Publish & Share](/workflows/deploy-and-verify).
+</Note>
+
+## Where a survey runs
+
+The same survey can be given to any of these without rebuilding it:
+
+* **Anyone with the link** — no Salesforce login, optionally behind a CAPTCHA
+* **Community or portal users** — signed in to your Experience site
+* **Internal users** — inside Salesforce
+
+## Next
+
+<Card title="Quickstart" href="/quickstart" horizontal>
+  Build and publish a working survey in about fifteen minutes.
+</Card>

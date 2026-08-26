@@ -38,7 +38,7 @@ After you pick a form and click **Save Settings**, the **Suite** for that form i
 
 ## Distribution status
 
-A live snapshot of this campaign's survey progress. Counts refresh after links are generated and after the nightly sync.
+A live snapshot of this campaign's survey progress. Counts are computed fresh each time the panel loads.
 
 | Metric | Meaning |
 | --- | --- |
@@ -88,7 +88,16 @@ When a respondent opens their link and clicks **Start**, AutoSurvey:
 2. Creates or resumes a single submission and links it to the invitation.
 3. Stamps the first-opened time and tracks status as **In Progress → Completed**.
 
-A nightly sync rolls each member's status, completion time, and latest invitation up to the **Campaign Member**, and updates the Campaign's **Total Completed**, **Completion Rate**, and **Last Sync** rollups.
+The moment a member completes the survey, the Campaign's **Total Completed**, **Completion Rate**, and **Last Sync** rollups are recomputed automatically. A nightly sync acts as a backstop for anything that refresh misses, and also rolls each member's status, completion time, and latest invitation up to the **Campaign Member**.
+
+<Note>
+  The completion figures **in this panel are calculated live**, so they are correct the moment a
+  response lands. The same figures on **list views, reports and the Campaign record page** come
+  from cached rollup fields — these refresh automatically within moments of each completion, with
+  the nightly sync as a backstop for anything the automatic refresh misses. **Last Sync** tells
+  you when they were last refreshed; in the rare case the cached figures lag the panel, they
+  catch up no later than the next nightly run.
+</Note>
 
 ## Validate the survey URL
 
@@ -111,6 +120,18 @@ See [Data and Reporting](/concepts/data-and-reporting) for the underlying object
 AutoSurvey sends campaign invitation emails directly from the Campaign
 Distribution panel — no external email tool or Salesforce List Email is
 required.
+
+<Note>
+  Emails sent to a list carry an **unsubscribe link** automatically — insert it with
+  `%%UNSUBSCRIBE%%`. The page it lands on asks the recipient to confirm before anything happens, so
+  a corporate mail scanner that follows links in the background cannot unsubscribe someone by
+  accident. Recipients who unsubscribe are skipped by later sends.
+
+  `%%UNSUBSCRIBE%%` uses the same `%%…%%` delimiters as
+  [answer piping](/concepts/piping), but it is a different mechanism — an email token, not a
+  survey one. Answers cannot be piped into emails, and the unsubscribe token has no meaning
+  inside a survey.
+</Note>
 
 Prerequisites:
 
@@ -216,4 +237,4 @@ For the full data-handling model, see [Security and Privacy](/admin/security-and
 | **No Experience sites listed / all "Not configured"** | The site must be **Active** (publish and activate it in Experience setup — use the **Open Experience setup** link by the Experience Site Domain field), and the guest user must have `AutoSurvey_Guest_Access` assigned. Newly created sites are inactive until you activate them. See [Setup Home → Public Survey Access](/admin/setup). |
 | **"Link configuration needs attention"** | Check the listed issues: confirm a form is selected, that it (or its suite) has both a suite code and form code, and that the survey base URL is configured in Setup. Click **Re-check** after fixing an issue. |
 | **Panel not visible on the Campaign** | Confirm you are in the **AutoSurvey** app and have admin permissions (`ASVY_Deploy_Admin`). |
-| **Counts look stale** | Rollups refresh after generation and on the nightly sync; allow a sync cycle to elapse. |
+| **Counts look stale** | Cached rollups refresh within moments of each completion; check **Last Sync** on the Campaign. If a refresh was missed, the nightly sync catches it up — allow one nightly cycle to elapse. |

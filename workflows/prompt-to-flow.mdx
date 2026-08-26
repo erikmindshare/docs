@@ -1,16 +1,97 @@
 ---
-title: Prompt → Flow
-description: From prompt to a deployed Screen Flow.
+title: "Prompt to Survey"
+description: "Describe the survey you want and let AutoSurvey draft the questions and choice lists for you, then edit them like any other survey."
 ---
 
-# Prompt → Flow
-Use this when you want a fast first draft.
 
-## Steps (stub)
-- Write the prompt (goal, audience, required fields, validations)
-- Generate
-- Review warnings
-- Deploy
-- Verify
+The fastest way to a first draft: describe the survey in plain language and let AutoSurvey write the
+questions and choice lists. What comes back is an ordinary AutoSurvey survey — you edit, validate and
+publish it exactly like one you wrote by hand.
 
-> TODO: Example prompt + example output.
+## Where it lives
+
+Open your suite in **Suite Manager** and go to **Populate Survey Questions** (step 5), or pick
+**Populate Questions...** from the **⋯** menu in the suite header to jump straight there.
+
+That step offers six ways to add questions — three under **Start with AI**, three under
+**Bring your own** — and you can mix them:
+
+| | |
+| --- | --- |
+| **Freeform prompt** | Describe the survey; AutoSurvey generates questions and option sets |
+| **Guided** | Answer a few quick questions and AutoSurvey drafts it |
+| **Paste your questions** | Your wording; AutoSurvey detects the types and options |
+| **Bring your survey** | Migrate an existing survey word-for-word — see [Import an Existing Survey](/workflows/import-an-existing-survey) |
+| **Import CSV/JSON** | Paste or upload CSV or JSON |
+| **Edit in Google Sheets** | Open the Google Sheet and write them yourself |
+
+## Two ways to describe what you want
+
+**Freeform prompt** — one box, free text. Write what you'd tell a colleague.
+
+**Guided** — separate fields for the topic, the audience, and the key decision or goal the survey
+serves. Worth the extra minute when the survey has to earn its place: naming the *decision*
+is what stops a generator producing twenty interesting questions that answer nothing.
+
+### A worked example
+
+> We run a three-day developer conference. I want a post-event survey for attendees that tells us
+> whether to run it again in the same format. Cover the talks, the venue, the food and the
+> networking. Keep it under five minutes. Include one NPS question and a free-text "what should we
+> change" at the end.
+
+That produces a screen-structured draft with an NPS question, rating questions per track, and a
+closing long-text — with the choice lists built as reusable [Option Sets](/concepts/option-sets).
+
+## Fast or Standard
+
+Under **Optional AI Guidance** you can choose how hard AutoSurvey works:
+
+| Mode | What it does |
+| --- | --- |
+| **Fast** | One pass. Quicker, and usually needs more cleanup |
+| **Standard** | Two passes — the first designs the question set and screen structure, the second compiles it for consistency |
+
+**Standard is the right default for most surveys.** Use Fast when you're exploring shapes rather
+than drafting the real thing.
+
+## What happens to the result
+
+The generated questions and option sets are imported into your suite's bound Google Sheet. From
+there it is an ordinary survey: edit anything you like, validate, import, publish. Nothing goes live
+because it was generated.
+
+<Tip>
+  Treat the first generation as a draft, not an answer. The fastest workflow is generate → skim in
+  the sheet → delete a third → publish.
+</Tip>
+
+## Large surveys
+
+AutoSurvey generates up to **500 questions** in one go.
+
+Anything over about 150 questions is automatically moved to a background job — you don't have to do
+anything, the progress panel says it's working in the background, and you get a notification when
+it's done. Very large surveys need a higher AI tier:
+
+| Survey size | Runs | Tier needed |
+| --- | --- | --- |
+| Up to ~120 questions | Immediately | Any |
+| ~120–350 questions | In the background | Advanced or Premium |
+| ~350–500 questions | In the background | Premium |
+
+## Before your first generation
+
+<Warning>
+  **AI generation needs the AI model catalog seeded first.** If it hasn't been, the AI options in
+  step 5 are disabled and the panel shows an **AI generation is not available** warning explaining
+  why. The fix is the **Seed AI models** button in Setup — running setup again does *not* seed it.
+  See the [Setup Home Guide](/admin/setup).
+</Warning>
+
+## Related
+
+* [Design with an AI Chatbot](/workflows/design-with-ai) — drafting questions in ChatGPT, Claude or Gemini instead
+* [The Questions Sheet](/concepts/questions-sheet) — what the generator writes into
+* [Sheets to Survey](/workflows/sheets-to-flow) — editing and importing the result
+* [Publish & Share](/workflows/deploy-and-verify) — taking it live

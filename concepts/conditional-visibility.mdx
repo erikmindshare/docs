@@ -1,22 +1,30 @@
 ---
-title: Conditional Visibility (Show If)
-description: Show or hide a question based on an earlier answer — and the one rule to remember, that a Show If can only depend on another answer on the same screen.
+title: "Conditional Visibility (Show If)"
+description: "Show or hide a question, a section, or a whole page based on answers the respondent has already given — the operators, how to combine them, and the one direction a rule can't point."
 ---
 
-A **Show If** rule (the `Visibility` column in the Questions sheet) lets a question or section appear only when an earlier answer meets a condition — for example, *show "How many employees?" only when "Are you a business?" = Yes*.
+
+A **Show If** rule (the `Show If` column in the Questions sheet) makes a row appear only when the
+answers so far meet a condition — for example, *show "How many employees?" only when "Are you a
+business?" = Yes*.
 
 <Note>
-**The one rule to remember:** a Show If can only reference another answer **on the same screen** (page) as the question it controls.
+  **The one rule to remember:** a Show If can depend on any answer the respondent has **already
+  given** — on this page or any earlier one. What it cannot depend on is an answer they have not
+  reached yet, because that rule could never fire.
 </Note>
 
-## Writing a Show If
+## Writing a rule
 
 The easiest way is the **Show-If Builder** in the AutoSurvey sidebar (in Google Sheets, open the
-**AutoSurvey** menu → sidebar). Pick the controlling question — it only lists questions on the **same
-screen** — choose a condition, pick the value(s) from that question's own choices, and it writes a
-valid rule into the `Show If` cell for you.
+**AutoSurvey** menu → sidebar). Pick the controlling question — it offers every question on this
+screen or any earlier one — choose a condition, pick the value(s) from that question's own choices,
+and it writes a valid rule into the cell.
 
-If you prefer to type it, the syntax is small:
+The builder writes **one condition per rule**. To combine conditions across different questions,
+type the rule yourself using the syntax below.
+
+## Operators
 
 | Operator | Meaning | Example |
 | --- | --- | --- |
@@ -26,87 +34,111 @@ If you prefer to type it, the syntax is small:
 | `NOT IN (…)` | matches none of | `Region__c NOT IN ('US', 'CA')` |
 | `ISBLANK(x)` | x has no answer | `ISBLANK(Comments__c)` |
 | `ISNOTBLANK(x)` | x has an answer | `ISNOTBLANK(Email__c)` |
+| `<` `<=` `>` `>=` | numeric comparison | `Score__c >= 8` |
 
 A bare field name is shorthand for `= true` — handy for a checkbox: `Opted_In__c`.
 
-A few rules:
+Quote text values with single quotes; leave numbers and `true` / `false` unquoted.
 
-- Quote text values with single quotes (`'Manager'`); leave numbers and `true` / `false` unquoted.
-- Combine conditions with **all `AND`** or **all `OR`** — don't mix the two in one rule. To match
-  several values of the same question, use `IN (…)` instead of an `OR` chain.
-- Ordering comparisons (`<`, `>`, `<=`, `>=`) aren't supported — answers are compared as text.
+<Warning>
+  **The comparison operators are numeric.** They work on `Number`, `NPS`, `Star`, `Slider`,
+  `Currency` and `Percent` questions. Point one at a text or choice question and the rule imports
+  with a warning (`ORDERING_ON_NON_NUMERIC`) and then never fires for anyone. The Show-If Builder
+  only offers them on numeric questions, which is the easiest way not to hit this.
+</Warning>
 
-<Tip>
-Build it in the sidebar and you can't get these wrong: it only offers same-screen controllers, the
-supported operators, and the controlling question's choices as values.
-</Tip>
+## Combining conditions
 
-## Why same‑screen only
+Use `AND`, `OR`, `NOT` and parentheses, mixed however you need:
 
-Every AutoSurvey survey runs as a native **Salesforce Screen Flow**, and a Screen Flow shows **one screen at a time**. Salesforce evaluates a question's show/hide condition using only the values present on the screen the respondent is currently looking at.
+```text
+Role__c = 'Manager' AND Region__c IN ('US', 'CA')
+```
 
-That means an answer from an **earlier** screen isn't available to drive show/hide on a **later** screen — by the time the later screen renders, the earlier answer lives outside what the screen's visibility check can see. This is a built‑in characteristic of Salesforce Flow, not an AutoSurvey limitation, so AutoSurvey can't work around it. Rather than let a rule import and then silently never fire, AutoSurvey catches it up front.
+```text
+(Role__c = 'Manager' OR Role__c = 'Lead') AND Score__c >= 8
+```
 
-## What you'll see
-
-If a Show If points at a question on a different screen, the import is blocked with a message like:
-
-> Visibility rule references **"Is_Business\_\_c"** on screen **"About you"**, but this question is on screen **"Company details"**. A survey can only show or hide a question from another answer on the **same screen** — it is a built‑in limit of Salesforce Flow, not an AutoSurvey restriction. Put both questions on the same screen, or remove the rule.
-
-## How to fix it
-
-You have two straightforward options:
-
-1. **Put both questions on the same screen.** Give the controlling question and the question it shows/hides the same `Screen` value. This is usually what you want — the respondent answers the trigger and immediately sees the follow‑up appear on the same page.
-2. **Remove the Show If** if the questions genuinely belong on different screens and you don't need the conditional behavior.
+```text
+NOT ISBLANK(Comments__c) AND Opted_In__c
+```
 
 <Tip>
-Questions that leave the `Screen` column blank are all treated as one implicit screen, so a Show If between two blank‑`Screen` rows is fine — they're on the same screen.
+  To match several values of the **same** question, `IN (…)` is shorter and clearer than an `OR`
+  chain — and it is what the Show-If Builder writes.
 </Tip>
 
-## Example
+A rule can hold up to **50 conditions**. Nesting is capped well above anything readable; if you hit
+either limit, the rule is almost certainly better split across a section.
 
-Say you want to ask for a company size only when the respondent is a business.
+## What a rule can be attached to
 
-**✅ Works — same screen**
+Show If is not only for questions. Put it on any row:
 
-| API Name | Question | Screen | Show If |
-| --- | --- | --- | --- |
-| `Is_Business__c` | Are you a business? | About you | |
-| `Company_Size__c` | How many employees? | About you | `Is_Business__c = 'Yes'` |
+| Row | Effect |
+| --- | --- |
+| A **question** | Shows or hides that question |
+| A **Section** | Shows or hides the section **and every question in it** |
+| A **Screen** row | Shows or skips **the whole page** |
+| A **Terminal Screen** row | Decides which respondents end the survey there — this is how you screen someone out |
 
-Both questions share the **About you** screen, so the follow‑up shows or hides reactively as the respondent answers.
+<Warning>
+  A section's rule cascades. A question inside a hidden section is hidden regardless of its own
+  Show If — the two conditions combine, they don't compete. If a question needs to appear when its
+  section doesn't, move it out of the section.
+</Warning>
 
-**❌ Blocked — different screens**
+<Warning>
+  **Don't mix different Show If rules across every row of a page.** If every row on a page is
+  conditional and two or more **different** rules are in play, some answer combinations could leave
+  the page with parts missing — or nothing at all — so the import stops with `SCREEN_MAY_BE_EMPTY`.
+  Leave at least one thing on the page with no Show If — a heading, an instruction, or the question
+  the page is really about.
 
-| API Name | Question | Screen | Show If |
-| --- | --- | --- | --- |
-| `Is_Business__c` | Are you a business? | About you | |
-| `Company_Size__c` | How many employees? | Company details | `Is_Business__c = 'Yes'` |
+  One shape is fine by design: when a page's conditional rows all share one **identical** rule (or
+  the page has just one conditional row), the page shows or hides as a single unit — respondents
+  whose answers hide it simply skip the page. That is the supported way to branch a whole page.
+</Warning>
 
-Here the trigger is on **About you** but the follow‑up is on **Company details** — a different screen — so the import is rejected. Move `Company_Size__c` onto the **About you** screen to fix it.
+## Reactive on the same page
 
-## Beyond the DSL: a custom Flow
+When a controlling question is on the **same page**, show/hide happens as the respondent types or
+clicks — they don't have to move on for the follow-up to appear. This works for every question type,
+including Long Text and Matrix.
 
-Show If is intentionally simple. If you need logic it can't express — cross-screen branching,
-calculations, callouts, custom validation — remember the survey **is** a normal, unmanaged Salesforce
-**Screen Flow** in your org. A power user can:
+When the controlling question is on an **earlier** page, the rule is evaluated when the later page
+opens, which is the only moment it can be.
 
-1. **Clone** the generated Flow in Flow Builder under a new name and edit the clone freely.
-2. Point the survey's **Form** record at the clone via the **Custom Flow Developer Name** field — the
-   shareable survey link then runs your clone.
-3. Optionally check **Skip Autogen Flow Regen** on that Form so re-importing the sheet won't
-   regenerate the original Flow.
+## When a rule is rejected
 
-AutoSurvey only ever regenerates the original auto-generated Flow, so your hand-edited clone is never
-overwritten. Two caveats: the flow-free LWC runner reflects only Show If rules (not custom Flow logic),
-so distribute the **Flow** link for a customized survey; and future sheet edits flow to the
-auto-generated Flow, not your clone.
+| What you did | What happens |
+| --- | --- |
+| Referenced an API name no question uses | `UNKNOWN_VISIBILITY_REFERENCE` — import stops |
+| Pointed a question at itself | `SELF_REFERENCING_VISIBILITY` — import stops |
+| Referenced an answer from a **later** page | `VISIBILITY_FORWARD_REFERENCE` — import stops |
+| Contradicted a question against itself — like `Score__c > 5 AND Score__c < 3` | `SINGLE_FIELD_CONTRADICTION` — import stops |
+| Built a loop — A controls B controls A | `DEPENDENCY_CYCLE` — warning |
+| Compared a non-numeric question with `<` or `>` | `ORDERING_ON_NON_NUMERIC` — warning |
+| Matched a choice value the Option Set no longer has | `STALE_CHOICE_LITERAL` — warning |
+
+The contradiction check looks at one question at a time. A condition that can never be true because
+of how **different** questions combine isn't caught — the survey imports, and that row simply never
+shows.
+
+<Note>
+  A **warning** means the survey imports and then behaves in a way you probably didn't intend —
+  usually a rule that silently never fires. They are worth reading. See
+  [Troubleshooting](/support/troubleshooting).
+</Note>
+
+## When Show If isn't enough
+
+Show If decides whether a row is *visible*. It does not decide where a respondent goes next. For
+that, use a **Terminal Screen** with its own Show If — that ends the survey for the respondents who
+match, and lets everyone else continue. See [Display Types](/concepts/display-types).
 
 ## Related
 
-- [Display Types](/concepts/display-types) — the control each question uses
-- [Display Properties](/concepts/display-properties) — per-type tuning
-- [Option Sets](/concepts/option-sets) — choice lists for the values you compare against
-- [Sheets → Flow](/workflows/sheets-to-flow) — how the Questions sheet becomes a Screen Flow
-- [Runtime Modes](/concepts/runtime-modes) — how questions render inside the flow
+* [Display Types](/concepts/display-types) — including Terminal Screens and screening out
+* [Option Sets](/concepts/option-sets) — the choice values your rules compare against
+* [Troubleshooting](/support/troubleshooting) · [Error Reference](/support/error-reference)

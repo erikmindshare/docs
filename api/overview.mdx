@@ -1,7 +1,63 @@
 ---
-title: API Overview
-description: Placeholder for any API/webhook docs.
+title: "Integrating with AutoSurvey"
+description: "AutoSurvey has no API of its own — and does not need one. Your responses are Salesforce records, so you integrate with Salesforce."
 ---
 
-# API Overview (stub)
-If/when AutoSurvey exposes APIs or webhooks, document them here.
+
+**AutoSurvey does not expose its own API, and that is the point.**
+
+Survey tools that live outside your CRM need one: their data is somewhere else, so you integrate to
+get it back. AutoSurvey writes responses directly into your Salesforce org as records. There is no
+second system to reach into, and no sync to keep honest.
+
+So you integrate with AutoSurvey by integrating with **Salesforce**, using the APIs your org already
+has and your team already knows.
+
+## What to point your integration at
+
+| Object | One record per | Use it for |
+| --- | --- | --- |
+| **Your Response Object** | Response, with a field per question | The usual choice — a flat, queryable row per response |
+| **Survey Submission** | Response, with status, timing, release and form | Operational integrations: completion, drop-off, lifecycle |
+| **Survey Answer** | Individual answer | Answer-level analysis across surveys and waves |
+
+See [What AutoSurvey Creates in Your Org](/admin/objects-permissions-layouts) and
+[Data & Reporting](/concepts/data-and-reporting).
+
+## Which Salesforce API
+
+| You want to | Use |
+| --- | --- |
+| Pull responses on a schedule | REST or Bulk API against the Response Object |
+| React the moment a response lands | A record-triggered Flow, or Platform Events / Change Data Capture on the Response Object |
+| Push a survey invitation from another system | Create the Campaign Member and let AutoSurvey's [campaign distribution](/admin/campaign-distribution) issue the link |
+| Report inside Salesforce | You don't need an integration — see [Data & Reporting](/concepts/data-and-reporting) |
+
+<Tip>
+  **A record-triggered Flow on the Response Object is the shortest path to "do something when a
+  response arrives"** — post to Slack, create a case for a detractor, notify an owner. No middleware,
+  no polling, no credentials to manage.
+</Tip>
+
+<Note>
+  Your generated Response Object is created in your org **without** a namespace prefix — query it by
+  the API name shown in Setup, e.g. `Customer_Feedback__c`, and its fields follow the same rule. The
+  packaged objects are the ones that carry the `atsv__` prefix: Survey Submission is
+  `atsv__Survey_Submission__c` and Survey Answer is `atsv__Survey_Answer__c`, with `atsv__`-prefixed
+  fields.
+</Note>
+
+## Permissions for an integration user
+
+Give the integration user read access through the reporting permission sets rather than opening the
+objects directly. **Global Reporting** grants read-only access, with View All Records, across the
+AutoSurvey reporting objects — Survey Submission, Survey Answer and your generated Response Objects —
+so individual, unaggregated responses are queryable with it alone. **AutoSurvey Raw Response Access**
+grants no object access of its own; it unlocks the restricted raw-response report folder and raw
+CSV/ZIP exports inside Salesforce, so an API integration user typically does not need it. See
+[Installation & Permissions](/admin/installation-and-permissions).
+
+## Related
+
+* [Data & Reporting](/concepts/data-and-reporting) · [What AutoSurvey Creates in Your Org](/admin/objects-permissions-layouts)
+* [Campaign Survey Distribution](/admin/campaign-distribution) · [Installation & Permissions](/admin/installation-and-permissions)
