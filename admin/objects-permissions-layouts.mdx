@@ -21,9 +21,10 @@ without a single schema change.
 | **A page layout** | So those records are readable as soon as they arrive |
 
 <Note>
-  The generated Response Object carries the `atsv__` namespace prefix — it is created through the
-  managed package, so it arrives as `atsv__Your_Object__c` even though it's yours to use, report on
-  and extend. Worth knowing when you go looking for it in Setup.
+  The generated Response Object is created **in your org, unprefixed** — it arrives as
+  `Your_Object__c`, yours to use, report on and extend like any object you built yourself. Only
+  AutoSurvey's own packaged objects carry the `atsv__` namespace prefix. Worth knowing when you go
+  looking for it in Setup.
 </Note>
 
 ## What later publishes do

@@ -201,7 +201,7 @@ moments** — and they are not checking the same list:
 
 | Where | Code | What it checks |
 | --- | --- | --- |
-| The **sidebar** in Google Sheets | `INVALID_DISPLAY_TYPE` | Whether the value appears **exactly** on **your sheet's DisplayTypes tab** — alias spellings don't pass |
+| The **sidebar** in Google Sheets | `INVALID_DISPLAY_TYPE` | Whether the value appears **exactly** on **your sheet's Display Types tab** — alias spellings don't pass |
 | **Import into Salesforce** | `UNKNOWN_DISPLAY_TYPE` | Whether **AutoSurvey can actually draw a control** for it |
 
 Both stop the import. They agree on an untouched sheet — but they are different lists, so if you
@@ -212,7 +212,7 @@ would have accepted it.
 <Note>
   The two checks also treat a recognized-but-non-canonical spelling differently. The **import**
   normalizes it and moves on. The **sidebar** blocks it: an alias spelling isn't exactly on the
-  DisplayTypes tab, so it draws a blocking `INVALID_DISPLAY_TYPE` — alongside an auto-fixable
+  Display Types tab, so it draws a blocking `INVALID_DISPLAY_TYPE` — alongside an auto-fixable
   `NON_CANONICAL_DISPLAY_TYPE` hint that offers to rewrite it to the canonical name. Accept the fix
   and both go away: `Long Text` becomes `LongText`.
 </Note>

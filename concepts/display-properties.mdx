@@ -112,7 +112,7 @@ _Applies to `FileUpload`._
 </Warning>
 
 <Warning>
-  **`maxFiles` is checked when the file is saved, not when it is picked.** The upload control does not stop a respondent selecting more files than you allow — the extras are rejected on upload. If you set `maxFiles`, say so in the question's help text so nobody chooses files they will lose.
+  **`maxFiles` is accepted, but not currently enforced.** Setting it is not an error — it just doesn't limit anything yet: neither the upload control nor the save rejects extra files. The only enforced file-count limit is a fixed cap of **25 files per submission**. If a particular count matters to you, say so in the question's help text.
 </Warning>
 
 ## Currency
