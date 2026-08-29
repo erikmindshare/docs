@@ -79,7 +79,6 @@
     {
       "group": "Distribution",
       "pages": [
-        "admin/distribution-settings",
         "admin/campaign-distribution"
       ]
     },
