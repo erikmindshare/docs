@@ -3,7 +3,7 @@ title: Design with an AI Chatbot
 description: Use ChatGPT, Claude, or Gemini to draft survey questions that drop straight into AutoSurvey, with a copy‑paste prompt tuned to AutoSurvey's question types and limits.
 ---
 
-AutoSurvey has its own AI generator (see [Prompt → Flow](/workflows/prompt-to-flow)), but you can also design your survey in **any** general‑purpose chatbot — ChatGPT, Claude, or Gemini — and bring the result back. The chatbot does the creative "what should we ask?" work; AutoSurvey turns the result into a deployable Screen Flow.
+AutoSurvey has its own AI generator (see [Prompt → Flow](/workflows/prompt-to-flow)), but you can also design your survey in **any** general‑purpose chatbot — ChatGPT, Claude, or Gemini — and bring the result back. The chatbot does the creative "what should we ask?" work; AutoSurvey turns the result into a survey that runs inside your org.
 
 The trick is handing the chatbot a prompt that already knows AutoSurvey's question types and limits, so its output drops in cleanly. That prompt is below.
 
@@ -17,7 +17,7 @@ There are two versions of the prompt. Match it to the model you're using.
 
 <CardGroup cols={2}>
   <Card title="Full — for capable models" icon="gauge-high">
-    Frontier / flagship models handle the full toolkit, including matrix grids, NPS, star, slider, and same‑screen conditional logic.
+    Frontier / flagship models handle the full toolkit, including matrix grids, NPS, star, slider, and conditional logic.
 
     **e.g.** ChatGPT (GPT‑4o, GPT‑4.1, GPT‑5, o‑series) · Claude (Opus, Sonnet) · Gemini (1.5 / 2.5 Pro, Advanced)
   </Card>
@@ -38,7 +38,7 @@ Fill in the bracketed lines at the top, then send it to your chatbot.
 
 <CodeGroup>
 ```text Full prompt
-You are an expert survey designer. Design a complete, well-structured survey that I will build in AutoSurvey (a Salesforce app that turns a list of questions into a deployable Screen Flow). Follow AutoSurvey's question types and limits exactly so your output drops in cleanly.
+You are an expert survey designer. Design a complete, well-structured survey that I will build in AutoSurvey (a Salesforce app that turns a list of questions into a survey that runs inside Salesforce). Follow AutoSurvey's question types and limits exactly so your output drops in cleanly.
 
 MY SURVEY
 - Topic / goal: [DESCRIBE WHAT YOU WANT TO LEARN]
@@ -51,7 +51,8 @@ QUESTION TYPES YOU MAY USE (these are AutoSurvey "Display Types" - use these exa
 - Text - one line of open text. Text Area - a paragraph; Text Area (Long) for longer free text.
 - Radio Vertical - single choice, options stacked. Picklist - single choice as a dropdown (better for long lists).
 - Checkbox Vertical - multi-select ("select all that apply"). MultiPicklist - multi-select as a compact picklist.
-- Radio Horizontal - a 1-5 scale shown as a horizontal row; pair it with a rating Option Set. (There is NO "Likert" type - a Likert scale is just an Option Set like "Likert5" used on a Radio Horizontal question.)
+- Radio Horizontal - a 1-5 scale shown as a horizontal row; pair it with a rating Option Set.
+- Likert5 (alias Likert) - a 1-5 agreement scale as its own display type; it still needs a rating Option Set. Use it, or use Radio Horizontal with the same Option Set - either is correct.
 - NPS - the classic 0-10 "how likely are you to recommend..." question. Use AT MOST ONCE. No Option Set.
 - Star - a 1-5 star rating for satisfaction or quality. No Option Set.
 - Slider - a number on a 0-10 track for intensity or magnitude. No Option Set.
@@ -63,7 +64,7 @@ STRUCTURE RULES (must follow)
 - Group questions into a few logical screens (pages). Aim for 3-5 questions per screen, 7 maximum. Keep related questions together; put optional open-text follow-ups at the end of a screen.
 - Screen names must be 35 characters or fewer.
 - Every Radio / Picklist / Checkbox / Matrix question needs a named Option Set (a reusable choice list, e.g. "Satisfaction5"). Reuse the same set whenever the scale is identical.
-- Conditional follow-ups (Show If): a question may be shown based on an earlier answer ONLY IF the controlling question is on the SAME screen. Express it as: ControllerApiName = 'OptionValue' (use != for "is not"; you may also use IN ('A','B')). Cross-screen conditions are NOT supported - keep the trigger and the dependent question on the same screen. Use it only for genuine branching (e.g. ask "What went wrong?" only when Satisfaction = "Dissatisfied").
+- Conditional follow-ups (Show If): a question may be shown based on any answer the respondent has ALREADY given - on the same screen or on any earlier screen. Express it as: ControllerApiName = 'OptionValue' (use != for "is not"; you may also use IN ('A','B')). The one rule: a Show If may NOT depend on a question the respondent reaches LATER, because that answer does not exist yet - the import refuses a forward reference. Use it only for genuine branching (e.g. ask "What went wrong?" only when Satisfaction = "Dissatisfied").
 
 WRITING RULES
 - One idea per question - no double-barreled questions.
@@ -82,7 +83,7 @@ API Name | Question | Display Type | Screen | Section | Option Set | Required | 
 - Section is ONLY for Matrix rows (the shared grid title); leave it blank otherwise.
 - Option Set is the NAME of the choice list for Radio / Picklist / Checkbox / Matrix rows; leave it blank for Text, NPS, Star, Slider, Number, Date, etc.
 - Required is TRUE or FALSE.
-- Show If (optional) is a same-screen condition like ControllerApiName = 'OptionValue'; leave it blank for always-visible questions.
+- Show If (optional) is a condition on an answer given on this screen or an earlier one, like ControllerApiName = 'OptionValue'; leave it blank for always-visible questions.
 - API Name: a short unique identifier using letters, numbers and underscores, starting with a letter (e.g. Recommend_Likelihood).
 
 Option Sets table - columns, in this order:
@@ -93,7 +94,7 @@ Do not invent Display Types or columns beyond those listed above.
 ```
 
 ```text Lite prompt
-You are an expert survey designer. Design a complete, well-structured survey that I will build in AutoSurvey (a Salesforce app that turns a list of questions into a deployable Screen Flow). Keep to the simple question types below - this version is tuned for lighter AI models, so do not use matrix grids, NPS, star, slider, or conditional (show-if) logic.
+You are an expert survey designer. Design a complete, well-structured survey that I will build in AutoSurvey (a Salesforce app that turns a list of questions into a survey that runs inside Salesforce). Keep to the simple question types below - this version is tuned for lighter AI models, so do not use matrix grids, NPS, star, slider, or conditional (show-if) logic.
 
 MY SURVEY
 - Topic / goal: [DESCRIBE WHAT YOU WANT TO LEARN]
@@ -106,7 +107,7 @@ QUESTION TYPES YOU MAY USE (AutoSurvey "Display Types" - use these exact names, 
 - Text - one line of open text. Text Area - a paragraph of open text.
 - Radio Vertical - single choice (pick one). Picklist - single choice as a dropdown for long lists.
 - Checkbox Vertical - multi-select ("select all that apply").
-- Radio Horizontal - a 1-5 rating shown as a horizontal row; pair it with a rating Option Set (e.g. "Likert5"). There is no separate "Likert" type.
+- Radio Horizontal - a 1-5 rating shown as a horizontal row; pair it with a rating Option Set (e.g. "Agreement5").
 Do NOT use Matrix, NPS, Star, Slider, or Show If (conditional) logic.
 
 STRUCTURE RULES (must follow)
@@ -157,13 +158,13 @@ The prompt already encodes these rules, but here's where each is documented in f
 
 <CardGroup cols={2}>
   <Card title="Display Types" icon="table-cells" href="/concepts/display-types">
-    The exact control names: `Text`, `Picklist`, `Radio Horizontal/Vertical`, `Checkbox Vertical`, `NPS`, `Star`, `Slider`, `Matrix`, and more. (No `Likert` type — use a `Radio Horizontal` with a `Likert5` Option Set.)
+    The exact control names: `Text`, `Picklist`, `Radio Horizontal/Vertical`, `Checkbox Vertical`, `NPS`, `Star`, `Slider`, `Matrix`, `Likert5`, and more. A `Likert5` question still takes an Option Set, exactly like a `Radio Horizontal` one.
   </Card>
   <Card title="Option Sets" icon="list" href="/concepts/option-sets">
     Choice, rating, and matrix questions reference a named, reusable choice list (e.g. `Likert5`).
   </Card>
   <Card title="Conditional Visibility" icon="code-branch" href="/concepts/conditional-visibility">
-    A Show If can only depend on another answer **on the same screen** — keep the trigger and the follow‑up together.
+    A Show If can depend on any answer the respondent has already given — this screen or an earlier one. It cannot depend on one they have not reached yet.
   </Card>
   <Card title="Matrix programs" icon="table-cells-large" href="/concepts/matrix-programs">
     A grid of rows sharing one Screen, one Section (the grid title), and one column Option Set.
@@ -171,7 +172,7 @@ The prompt already encodes these rules, but here's where each is documented in f
 </CardGroup>
 
 <Warning>
-The biggest gotcha for an AI: **conditional ("Show If") logic only works within a single screen.** A survey can't show or hide a question based on an answer from an earlier page — it's a built‑in limit of Salesforce Flow. The Full prompt tells the chatbot this; if you edit the prompt, keep that rule. See [Conditional Visibility](/concepts/conditional-visibility).
+The biggest gotcha for an AI: **a "Show If" may only look backwards.** It can depend on any answer the respondent has already given, on this screen or an earlier one; it cannot depend on a question they reach later. The import refuses a forward reference and names the row. The Full prompt tells the chatbot this; if you edit the prompt, keep that rule. See [Conditional Visibility](/concepts/conditional-visibility).
 </Warning>
 
 ## FAQ
@@ -181,7 +182,7 @@ The biggest gotcha for an AI: **conditional ("Show If") logic only works within 
     Any capable general‑purpose assistant — ChatGPT, Claude, or Gemini. The prompt is self‑contained, so the model just needs to follow instructions and write clean text. If one model's wording feels off, paste the same prompt into another.
   </Accordion>
   <Accordion title="Why does the Lite prompt drop matrix and conditional logic?">
-    Those features carry structural rules — a matrix shares one screen / section / option set, and a Show If must stay on one screen. Lighter models often get those rules wrong, producing output that fails import. Keeping Lite to simple controls makes its output reliable. Use Full on a capable model when you need the richer controls.
+    Those features carry structural rules — a matrix shares one screen / section / option set, and a Show If must point back to an answer already given. Lighter models often get those rules wrong, producing output that fails import. Keeping Lite to simple controls makes its output reliable. Use Full on a capable model when you need the richer controls.
   </Accordion>
   <Accordion title="Can I just send my chatbot this page instead of the prompt?">
     Yes. You can paste this page's URL and ask it to follow the guide, or append `.md` to the page URL for a clean, text‑only version. Either way, point the chatbot at the prompt above.
