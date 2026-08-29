@@ -75,6 +75,15 @@ they did.
   host the image at a stable short path.
 </Warning>
 
+<Note>
+  **If the cards are blank on a public survey, check your org's Content Security Policy.** A public
+  survey runs on an Experience Cloud site that you create and secure, and a site can be set to
+  refuse images from hosts it does not trust. AutoSurvey ships trusted-site entries for Google
+  hosts only, so an image on your own CDN may need one adding in **Setup → CSP Trusted Sites**.
+  Whether your site enforces this depends on the security level you chose for it, so test one
+  picture question on the public link before you build a survey around images.
+</Note>
+
 ## Rules
 
 * **Labels must be unique within a set** (case-insensitive) — duplicates are blocked
