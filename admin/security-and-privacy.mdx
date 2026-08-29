@@ -1,13 +1,13 @@
 ---
 title: Security & Privacy
-description: How AutoSurvey secures public survey execution with least-privilege access and tokenized sessions.
+description: How AutoSurvey secures public survey execution, and the privacy controls you operate — anonymous responses, the confidentiality note, masked answers, disclosure floors and retention limits.
 ---
 
 # Security & Privacy
 
 AutoSurvey is designed so you can run public-facing surveys on Salesforce without exposing broad guest access to your data model.
 
-Public Experience Cloud pages and Screen Flows can become risky when access controls drift over time. AutoSurvey's default architecture reduces that risk by separating public survey execution from internal admin and reporting paths.
+A public page can become risky when access controls drift over time. AutoSurvey's default architecture reduces that risk by separating public survey execution from internal admin and reporting paths.
 
 ## Secure-by-default approach
 
@@ -74,9 +74,60 @@ AutoSurvey's architecture is intentionally designed to reduce common classes of 
 - Do not expose sensitive token fields in reports or list views.
 - Use supported credential patterns (BYOK/Named Credential where applicable), not ad-hoc key storage.
 
-## Positioning line
+## Privacy controls you can set
 
-"AutoSurvey helps you publish public surveys on Salesforce with AppExchange-grade guardrails: tokenized sessions, least-privilege reporting access, and safe deployment patterns."
+The sections above describe the architecture. These are the controls **you** operate. A privacy
+review usually asks for this list.
+
+### Whether a respondent is identified
+
+Each suite sets **Identify respondent** to `Off`, `Optional` or `Required`.
+
+| Value | What the respondent sees | What you get |
+| --- | --- | --- |
+| `Off` | Nothing. They answer and finish | No responder identity captured |
+| `Optional` | A step **after** they finish | Unlinked by default — a results subscription, not a link to their answers. The respondent may opt into linking on that step |
+| `Required` | A registration step **before** question 1 | Their answers are linked to them |
+
+`Optional` is the setting to use when you want to stay in touch without tying a person to their
+answers. The default is not to identify anyone.
+
+**Anonymous responses.** `Off` captures no responder name, no email and no record link. AutoSurvey
+still stores a session key on the response so a part-finished survey can be resumed. That key
+identifies a session, not a person, and nothing joins it to a Contact, Lead or User unless you
+switch identification on.
+
+### The confidentiality note
+
+Setup Home carries an **org-wide** confidentiality policy with three values:
+
+| Value | Effect |
+| --- | --- |
+| `Off` | No confidentiality note (the default) |
+| `OnByDefault` | New surveys are seeded with the note. An author may edit or remove it |
+| `Required` | **Every** survey always shows the note. Authors cannot remove it |
+
+`Required` is the setting for an org that must make the same promise on every survey. You can edit
+the wording of the default note in the same place.
+
+### Masking an answer
+
+Give a question the **`Masked Text`** display type and its answer is stored masked. Reading an
+unmasked answer needs the **Reveal Masked Answers** custom permission, so masking is a permission
+boundary and not only a display choice. Assign that permission to the small group who genuinely
+need the raw value.
+
+### Disclosure floors and retention ceilings
+
+Two custom metadata types let you make AutoSurvey's own defaults **stricter**, and only stricter:
+
+| Setting | What it governs | Which direction you may move it |
+| --- | --- | --- |
+| `Survey_Disclosure_Policy__mdt` | The minimums that gate what any respondent-facing surface may disclose — minimum n, minimum cell, sensitive minimum n, margin floor | **More conservative only.** An override cannot lower a floor |
+| `Survey_Retention_Policy__mdt` | How long a respondent registration is kept before it is purged | **Shorter only.** An override cannot extend retention |
+
+The clamps run one way on purpose. A floor you could lower is not a floor, and a retention ceiling
+you could raise would defeat the purge.
 
 ## Your data &amp; the law (data governance)
 
@@ -97,7 +148,7 @@ instructions. The legal pack below states our commitments in full.
 
 ### AI features
 
-The optional AI features (question generation, field-name suggestions) send only the **survey
+The optional AI features (question generation) send only the **survey
 design content you author** to an AI provider (OpenAI or Anthropic, depending on the model selected)
 — never respondent answers. Analytics ("Insights") and export run inside your org with no AI. In
 **BYOK** mode, AI calls go directly from your org to your provider; in **hosted** mode AutoSurvey
@@ -111,8 +162,25 @@ Anthropic, PBC (AI authoring). See the DPA for the maintained list.
 ### On uninstall
 
 Uninstalling the managed package removes AutoSurvey's managed response objects and their data per
-Salesforce's standard behavior; a customer-owned mapped reporting object and its data remain.
-**Export any responses you want to keep before uninstalling.**
+Salesforce's standard behavior. A **customer-owned mapped reporting object and its data remain**,
+and that object is built to stay readable once the managed parent is gone.
+
+Alongside one field per question, AutoSurvey stamps **18 stored fields** onto every row of that
+object. They are stored values, not formulas, so they survive the uninstall:
+
+- **Which survey** — suite name and code, form name and code, release label, release number,
+  import version.
+- **When, and what state** — status, started at, submitted at, last saved at, session key.
+- **Who answered** — responder name and email as frozen text, plus Contact, Lead and User lookups.
+  The text copies stay readable even if the Contact is later deleted.
+- **Every answer** — `Survey Answers (JSON)`, the complete answer set as one payload, up to 32 KB.
+  It keeps multi-select and matrix answers that the per-question columns flatten.
+
+A stamp is skipped only where one of your own questions already claims that field name.
+
+So reporting on the mapped object keeps working after uninstall. **Export any responses you want to
+keep before uninstalling** — that is still the safe order, and it is the only way to keep the
+in-package detail records.
 
 ### Legal pack
 
