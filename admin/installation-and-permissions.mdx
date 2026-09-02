@@ -21,6 +21,32 @@ everyone should get a group.
   thing — assign it instead of the seven admin sets individually.
 </Warning>
 
+## AutoSurvey never assigns these for you
+
+<Warning>
+  **Setup Home checks your permissions. It never grants them.** The admin-access check reads what
+  your user already holds and reports what is missing; it performs no assignment. This is
+  deliberate — a managed package that assigned its own permission sets would not pass AppExchange
+  security review. Every set on this page is assigned by a System Administrator, by hand, from
+  **Setup → Permission Sets → Manage Assignments**.
+</Warning>
+
+One set stops setup outright if it is missing: **PBO Service Access**
+(`atsv__PBO_Service_Access`). It carries the external credential AutoSurvey uses to reach its
+control plane, so the **Control Plane Connection** check fails without it. The failure names the
+set and says the same thing:
+
+> Your user does not have access to the AutoSurvey control plane credential, so no request was
+> sent. … Ask a System Administrator to assign the "PBO Service Access" permission set
+> (`atsv__PBO_Service_Access`) … AutoSurvey does not assign permission sets for you.
+
+<Note>
+  **AutoSurvey Full Admin carries `PBO_Service_Access`. The three individual admin sets do not.**
+  If you assigned `AutoSurvey_Admin`, `Deploy_Admin` and `AutoSurvey_Survey_Admin` one at a time
+  instead of assigning the group, Control Plane Connection keeps failing until you add
+  `PBO_Service_Access` as well. Assigning the group is the shorter route.
+</Note>
+
 ## Respondents outside your staff
 
 | Who they are | Assign |
