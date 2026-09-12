@@ -51,8 +51,18 @@ See [What AutoSurvey Creates in Your Org](/admin/objects-permissions-layouts) an
 
 Give the integration user read access through the reporting permission sets rather than opening the
 objects directly. **Global Reporting** grants read-only access, with View All Records, across the
-AutoSurvey reporting objects — Survey Submission, Survey Answer and your generated Response Objects —
-so individual, unaggregated responses are queryable with it alone. **AutoSurvey Raw Response Access**
+packaged reporting objects — Survey Submission and Survey Answer — so individual, unaggregated
+responses are queryable there with it alone.
+
+<Note>
+  **Global Reporting does not cover your generated Response Objects.** It is part of the managed
+  package, so Salesforce does not allow it to be changed in your org, and it can never be given
+  access to the per-suite Response Objects that AutoSurvey creates there. Grant those through the
+  per-suite permission set AutoSurvey creates alongside each Response Object, which is not part of
+  the package and can be assigned normally.
+</Note>
+
+**AutoSurvey Raw Response Access**
 grants no object access of its own; it unlocks the restricted raw-response report folder and raw
 CSV/ZIP exports inside Salesforce, so an API integration user typically does not need it. See
 [Installation & Permissions](/admin/installation-and-permissions).
