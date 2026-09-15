@@ -57,9 +57,9 @@ AutoSurvey ships three follow-up Flows. Each one starts when a response is creat
 
 | Flow | Starts when | What it does |
 | --- | --- | --- |
-| **AutoSurvey: Negative Feedback Recovery Case** | Is negative response is true, the survey is not about a Case, and the response has a contact. | Opens a Case for the contact and sends the contact's owner an in-app notification. |
-| **AutoSurvey: Negative Case Feedback Follow-Up** | Is negative response is true. | For a survey sent about a Case (the survey's record is a Case, or the invitation is related to one): adds a Task on that Case and notifies the Case owner. It does nothing when no Case is found, and it does not add a second Task while an open follow-up Task exists. |
-| **AutoSurvey: Promoter Review Request** | Is positive response is true and the response has a contact. | Creates a Task, emails the person a request for a public review, and notifies the contact's owner. |
+| **AutoSurvey: Negative Feedback Recovery Case (Template)** | Is negative response is true, the survey is not about a Case, and the response has a contact. | Opens a Case for the contact and sends the contact's owner an in-app notification. |
+| **AutoSurvey: Negative Case Feedback Follow-Up (Template)** | Is negative response is true. | For a survey sent about a Case (the survey's record is a Case, or the invitation is related to one): adds a Task on that Case and notifies the Case owner. It does nothing when no Case is found, and it does not add a second Task while an open follow-up Task exists. |
+| **AutoSurvey: Promoter Review Request (Template)** | Is positive response is true and the response has a contact. | Creates a Task, emails the person a request for a public review, and notifies the contact's owner. |
 
 ### The Flows ship as templates
 
@@ -68,7 +68,7 @@ All three Flows are installed **inactive** (in Draft). Nothing happens on a mark
 1. Open **Setup → Flows** (the Settings card has an **Open Flows in Setup** link).
 2. Open the Flow, review it, and click **Activate**.
 
-Before you activate **AutoSurvey: Promoter Review Request**, replace the placeholder review link in its email with your own review page. The template ships with a placeholder link on purpose.
+Before you activate **AutoSurvey: Promoter Review Request (Template)**, replace the placeholder review link in its email with your own review page. The template ships with a placeholder link on purpose.
 
 The Settings card shows each Flow's status next to its name: **Active**, **Template · not active**, or **Status not readable here** when the person viewing the card cannot read Flow status in Setup.
 
