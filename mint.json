@@ -93,6 +93,8 @@
       "group": "Administration",
       "pages": [
         "admin/setup",
+        "admin/survey-settings",
+        "admin/scoring-and-alerts",
         "admin/installation-and-permissions",
         "admin/objects-permissions-layouts",
         "admin/security-and-privacy"

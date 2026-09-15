@@ -1,0 +1,78 @@
+---
+title: Scoring and Alerts
+description: How a response gets its score, when it is marked negative or positive, and exactly what happens next.
+---
+
+# Scoring and Alerts
+
+The **Scoring & alerts** card on a survey's **Settings** tab decides when a response is marked **negative** or **positive**, and shows the follow-up Flows that act on that mark. The rules apply at the next release; the marks are written when a response completes.
+
+## How a response gets its score
+
+A response is scored from its **NPS**, **CSAT** and **CES** questions. An author sets a question's type in its Display properties (**Metric type**) and marks one question as the **Primary metric**. Each type has its own scale and its own bands:
+
+| Type | Default scale | Bands |
+| --- | --- | --- |
+| **NPS** | 0 to 10 | Promoter (9–10), Passive (7–8), Detractor (0–6) |
+| **CSAT** | 1 to 5 | Satisfied (4–5), Neutral (3), Dissatisfied (1–2) |
+| **CES** | 1 to 7 | Low effort (6–7), Medium effort (4–5), High effort (1–3). A higher CES score means less effort. |
+
+A question can set its own scale maximum; the bands scale with it. A plain **Rating** question does not count toward the score: its meaning depends on the question, so a low rating is not treated as negative feedback. If you want a rating-style question to count, type it as CSAT.
+
+Two values drive the rules:
+
+- **The main score** — the band of the response's Primary metric question.
+- **The average** — the mean of the NPS, CSAT and CES answers, as a percentage of their scales. A response with no NPS, CSAT or CES answer has no average.
+
+## The two rules
+
+Each rule has two signals. Tick one or both; if both are ticked, either signal fires the rule.
+
+| Rule | Signal 1: the band | Signal 2: the average |
+| --- | --- | --- |
+| **Negative response** | The main score lands in its lowest band: NPS Detractor, CSAT Dissatisfied or CES High effort. | The average falls **below** the threshold you enter (in percent). |
+| **Positive response** | The main score lands in its top band: NPS Promoter, CSAT Satisfied or CES Low effort. | The average rises **above** the threshold you enter (in percent). |
+
+Notes on the threshold:
+
+- Leave the threshold empty and only the band counts. An empty threshold never fires.
+- The negative signal is strictly below: a threshold of 40 does not fire at exactly 40.
+- The positive signal is strictly above: a threshold of 85 does not fire at exactly 85.
+- Choose **Do nothing** on a rule to turn it off: no mark and no follow-up.
+
+## What the mark is
+
+When a rule fires, the response record gets a mark:
+
+| Field on the response | Meaning |
+| --- | --- |
+| **Is negative response** | The negative rule fired. |
+| **Is positive response** | The positive rule fired. |
+
+The marks are ordinary fields on the response, so you can report and filter on them. The response also carries its primary score, its band and the average.
+
+## Exactly what happens next
+
+AutoSurvey ships three follow-up Flows. Each one starts when a response is created or updated with the matching mark.
+
+| Flow | Starts when | What it does |
+| --- | --- | --- |
+| **AutoSurvey: Negative Feedback Recovery Case** | Is negative response is true, the survey is not about a Case, and the response has a contact. | Opens a Case for the contact and sends the contact's owner an in-app notification. |
+| **AutoSurvey: Negative Case Feedback Follow-Up** | Is negative response is true. | For a survey sent about a Case (the survey's record is a Case, or the invitation is related to one): adds a Task on that Case and notifies the Case owner. It does nothing when no Case is found, and it does not add a second Task while an open follow-up Task exists. |
+| **AutoSurvey: Promoter Review Request** | Is positive response is true and the response has a contact. | Creates a Task, emails the person a request for a public review, and notifies the contact's owner. |
+
+### The Flows ship as templates
+
+All three Flows are installed **inactive** (in Draft). Nothing happens on a mark until an admin activates them:
+
+1. Open **Setup → Flows** (the Settings card has an **Open Flows in Setup** link).
+2. Open the Flow, review it, and click **Activate**.
+
+Before you activate **AutoSurvey: Promoter Review Request**, replace the placeholder review link in its email with your own review page. The template ships with a placeholder link on purpose.
+
+The Settings card shows each Flow's status next to its name: **Active**, **Template · not active**, or **Status not readable here** when the person viewing the card cannot read Flow status in Setup.
+
+## Related
+
+- [Survey Settings](/admin/survey-settings) — the other four cards on the Settings tab.
+- [Data and Reporting](/concepts/data-and-reporting) — reporting on responses and their scores.

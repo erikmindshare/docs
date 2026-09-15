@@ -1,0 +1,64 @@
+---
+title: Survey Settings
+description: Every card and control on a survey's Settings tab, what each one changes, and when the change reaches a respondent.
+---
+
+# Survey Settings
+
+Open a survey and click the **Settings** tab. It shows five cards: **How it runs**, **Answers**, **Scoring & alerts**, **Data** and **The questions sheet**. Each card shows its current values on one line. Click **Edit** to open a card, change its controls, then click **Save**. One card is open at a time.
+
+Everyone who can see the survey can read the settings. **Edit** appears only for a person with deploy access. If you can read but not edit, the tab says so; ask an AutoSurvey admin to make the change.
+
+## When a change reaches a respondent
+
+| Card | When it applies |
+| --- | --- |
+| **How it runs** | At the next release. |
+| **Answers** | At the next release. |
+| **Scoring & alerts** | At the next release. |
+| **Data › Record data in questions** | At the next release. |
+| **Data › Description** | At once (authors only; respondents never see it). |
+| **The questions sheet** | At once. |
+
+The settings that apply "at the next release" are copied onto the release when you mint it, and the survey runner reads the release. A live survey therefore keeps running with the settings it was released with until you release again. On a survey that has never been released, the card says **Applies when you release**.
+
+## How it runs
+
+| Control | What it does |
+| --- | --- |
+| **Screen flow** | A screen is a page of the survey. **Adapt to device** (recommended): one question per screen on phones, grouped pages on desktop. **Grouped pages**: several questions per page on every device. **One per screen**: one question per screen on every device. |
+| **Auto-advance after answering** | Only with one question per screen. Moves on as soon as a question is answered. |
+| **Long text answers: default lines** | How tall a long-text box is when the screen opens (1 to 30 lines). It grows as the person types. A question can set its own height in its Display properties; that setting wins for that question. |
+
+## Answers
+
+| Control | What it does |
+| --- | --- |
+| **Strict validation** | **On**: a long-text answer must fit its length limit, and a person who picks "Other" must type what they mean before they can continue. **Off**: those two checks do not run, so a survey imported from an older sheet keeps submitting as before. Everything else — required questions, number ranges, formats — is always checked. |
+| **Skip validation while testing** | While you test, you can skip questions and leave required ones empty. This applies to previews and test runs only. It never reaches a released survey: a respondent is always validated. |
+| **Identify the respondent** | **Off**: the survey starts at the first question. **Optional**: a registration step (name and email) opens first and can be skipped. **Required**: the person must register before the first question. Registered responses show the person on the submission. |
+
+## Scoring & alerts
+
+This card decides when a response is marked negative or positive, and shows exactly which follow-up Flows run on that mark and whether each Flow is active. The rules and the Flows are described on their own page: [Scoring and alerts](/admin/scoring-and-alerts).
+
+## Data
+
+| Control | What it does |
+| --- | --- |
+| **Answers are stored in** | The Salesforce object that holds this survey's responses. It is set when the survey is created and cannot change. The link **View the fields in Setup** opens that object in Setup. |
+| **Record data in questions** | A question can show a value from the record the survey is about, with a tag such as `%%record.Account.Name%%`. Only the fields listed here can be shown; a field a respondent must not see stays off this list. Applies at the next release. |
+| **Description** | An authors' note. It is shown in the survey list and the sheet monitor. It is not shown to respondents. |
+
+## The questions sheet
+
+| Control | What it does |
+| --- | --- |
+| **Sheet** | The Google Sheet this survey's questions come from, with the time of the last sync. Click the sheet's name to open it. **Change sheet…** points the survey at another sheet. |
+| **Who has access** | **See who has access** lists the people the sheet is shared with, and their role. |
+| **Share with someone** | **Share the sheet…** shares the sheet with a person. Google may otherwise ask them for access when they open it; sharing here removes that step. Applies at once. |
+
+## Related
+
+- [Scoring and alerts](/admin/scoring-and-alerts) — how a response gets its score, the two rules, and the follow-up Flows.
+- [Setup Home Guide](/admin/setup) — the org-level checks the Settings tab depends on.
