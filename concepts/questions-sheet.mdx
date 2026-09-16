@@ -7,7 +7,7 @@ description: "Every column on the Questions tab — what it does, whether it is 
     Structure is generated; the descriptions live in that script. Do not hand-edit. */}
 
 The **Questions** tab is where a survey is written: one row per question, per section heading, per
-page break. AutoSurvey reads **30** columns from it.
+page break. AutoSurvey reads **25** columns from it.
 
 <Note>
   **Order does not matter and extra columns are ignored.** AutoSurvey finds each column by its
@@ -74,16 +74,6 @@ page break. AutoSurvey reads **30** columns from it.
 | --- | --- | --- | --- |
 | `Metric Type` | No | Marks this question as a scored metric: `NPS`, `CSAT`, `CES`, `Rating`, or `Not Scored`. Add `*` to make it the form's primary metric. | — |
 | `Inverse Score` | No | `TRUE` for a negatively-worded scored question, where a high answer means low sentiment. Inverts only its contribution to the combined score. | `InverseScore`, `Reverse Coded`, `Reverse Score`, `Reverse Scored` |
-
-## Recognized but no longer used
-
-| Column | Required | What it does | Also accepted as |
-| --- | --- | --- | --- |
-| `Lock API Name` | No | Left over from the AI field-renamer, removed in 2026. Accepted so older sheets do not warn, but nothing reads it. | — |
-| `Name Suggestion 1` | No | Left over from the AI field-renamer. Nothing reads it. | — |
-| `Name Suggestion 2` | No | Left over from the AI field-renamer. Nothing reads it. | — |
-| `Name Suggestion 3` | No | Left over from the AI field-renamer. Nothing reads it. | — |
-| `Best Name` | No | Left over from the AI field-renamer. Nothing reads it. | — |
 
 ## Related
 

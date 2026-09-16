@@ -20,12 +20,9 @@ AutoSurvey reads five tabs:
 | **Config** | Suite-level settings |
 | **Audience Round Matrix** | Optional. Which audiences get which waves. [Matrix programs](/concepts/matrix-programs) |
 
-<Warning>
-  Any other tab is ignored — including a **Surveys**, **Survey Content** or **Assignments** tab left
-  over from an older workbook. Nothing warns you, so if audience targeting isn't taking effect,
-  check you're using the Audience Round Matrix and its per-wave columns rather than an Assignments
-  tab. See [Matrix programs](/concepts/matrix-programs).
-</Warning>
+<Note>
+  AutoSurvey reads only these tabs. It ignores any other tab in the workbook.
+</Note>
 
 <Note>
   Only **three** columns on the Questions tab are required: `API Name`, `Question` and
@@ -45,16 +42,7 @@ A few keys are yours:
 | `Survey Title` | The survey's name |
 | `Response Object Api Name` | The Salesforce object responses are stored on |
 | `Has Audiences` / `Has Rounds` | Whether this suite runs as a [matrix program](/concepts/matrix-programs) |
-| `Max Question Length` | The cap applied to question text |
 | `Auto Fix Validation` | Whether the sidebar may apply its own fixes |
-
-<Warning>
-  **A key AutoSurvey no longer reads is left in place, not deleted.** If your workbook predates a
-  change, keys like `Layout Style`, `Screen Width`, `Show Navigator`, `Logo URL`, `Favicon URL` or
-  `Background Image URL` may still be sitting there doing nothing. The import raises a
-  `RETIRED_CONFIG_KEY` warning naming each one — and, where there's a successor, where the setting
-  went. It's a warning rather than an error, so nothing breaks; the value is simply ignored.
-</Warning>
 
 ## The loop
 
