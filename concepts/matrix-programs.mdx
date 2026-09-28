@@ -1,89 +1,242 @@
 ---
-title: "Matrix Programs (Audience × Wave)"
-description: "Run the same question set across several audiences and several rounds without maintaining a separate survey for each combination."
+title: "Audiences and Waves (Matrix Programs)"
+sidebarTitle: "Audiences and Waves"
+description: "Ask the same survey of several groups, or ask it again later, and keep it as one survey with one bank of questions."
 ---
 
 
-Longitudinal and multi-audience research has the same shape everywhere: one bank of questions, asked
-of several groups, several times. **Members** and **supervisors**. **Baseline**, **month three**,
-**month twelve**. Twelve variants of nearly the same survey.
+Many survey programs have the same shape. One bank of questions goes to several groups, and it goes
+to them several times. **Interns** and **supervisors**. **Baseline**, **month three**, **month
+twelve**. Without audiences and waves, that is six or twelve copies of nearly the same survey.
 
-Maintaining those as twelve separate surveys is where survey programmes go wrong — a wording fix
-lands in nine of them, and by wave three you can no longer compare anything.
+Copies are where survey programs go wrong. A wording fix goes into nine of the twelve copies, and by
+the third wave you cannot compare the answers.
 
-A **matrix program** keeps one question bank and marks which questions belong to which
-audience × wave combination.
+With audiences and waves, you keep **one survey** with **one bank of questions**. You mark which
+questions go to which audience in which wave. AutoSurvey builds one form for each combination.
 
-## How it works
+## The words
 
-Two tabs, working together — once the [Config tab](/workflows/sheets-to-flow#the-config-tab)
-switches matrix mode on. Set `Has Audiences` or `Has Rounds` to `TRUE` there. Sheets exported by
-AutoSurvey set these keys for you; in a workbook you build by hand you must add them yourself —
-without them, the import ignores the matrix silently and builds a single form from the `Active`
-column instead.
+| Word | Meaning | Example |
+| --- | --- | --- |
+| **Audience** | A group that answers. | Interns and supervisors. Customers and staff. |
+| **Wave** | A point in time when you ask. The Google Sheet calls a wave a **round**. | W1, W2 and W3. Before and after. |
+| **Form** | One audience at one wave. Each form has its own link, its own questions and its own results. | The Supervisor form for W2. |
+| **Grid** (or matrix) | All audiences against all waves. Each cell is one possible form. A cell can have no form. | 2 audiences × 3 waves = 6 cells. |
+| **Survey suite** | A survey that holds several forms. | The Internship Program, with 5 forms. |
+
+A plain survey is a survey with one form. When you add an audience or a wave to it, it becomes a
+suite.
+
+## Turn on survey suites
+
+Audiences and waves are off in a new org. An AutoSurvey admin turns them on for the whole org. An
+admin is a user who can open **Setup Home**.
+
+There are two ways to turn them on:
+
+* **Setup Home.** Open **Setup Home**, expand **Optional Capabilities**, and turn on **Show survey
+  suites**.
+* **The note in Survey Suites.** When you have two live surveys, and your first survey is at least
+  three days old, **Survey Suites** shows the note "Running the same survey for another group?" one
+  time. Click **Tell me more** to open the explainer. An admin sees **Turn on for this org**. Other
+  users see where an admin turns it on, and a link to this page.
+
+When suites are on:
+
+* The app says **suite** for a survey that holds several forms.
+* The survey's ⋯ menu gets **Manage audiences & waves…**.
+* The samples that use audiences and waves become available in **New Survey**.
+
+When suites are on, these do **not** change:
+
+* Your existing surveys, their links and their results.
+* A survey gets forms only when you add an audience or a wave to it.
+
+Open tabs show the new words after a reload. To turn suites off, turn off **Show survey suites** on
+Setup Home. A survey that already has several forms keeps its forms and its **Manage audiences &
+waves…** menu item.
+
+## Try it: the Internship Program sample
+
+The fastest way to learn audiences and waves is to build the sample and look at it.
+
+<Steps>
+  <Step title="Turn on survey suites">
+    Do this once for the org. See [Turn on survey suites](#turn-on-survey-suites).
+  </Step>
+  <Step title="Open the sample">
+    In **Survey Suites**, click **New Survey**, then **Start from a sample**. In the **How AutoSurvey
+    works** group, pick **Internship Program**.
+  </Step>
+  <Step title="Create it">
+    Review the survey, then click **Create**. AutoSurvey builds the questions and the five forms.
+  </Step>
+  <Step title="Look at the forms">
+    Open the survey. Use the ⋯ menu, **Manage audiences & waves…**, to see the grid and which
+    questions each form asks.
+  </Step>
+</Steps>
+
+The sample is an internship program at a coffee roaster. Interns answer in all three waves.
+Supervisors answer from the second wave, when they know their intern:
+
+| Audience \ Wave | W1 | W2 | W3 |
+| --- | --- | --- | --- |
+| **Intern** | Form | Form | Form |
+| **Supervisor** | *No form* | Form | Form |
+
+That is 5 forms from one bank of 13 questions. This table shows which forms ask each question:
+
+| Question | Intern W1 | Intern W2 | Intern W3 | Supervisor W2 | Supervisor W3 |
+| --- | :-: | :-: | :-: | :-: | :-: |
+| Intro text and "Which site are you based at?" | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Confidence intro and 3 confidence ratings (espresso, roast, busy counter) | ✓ | ✓ | ✓ | ✓ | ✓ |
+| "How ready do you feel for unsupervised shifts?" | ✓ | ✓ | ✓ | | |
+| "How ready is your intern for unsupervised shifts?" | | | | ✓ | ✓ |
+| "What support does this intern need most next?" | | | | ✓ | ✓ |
+| "What do you most want to get out of this programme?" | ✓ | | | | |
+| "What has changed for you since the last round?" | | ✓ | ✓ | ✓ | ✓ |
+| "I would recommend this programme to someone else." and "Would you take part in another round?" | | | ✓ | | ✓ |
+| **Rows on the form** | **8** | **8** | **10** | **9** | **11** |
+
+Each form also counts 2 text rows (the intro and the confidence intro). They show text and ask
+nothing.
+
+Look for these things in the sample:
+
+* **The same question, the same field.** The three confidence ratings use the same words on every
+  form. Their answers go into one field each, so you can compare W1 with W3 in one report.
+* **A pair of questions, one for each audience.** Interns rate their own readiness. Supervisors rate
+  their intern's readiness. These are two questions, because the words are different. Put them side
+  by side in a report to see where interns and supervisors disagree.
+* **A question for one wave only.** The goal question is asked only at W1. The recommend and
+  continue questions are asked only at W3, at the end of the program.
+* **A cell with no form.** Supervisor W1 has no form, because a supervisor does not know the intern
+  yet. A cell with no form has no link and no results.
+
+## Manage audiences and waves in the app
+
+Open the survey, then the ⋯ menu, then **Manage audiences & waves…**. The window has two views.
+
+### The Audiences & waves view
+
+This view shows the audiences, the waves and the grid.
+
+* **Add, rename and remove** audiences and waves.
+* **Create** a form in an empty cell. The new form starts with the questions of an existing form.
+  Then change its questions in the other view. **Create all** creates a form in every empty cell.
+* **Disable** a form to stop its public link. Its responses stay, and **Restore** starts the link
+  again.
+* **Delete** a form only when it has no responses. The window does not offer **Delete** for a form
+  that has responses.
+
+Each cell shows the number of questions and the number of responses on that form.
+
+### The Questions & forms view
+
+This view shows every question against every form. Turn a cell on to put the question on that form.
+You can turn a question on for all forms, or a form on for all questions. Nothing changes until you
+click **Apply** (the button shows the number of changes). **Revert** discards the changes.
+
+<Note>
+  The **content** of a question is the same on every form that asks it. You choose **which** forms
+  ask a question, not a different wording for each form. If one audience needs different words, make
+  a second question, as the sample does for readiness.
+</Note>
+
+### Limits
+
+* The survey needs a connected Google Sheet. The window writes the grid and the question choices to
+  the sheet. Without a sheet, the window tells you to connect one first.
+* A grid can have up to **25** cells, for example 5 audiences × 5 waves. Above **9** cells, the
+  window shows a warning, because each cell is a separate form to publish and analyze.
+* You cannot split a survey into audiences and waves after it starts to collect responses. To run
+  different audiences or waves, create a new suite and set them up there.
+
+## Audiences and waves in the Google Sheet
+
+The window above writes to the survey's Google Sheet. You can also edit the sheet directly. Two tabs
+work together, after the [Config tab](/workflows/sheets-to-flow#the-config-tab) turns on matrix
+mode.
+
+On the **Config** tab, set `Has Audiences` or `Has Rounds` to `TRUE`. Sheets that AutoSurvey exports
+set these keys for you. In a workbook that you build by hand, you must add them yourself. Without
+them, the import ignores the matrix and builds a single form from the `Active` column.
 
 ### 1. The Audience Round Matrix tab
 
-Rows are your audiences, columns are your rounds, and each cell says whether that combination exists
-at all:
+Rows are your audiences. Columns are your waves (rounds). Each cell says whether that combination
+has a form:
 
-| Audience \ Round | R1 | R2 | R3 |
+| Audience \ Round | W1 | W2 | W3 |
 | --- | --- | --- | --- |
-| Member | `TRUE` | `TRUE` | `TRUE` |
+| Intern | `TRUE` | `TRUE` | `TRUE` |
 | Supervisor | `FALSE` | `TRUE` | `TRUE` |
 
-Here supervisors join at round two — there is no Supervisor R1 survey, and never will be.
+This is the grid of the Internship Program sample. Supervisors join at W2, so there is no
+Supervisor W1 form.
 
 ### 2. Per-combination columns on the Questions tab
 
 Every `TRUE` cell above gives you one extra column on the **Questions** tab, named
 `<Audience> <Round>`. Mark each question `TRUE` in the combinations it belongs to:
 
-| API Name | Question | Display Type | Member R1 | Member R2 | Supervisor R2 |
-| --- | --- | --- | --- | --- | --- |
-| `Goal__c` | What is your main goal? | `Text Area` | `TRUE` | `TRUE` | `FALSE` |
-| `Progress__c` | How much progress since we last spoke? | `Slider` | `FALSE` | `TRUE` | `TRUE` |
-| `Support__c` | How well supported do you feel? | `Likert5` | `TRUE` | `TRUE` | `TRUE` |
-
-`Goal__c` is asked of members in both rounds and never of supervisors. `Progress__c` only makes
-sense from round two, since there is nothing to compare against at baseline.
+| API Name | Question | Intern W1 | Intern W2 | Intern W3 | Supervisor W2 | Supervisor W3 |
+| --- | --- | --- | --- | --- | --- | --- |
+| `Mem_Conf_Brew__c` | Pull an espresso to the shop standard. | `TRUE` | `TRUE` | `TRUE` | `TRUE` | `TRUE` |
+| `Mem_Self_Ready__c` | How ready do you feel for unsupervised shifts? | `TRUE` | `TRUE` | `TRUE` | `FALSE` | `FALSE` |
+| `Mem_Goal__c` | What do you most want to get out of this programme? | `TRUE` | `FALSE` | `FALSE` | `FALSE` | `FALSE` |
+| `Mem_Recommend__c` | I would recommend this programme to someone else. | `FALSE` | `FALSE` | `TRUE` | `FALSE` | `TRUE` |
 
 <Note>
-  Underscores work too — `Member_R2` and `Member R2` are the same column. Use whichever reads better
-  in your sheet; audience and round names with spaces in them (`Wave 1`) are fine.
+  Underscores work too. `Intern_W2` and `Intern W2` are the same column. Audience and round names
+  with spaces in them (`Wave 1`) are fine.
 </Note>
 
-## Why this beats separate surveys
+## Compare audiences and waves in reports
 
-* **One place to fix a question.** Reword `Support__c` once and every combination that uses it
+Each response records its audience and its wave. The **Survey Submission** record has an
+**Audience** field and a **Wave** field, so you can group or filter any report by them.
+
+* **Compare waves.** A question that several forms ask has one API Name, so all its answers go into
+  one field. Group that field by **Wave** to see the trend from W1 to W3.
+* **Compare audiences.** Put a pair of questions, such as the two readiness questions, side by side,
+  and group by **Audience**.
+* **Questions that change between waves.** Use the **Survey Answer** object. It has one row per
+  answer, so a question set that changes between waves does not change the shape of the data. See
+  [Data & Reporting](/concepts/data-and-reporting).
+
+## Why this is better than separate surveys
+
+* **One place to fix a question.** Change the words of a question once, and every form that asks it
   changes together.
-* **The same field, across every wave.** Because it is one question with one API Name, all its
-  answers land in the same reporting field — so a trend across three rounds is a report, not a data
-  project.
-* **Adding a wave is a column.** Not a new survey to build and keep in step.
+* **The same field in every wave.** One question has one API Name, so a trend across three waves is
+  a report and not a data project.
+* **A new wave is a column.** You do not build a new survey and keep it in step with the others.
 
 ## Naming
 
-The combination column header must match the audience and round names exactly as written in the
-matrix. Beyond that, two habits are worth having:
+The combination column header must match the audience and round names in the matrix exactly. Two
+more rules help:
 
-* **Name rounds for what they are, not when they are** — `R1` / `Baseline` / `Month3` outlive
-  `Jan2026`, which is wrong the moment the programme slips.
-* **Keep audience names short.** They become part of every combination column header, and a wide
+* **Name a wave for what it is, not for when it is.** `W1`, `Baseline` and `Month3` stay correct.
+  `Jan2026` becomes wrong when the program moves.
+* **Keep audience names short.** They are part of every combination column header, and a wide
   Questions tab is hard to read.
 
 ## Getting started
 
-Flip the switch first: on the **Config** tab, set `Has Audiences` or `Has Rounds` to `TRUE` — in a
-hand-built workbook, a matrix without that key is silently ignored.
-
-Then start with the audiences and rounds you are sure of. The matrix is not a commitment — adding a round
-later is a new column in the matrix and a new column on the Questions tab, and existing responses
-are unaffected.
+1. Turn on survey suites. See [Turn on survey suites](#turn-on-survey-suites).
+2. Build the [Internship Program sample](#try-it-the-internship-program-sample) and look at it.
+3. For your own program, start with the audiences and waves that you are sure of. You can add a wave
+   later. It is a new column in the matrix and a new column on the Questions tab, and it does not
+   change existing responses.
 
 ## Related
 
-* [The Questions Sheet](/concepts/questions-sheet) — the fixed columns, alongside your combination columns
+* [The Questions Sheet](/concepts/questions-sheet) — the fixed columns, next to your combination columns
 * [Sheets to Survey](/workflows/sheets-to-flow) — the build loop
 * [Question Library & Versioning](/concepts/question-library-and-versioning) — reusing questions over time
-* [Data & Reporting](/concepts/data-and-reporting) — comparing waves once the answers are in
+* [Data & Reporting](/concepts/data-and-reporting) — comparing waves when the answers are in
+* [Setup Home](/admin/setup) — where an admin turns on survey suites
