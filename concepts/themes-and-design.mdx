@@ -5,8 +5,13 @@ description: "Choose how your survey looks — a built-in theme, a colour palett
 
 
 Every survey has a **design**: its colours, type, spacing, how options are framed, and your brand.
-You edit it on the **Design** page for that survey, and you can start from something rather than
-from nothing.
+You edit it on the survey's **Design** tab, and you can start from something rather than from
+nothing.
+
+When you create a survey, the **Look** section of the **Review** step lets you pick a theme, then
+its palette. A sample question shows the colours, the type and the corners of your choice. The step is optional: the standard look applies when you choose nothing, and you can change
+it at any time on the Design tab. A new survey starts with its title and intro centred over
+left-aligned questions.
 
 ## The one thing to understand first
 
@@ -19,7 +24,7 @@ from nothing.
 Two consequences, and they run in opposite directions:
 
 * **Nothing changes under you.** A theme edited later — by you or by an update — cannot alter a
-  survey that already adopted it. What you published stays what you published.
+  survey that already adopted it. What you released stays what you released.
 * **Improvements don't reach you either.** If a built-in theme is refined, surveys that already took
   its values keep the old ones. Re-adopt it if you want the change.
 
@@ -39,9 +44,11 @@ how much air there is, how the page is anchored:
 | **Compact** | Dense, Field Grid, Plain Rhythm |
 | **Other** | Bold Modern, Clean Neutral, Night, Washed, Boxed |
 
-Adopt one from a survey's **Design** page. The **Theme Library** tab is a different thing: it is the
-org-level shelf — which themes this org has, and a one-click way to pull the latest. **The Library
-stocks the shelf; the Design page styles a survey.**
+Adopt one from a survey's **Design** tab. The **Theme Library** tab is a different thing: it is the
+org-level shelf. It shows the themes and palettes **In this org** and those **Available from
+AutoSurvey**, and **⟳ Get all latest** pulls the latest in one click. On the Design tab,
+**↻ Refresh themes** fetches the latest themes and palettes and does not touch your own saved
+designs. **The Library stocks the shelf; the Design tab styles a survey.**
 
 <Tip>
   Themes carry structure; palettes carry colour. Adopt a theme first for the shape you want, then
@@ -65,22 +72,42 @@ Like a theme, a palette is a shortcut — it writes the values and lets go.
 
 ## Your brand
 
-Set your **logo** and **favicon** on the Design page under **Header & text** — logo size and
+Set your **logo** and **favicon** on the Design tab under **Header & text** — logo size and
 alignment sit alongside them — and your **background image** under **Colour**.
+
+To centre the survey title, the subtitle and the intro text while the questions stay on the left,
+use **Title and intro alignment** under **Layout**. **Same as questions** follows the question
+alignment.
 
 ## Welcome and ending screens
 
-The Design page also holds the copy a respondent sees before they start and after they finish. Both
+The Design tab also holds the copy a respondent sees before they start and after they finish. Both
 are edited in place, with a preview.
+
+The survey title, welcome, header, footer and ending text belong to the survey, not to the theme.
+They carry a **Survey setting** label, adopting a theme never changes them, and each has its own
+Save button. The **Help text style** control also shows the survey's own setting with the
+**Survey setting** label.
 
 ## Trying things safely
 
 | | |
 | --- | --- |
-| **Preview** | See the real survey rendered with your current design before saving |
+| **Respondent preview** | The right side of the Design tab shows your draft as a respondent sees it, one screen at a time. Answers you type there are not saved. If your draft has changes that the preview does not show yet, **Update preview** brings them in |
+| **Save draft** | Saves the theme, layout and style to the draft. **Release** publishes them to respondents |
 | **Restore your settings** | Put everything back to how it stood before you started trying themes this session |
 | **Share this design** | Take a design out — **Download .json** or **Copy** — then **Apply this design** on another survey |
 | **Save theme** | Name a design you've built and it appears in your themes, ready to apply to any other survey |
+
+<Note>
+  **The preview shows the draft.** Its heading reads **Respondent preview — draft**, with the live
+  version number when one exists. Before the first release, a **Not published yet** note sits above
+  the preview: the preview shows what a respondent will see, and a release is what makes it
+  reachable.
+</Note>
+
+If you switch to another survey or leave the tab with unsaved design changes, the Design tab asks
+first. You can save, discard, or keep editing.
 
 <Tip>
   **Restore is the reason to experiment freely.** It reverses a run of theme-flipping in one click —
@@ -91,4 +118,4 @@ are edited in place, with a preview.
 
 * [Display Properties](/concepts/display-properties) — per-question tuning that sits on top of the design
 * [The Questions Sheet](/concepts/questions-sheet) — content lives in the sheet, design does not
-* [Publish & Share](/workflows/deploy-and-verify) — design changes reach respondents when you publish
+* [Release & Share](/workflows/deploy-and-verify) — design changes reach respondents when you release

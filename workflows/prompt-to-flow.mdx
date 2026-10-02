@@ -1,37 +1,57 @@
 ---
 title: "Prompt to Survey"
-description: "Describe the survey you want and let AutoSurvey draft the questions and choice lists for you, then edit them like any other survey."
+description: "Describe the survey you want and let AutoSurvey draft the questions and choice lists for you, review them, then edit them like any other survey."
 ---
 
 
 The fastest way to a first draft: describe the survey in plain language and let AutoSurvey write the
-questions and choice lists. What comes back is an ordinary AutoSurvey survey — you edit, validate and
-publish it exactly like one you wrote by hand.
+questions and choice lists. You review the draft before the survey is created. What comes back is an
+ordinary AutoSurvey survey — you edit and release it exactly like one you wrote by hand.
 
 ## Where it lives
 
-Open your suite in **Suite Manager** and go to **Populate Survey Questions** (step 5), or pick
-**Populate Questions...** from the **⋯** menu in the suite header to jump straight there.
-
-That step offers six ways to add questions — three under **Start with AI**, three under
-**Bring your own** — and you can mix them:
+Click **New Survey**. The dialog opens on **Choose how to start**, with six ways as cards.
+**Describe it** is the first card, and the dialog opens on it:
 
 | | |
 | --- | --- |
-| **Freeform prompt** | Describe the survey; AutoSurvey generates questions and option sets |
-| **Guided** | Answer a few quick questions and AutoSurvey drafts it |
-| **Paste your questions** | Your wording; AutoSurvey detects the types and options |
-| **Bring your survey** | Migrate an existing survey word-for-word — see [Import an Existing Survey](/workflows/import-an-existing-survey) |
-| **Import CSV/JSON** | Paste or upload CSV or JSON |
-| **Edit in Google Sheets** | Open the Google Sheet and write them yourself |
+| **Describe it** | Your own words. The AI drafts the questions and the answer options |
+| **Paste your questions** | Your wording. AutoSurvey suggests the answer types |
+| **Start from a sample** | Open a sample to see what it asks, then click **Use this sample** |
+| **Import CSV/JSON** | Paste or upload a questions table, and the answer options if you have them |
+| **Bring your survey** | Copy an existing survey word for word — see [Import an Existing Survey](/workflows/import-an-existing-survey) |
+| **Bulk start in Google Sheet (advanced)** | Creates the survey first, with a blank sheet — see [Sheets to Survey](/workflows/sheets-to-flow) |
+
+Every way except the Google Sheet way goes to a **Review** screen first. No survey is created until
+you click **Create survey** on the Review screen.
+
+<Note>
+  **The survey already exists?** Open it and pick **Populate questions…** (a survey with no
+  questions) or **Change questions…** from the **⋯** menu in the survey header. On the
+  **Questions** tab you can also click **Replace all questions…**. These show the same kinds of
+  ways: **Describe it**, **Answer a few questions**, **Paste your questions**, **Import CSV/JSON**,
+  **Bring your survey** and **Bulk edit in Google Sheet (advanced)**. If the survey has questions,
+  AutoSurvey asks before it replaces them.
+</Note>
 
 ## Two ways to describe what you want
 
-**Freeform prompt** — one box, free text. Write what you'd tell a colleague.
+**Describe it** — one box, free text. Write what you would tell a colleague.
 
-**Guided** — separate fields for the topic, the audience, and the key decision or goal the survey
-serves. Worth the extra minute when the survey has to earn its place: naming the *decision*
-is what stops a generator producing twenty interesting questions that answer nothing.
+**Answer guided questions** — click it under the box to open five short questions. The AI writes
+the survey from your answers:
+
+| Question | What you choose |
+| --- | --- |
+| **What kind of survey is this?** | **General**, **Customer satisfaction**, **Net Promoter Score (NPS)**, **Event or community** or **Onboarding**. Each type says what it is for |
+| **Who answers it?** | The audience, in your words |
+| **What decision does it inform?** | The decision the answers serve |
+| **How long?** | **Short** (5 to 8 questions, about 2 min), **Medium** (8 to 12 questions, 2 to 3 min) or **Long** (12 or more questions, 3 min or more) |
+| **Tone** | **Neutral**, **Warm and friendly**, **Formal** or **Playful**, or type your own. Each preset shows a sample question |
+
+You can use the box, the guided questions, or both. The guided questions are worth the extra
+minute when the survey has to earn its place: naming the *decision* is what stops a generator
+from writing twenty interesting questions that answer nothing.
 
 ### A worked example
 
@@ -40,30 +60,55 @@ is what stops a generator producing twenty interesting questions that answer not
 > networking. Keep it under five minutes. Include one NPS question and a free-text "what should we
 > change" at the end.
 
-That produces a screen-structured draft with an NPS question, rating questions per track, and a
-closing long-text — with the choice lists built as reusable [Option Sets](/concepts/option-sets).
+That produces a draft with screens, an NPS question, rating questions per track, and a closing
+long-text question. The choice lists are built as reusable [Option Sets](/concepts/option-sets).
 
-## Fast or Standard
+## The AI level
 
-Under **Optional AI Guidance** you can choose how hard AutoSurvey works:
+Beside **Build my survey**, the line **AI:** and a tier name shows the AI tier this build uses. It starts
+at your own tier. Click **Change AI level** to pick another tier that your org offers. Each tier
+lists its models.
 
-| Mode | What it does |
-| --- | --- |
-| **Fast** | One pass. Quicker, and usually needs more cleanup |
-| **Standard** | Two passes — the first designs the question set and screen structure, the second compiles it for consistency |
+* **Custom** — shows only if you have the **Choose AI Models** permission. You pick the model for
+  each step, for this survey only. The next survey starts from your tier again.
+* **Manage tiers and models in Setup** — shows only if you can change the tiers.
 
-**Standard is the right default for most surveys.** Use Fast when you're exploring shapes rather
-than drafting the real thing.
+<Note>
+  The **Populate questions…** / **Change questions…** path for an existing survey has its own
+  **AI Tier** list, and a **Generation Quality** choice under **Optional AI Guidance**:
+  **Fast (Quick draft)** uses one AI pass and can need more cleanup; **Standard (Higher accuracy)**
+  uses more passes for better structure and consistency. Standard is the right default for most
+  surveys. The New Survey flow always uses Standard.
+</Note>
 
 ## What happens to the result
 
-The generated questions and option sets are imported into your suite's bound Google Sheet. From
-there it is an ordinary survey: edit anything you like, validate, import, publish. Nothing goes live
-because it was generated.
+Click **Build my survey**. The working screen says it usually takes under a minute; some runs take
+up to 2 minutes. Then **Review your survey** opens. Nothing goes live because it was generated.
+
+On the Review screen:
+
+* **List** shows each question with its type. **Preview** shows each screen as a read-only form.
+* **Why these questions** quotes your description and answers. **Change my description** takes you
+  back.
+* Click **×** to remove a question. **Undo** puts it back, newest first.
+* If a row has a value AutoSurvey cannot accept, the row shows **Blocks Create**, and the message
+  above the list has **Show the row**. Change it, then build again.
+* **Title**, **Workspace** and **Survey ID** sit together at the top. A title that another survey
+  already uses gives a warning with **Rename** or **Keep it**; it does not block Create. The Survey
+  ID is part of your public link and cannot change after you create the survey.
+* **Look** — choose a theme, then its palette. A sample question shows the chosen look. This is
+  optional; you can change it later on the Design page.
+* **Advanced** — a **Description**, and **Where answers are stored** (the Salesforce object that
+  holds the answers). Both have defaults.
+
+Click **Create survey**. AutoSurvey creates the survey and its Google Sheet, and opens the
+**Questions** tab in Preview. From there it is an ordinary survey: edit, add and move questions on
+the Questions tab, then release it.
 
 <Tip>
-  Treat the first generation as a draft, not an answer. The fastest workflow is generate → skim in
-  the sheet → delete a third → publish.
+  Treat the first generation as a draft, not an answer. The fastest workflow is build → remove a
+  third on the Review screen → create → change the rest on the Questions tab.
 </Tip>
 
 ## Large surveys
@@ -83,9 +128,9 @@ it's done. Very large surveys need a higher AI tier:
 ## Before your first generation
 
 <Warning>
-  **AI generation needs the AI model catalog seeded first.** If it hasn't been, the AI options in
-  step 5 are disabled and the panel shows an **AI generation is not available** warning explaining
-  why. The fix is the **Seed AI models** button in Setup — running setup again does *not* seed it.
+  **AI generation needs the AI model catalog seeded first.** If it hasn't been, the AI ways under
+  **Populate questions…** / **Change questions…** are disabled and show an **AI generation is not
+  available** warning that explains why. The fix is the **Seed AI models** button in Setup — running setup again does *not* seed it.
   See the [Setup Home Guide](/admin/setup).
 </Warning>
 
@@ -93,5 +138,5 @@ it's done. Very large surveys need a higher AI tier:
 
 * [Design with an AI Chatbot](/workflows/design-with-ai) — drafting questions in ChatGPT, Claude or Gemini instead
 * [The Questions Sheet](/concepts/questions-sheet) — what the generator writes into
-* [Sheets to Survey](/workflows/sheets-to-flow) — editing and importing the result
-* [Publish & Share](/workflows/deploy-and-verify) — taking it live
+* [Sheets to Survey](/workflows/sheets-to-flow) — bulk editing in Google Sheet (advanced)
+* [Release & Share](/workflows/deploy-and-verify) — releasing it

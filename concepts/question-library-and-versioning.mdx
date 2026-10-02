@@ -7,7 +7,7 @@ description: "How AutoSurvey keeps a question the same question while its wordin
 Surveys change. Wording gets sharpened, a scale gets rethought, a question moves to a different
 page. If every change made a new field, your reports would break every time you improved a question.
 
-AutoSurvey separates **what a question is** from **where it sits** and **what has been published**,
+AutoSurvey separates **what a question is** from **where it sits** and **what has been released**,
 so that doesn't happen.
 
 ## The recommended keying strategy
@@ -72,7 +72,7 @@ Three things get snapshotted, and they are not the same thing:
 | | What it snapshots |
 | --- | --- |
 | **Import Version** | Your sheet's content at the moment you imported it |
-| **Config Version** | Your suite's settings at that moment |
+| **Config Version** | Your survey's settings at that moment |
 | **Publish Release** | A named, live combination of an Import Version and a Config Version |
 
 ```
@@ -84,10 +84,14 @@ Publish Release   ← the live, shareable thing
 ```
 
 <Note>
-  **Importing mints versions; publishing is what points the live survey at them.** That is why an
-  import always shows as *Unpublished changes* and why importing repeatedly is safe — the released
-  survey does not move until you publish.
+  **Importing mints versions; releasing is what points the live survey at them.** That is why an
+  import always shows as changes waiting in the draft, and why importing repeatedly is safe — the
+  released survey does not move until you release.
 </Note>
+
+On the **Questions** tab, each question is compared with the live release. A question that is not in
+the live release yet shows **New**; a question that differs from it shows **Edited**. **Release
+history** in the survey's **⋯** menu lists each release as **Version N**.
 
 ## Knowing which version a response answered
 
@@ -100,8 +104,8 @@ Every response records the version it was collected under:
 | `Form_Code__c` | Which form they completed |
 
 <Tip>
-  A respondent who started before you republished keeps the version number they began on, so
-  mid-flight publishes don't corrupt a comparison. Group by `Release_Number__c` when you want a
+  A respondent who started before you released again keeps the version number they began on, so
+  a release during collection does not corrupt a comparison. Group by `Release_Number__c` when you want a
   clean before-and-after around a change.
 </Tip>
 
@@ -109,5 +113,5 @@ Every response records the version it was collected under:
 
 * [The Questions Sheet](/concepts/questions-sheet) — the `API Name` and `Active` columns
 * [Matrix programs](/concepts/matrix-programs) — one question bank across audiences and waves
-* [Publish & Share](/workflows/deploy-and-verify) — minting a release
+* [Release & Share](/workflows/deploy-and-verify) — releasing a new version
 * [Data & Reporting](/concepts/data-and-reporting) — reporting across versions

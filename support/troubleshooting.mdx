@@ -11,12 +11,12 @@ AutoSurvey checks your survey **twice**, in two places, and they are not two run
 | Check | Where you see it | What it knows about |
 | --- | --- | --- |
 | **Sheet sidebar** | The AutoSurvey sidebar in Google Sheets, when you run **Run Validation** | Your workbook — its columns, its tabs, its own Display Types list |
-| **Import** | Salesforce, when you import the suite | The whole survey: how screens flow, what the runner can render, how answers map to reporting columns |
+| **Import** | Salesforce, when you import the survey from the sheet | The whole survey: how screens flow, what the runner can render, how answers map to reporting columns |
 
 <Warning>
   **A green sidebar is not a promise the import will succeed — and a sidebar error does not always
-  mean the import would refuse.** Of the errors AutoSurvey can raise, 18 come only from the sidebar,
-  40 come only from the import, and just 5 are raised by both. The import sees things the sidebar
+  mean the import would refuse.** Of the errors AutoSurvey can raise, 22 come only from the sidebar,
+  39 come only from the import, and just 5 are raised by both. The import sees things the sidebar
   structurally cannot, like whether a screen is reachable or whether a Show If points forward in
   time. Always run the import before you consider a survey validated.
 </Warning>
@@ -140,8 +140,12 @@ Metric errors are the ones most likely to import cleanly and produce wrong numbe
 
 ## Everything else
 
-The complete list — all 63 errors, what each means, and which check raises it — is the
+The complete list — all 66 errors, what each means, and which check raises it — is the
 [Error Reference](/support/error-reference).
 
+In Salesforce, the import shows each error's full message and the row it is about. For a known
+error it also shows "how to fix" steps. When the sheet is linked, **Open in Sheet →** takes you to
+it. The import does not show the error codes on this page, so match the message text instead.
+
 If you're still stuck, [support@autosurvey.app](mailto:support@autosurvey.app). Send the error text
-itself: every message names the row and the column it's about.
+itself, with the row it names.

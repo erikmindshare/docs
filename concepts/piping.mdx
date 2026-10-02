@@ -23,8 +23,13 @@ A respondent who chose *Standing Desk* reads *"And what did you like most about 
 | Welcome, completion and closed screens | ✕ |
 
 <Note>
-  The surfaces that don't support piping are the ones that accept formatted text. Mixing a
-  respondent's own words into formatted content is a security risk we deliberately don't take.
+  `DisplayText` rows and the welcome, completion and closed screens accept formatted text, so they
+  do not support piping. Mixing a respondent's own words into formatted content is a security risk
+  we deliberately don't take.
+
+  Help text can carry simple formatting, such as **bold** and *italic*, and it still supports
+  piping. A piped value in help text always shows as plain text. It can never add formatting or
+  markup to the page.
 </Note>
 
 ## The rules
@@ -95,7 +100,8 @@ Related fields work too — `%%record.Owner.Name%%`.
 
 <Note>
   **You choose which fields a survey may show.** CRM merge fields are allowlisted per survey on the
-  **Design** page, and resolved on the server. A field you have not published is not available to the
+  survey's **Settings** tab, in the **Data** card, under **Record data in questions**. They are
+  resolved on the server, and a change applies at the next release. A field you have not published is not available to the
   survey, whatever the question text asks for — so an author cannot reach a field by guessing at its
   name.
 </Note>
@@ -110,4 +116,4 @@ Piped text is never re-scanned, so an answer can never become a live reference t
 * [The Questions Sheet](/concepts/questions-sheet) — where question and help text live
 * [Conditional Visibility](/concepts/conditional-visibility) — a hidden question's answer pipes blank
 * [Option Sets](/concepts/option-sets) — labels are what pipes, keys are what's stored
-* [Themes & Design](/concepts/themes-and-design) — where CRM merge fields are published
+* [Survey Settings](/admin/survey-settings) — where CRM merge fields are published

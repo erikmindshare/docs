@@ -1,11 +1,26 @@
 ---
 title: "Validation Rules"
-description: "Constrain what a respondent can enter — a length, a numeric range, or a pattern — from one column on the Questions tab."
+description: "Constrain what a respondent can enter — a length, a numeric range, or a pattern — in the question editor or in one column of the questions sheet."
 ---
 
 
 The **Validation** column on the Questions tab constrains what a respondent may enter. One cell, and
 it holds any of three kinds of rule.
+
+## Set a rule in the app
+
+You can also set a rule without the sheet. On the survey's **Questions** tab, open a question. In the
+**Logic** group, click **Add answer validation**. The **Validate the answer** window has three
+controls:
+
+* **Constraint** — **Character length** on a text question, or **Numeric range** on a numeric one.
+  Then set **Minimum**, **Maximum** or both.
+* **Pattern** — **Email**, **Phone**, **URL**, **Number**, or **Custom regex** for your own regular
+  expression.
+* **Result** — the rule the window writes, in the syntax below.
+
+Click **Apply**. The link then shows the rule, and the question gets a **Validated** chip in the
+list. The **Error message** field under the link is the same as the **Error Message** column.
 
 ## The three shapes
 
@@ -74,10 +89,22 @@ they get it wrong. Leave it blank for the default.
 | How many staff? | `Number` | `range: 1..10000` | Enter a number between 1 and 10,000 |
 | Tell us more | `Text Area (Long)` | `50..` | Please write at least 50 characters |
 
+<Note>
+  **Long text needs Strict validation.** On a `Text Area (Long)` or `Text Area (Rich)` question, a
+  length rule applies only when **Strict validation** is on. Turn it on in the survey's **Settings**
+  tab, in the **Answers** card. Number ranges and patterns always apply.
+</Note>
+
 <Tip>
   A rule that rejects an answer without saying why is a drop-off. If a rule is anything less than
   obvious from the question text, write the Error Message.
 </Tip>
+
+## Skip validation while you test
+
+The **Answers** card on the **Settings** tab has the switch **Skip validation while testing**. When it
+is on, your own test runs and the author preview skip the validation rules and the required
+questions. A respondent's run is always validated, whatever the switch says.
 
 ## What the import rejects
 

@@ -7,7 +7,7 @@ description: "Every column on the Questions tab — what it does, whether it is 
     Structure is generated; the descriptions live in that script. Do not hand-edit. */}
 
 The **Questions** tab is where a survey is written: one row per question, per section heading, per
-page break. AutoSurvey reads **25** columns from it.
+page break. AutoSurvey reads **27** columns from it.
 
 <Note>
   **Order does not matter and extra columns are ignored.** AutoSurvey finds each column by its
@@ -45,7 +45,7 @@ page break. AutoSurvey reads **25** columns from it.
 | `Allow Other` | No | Adds an "Other (please specify)" choice that reveals a free-text box. | — |
 | `Other Label` | No | Custom wording for that Other choice. | — |
 | `Default Value` | No | Pre-fills the answer. The respondent can change it. | — |
-| `Data Type` | No | The coarse storage type. Normally derived from the Display Type — set it only when you need to override. | — |
+| `Data Type` | No | Has no effect. The storage type always comes from the Display Type. The column is accepted so that older sheets do not show a warning. | — |
 
 ## Behaviour
 
@@ -53,7 +53,7 @@ page break. AutoSurvey reads **25** columns from it.
 | --- | --- | --- | --- |
 | `Required` | No | `TRUE` means the respondent cannot move on without answering. | — |
 | `Active` | No | `FALSE` keeps the row in your sheet but leaves it out of the survey. | — |
-| `Show If` | No | Show or hide this row based on an earlier answer. See [Conditional Visibility](/concepts/conditional-visibility). | `Visibility`, `ShowIf`, `Dependency` |
+| `Show If` | No | Show or hide this row based on an earlier answer. See [Conditional Visibility](/concepts/conditional-visibility). | `Visibility`, `Dependency` |
 | `Help Text` | No | A line of guidance shown under the question. | — |
 | `Validation` | No | Constrains the answer — `3..200` for length, `range: 1..5` for a number, `regex: ^[A-Z]+$` for a pattern. | `Validation Regex`, `ValidationRegex`, `Validation Rules` |
 | `Error Message` | No | The message shown when Validation rejects an answer. Leave blank for the default. | — |
@@ -74,6 +74,13 @@ page break. AutoSurvey reads **25** columns from it.
 | --- | --- | --- | --- |
 | `Metric Type` | No | Marks this question as a scored metric: `NPS`, `CSAT`, `CES`, `Rating`, or `Not Scored`. Add `*` to make it the form's primary metric. | — |
 | `Inverse Score` | No | `TRUE` for a negatively-worded scored question, where a high answer means low sentiment. Inverts only its contribution to the combined score. | `InverseScore`, `Reverse Coded`, `Reverse Score`, `Reverse Scored` |
+
+## Filled in for you
+
+| Column | Required | What it does | Also accepted as |
+| --- | --- | --- | --- |
+| `Last Updated` | No | Stamped with the time whenever you edit a row. For your reference only — the import ignores it. | — |
+| `Last Editor` | No | Stamped with the email of whoever last edited the row. For your reference only — the import ignores it. | — |
 
 ## Related
 

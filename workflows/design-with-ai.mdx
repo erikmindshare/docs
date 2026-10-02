@@ -3,12 +3,12 @@ title: Design with an AI Chatbot
 description: Use ChatGPT, Claude, or Gemini to draft survey questions that drop straight into AutoSurvey, with a copy‑paste prompt tuned to AutoSurvey's question types and limits.
 ---
 
-AutoSurvey has its own AI generator (see [Prompt → Flow](/workflows/prompt-to-flow)), but you can also design your survey in **any** general‑purpose chatbot — ChatGPT, Claude, or Gemini — and bring the result back. The chatbot does the creative "what should we ask?" work; AutoSurvey turns the result into a survey that runs inside your org.
+AutoSurvey has its own AI generator (see [Prompt to Survey](/workflows/prompt-to-flow)), but you can also design your survey in **any** general‑purpose chatbot — ChatGPT, Claude, or Gemini — and bring the result back. The chatbot does the creative "what should we ask?" work; AutoSurvey turns the result into a survey that runs inside your org.
 
 The trick is handing the chatbot a prompt that already knows AutoSurvey's question types and limits, so its output drops in cleanly. That prompt is below.
 
 <Note>
-Two ways to use the result, and the prompt produces both: paste it into AutoSurvey's in‑app **AI generation** step, or import it as a [Questions sheet](/workflows/sheets-to-flow).
+Two ways to use the result, and the prompt produces both: paste the list into **New Survey → Paste your questions**, or bring in the tables as a file with **Import CSV/JSON** or through the [questions sheet](/workflows/sheets-to-flow) (advanced).
 </Note>
 
 ## Pick your prompt: Full or Lite
@@ -145,10 +145,10 @@ Do not invent Display Types or columns beyond those listed above.
 
 <Steps>
   <Step title="Paste the list (easiest)">
-    Copy **output (A)** — the numbered list grouped by screen — into AutoSurvey's in‑app **AI generation** step set to **Standard**. It structures the questions you already designed rather than re‑inventing them; then you review and deploy. See [Prompt → Flow](/workflows/prompt-to-flow).
+    Click **New Survey**, choose **Paste your questions**, and paste **output (A)** — the numbered list grouped by screen. Click **Build from my questions**. AutoSurvey keeps your wording and suggests the types; it does not re‑invent the questions. Then you review the draft, create the survey and release it. See [Prompt to Survey](/workflows/prompt-to-flow).
   </Step>
   <Step title="…or import the tables (direct)">
-    Copy **output (B)** — the Questions and Option Sets tables — into the matching tabs and run [Sheets → Flow](/workflows/sheets-to-flow). The importer validates every column and flags anything to fix.
+    Ask the chatbot to give **output (B)** as comma‑separated CSV, one file for Questions and one for Option Sets. Click **New Survey**, choose **Import CSV/JSON**, and add the files. The import accepts comma‑separated CSV only, not the pipe tables. Or, as an advanced option, paste the tables into the matching tabs of the questions sheet and import them — see [Sheets to Survey](/workflows/sheets-to-flow). The import checks every column and flags anything to fix.
   </Step>
 </Steps>
 
@@ -188,7 +188,7 @@ The biggest gotcha for an AI: **a "Show If" may only look backwards.** It can de
     Yes. You can paste this page's URL and ask it to follow the guide, or append `.md` to the page URL for a clean, text‑only version. Either way, point the chatbot at the prompt above.
   </Accordion>
   <Accordion title="Do I have to write API names myself?">
-    Only for the direct import (output B), and the prompt asks the chatbot to propose sensible ones. If you paste output (A) into the in‑app AI step, AutoSurvey handles naming.
+    Only for the direct import (output B), and the prompt asks the chatbot to propose sensible ones. If you paste output (A) into **Paste your questions**, AutoSurvey handles naming.
   </Accordion>
   <Accordion title="What if the chatbot invents a question type AutoSurvey doesn't have?">
     The prompt limits it to supported [Display Types](/concepts/display-types). If something slips through (say a "ranking" question), map it to the closest supported control — usually single choice, multi choice, or a matrix — or ask the chatbot to redo that question within the allowed types.
@@ -197,6 +197,6 @@ The biggest gotcha for an AI: **a "Show If" may only look backwards.** It can de
 
 ## Related
 
-- [Prompt → Flow](/workflows/prompt-to-flow) — AutoSurvey's built‑in AI generator
-- [Sheets → Flow](/workflows/sheets-to-flow) — importing the Questions and Option Sets tables
+- [Prompt to Survey](/workflows/prompt-to-flow) — AutoSurvey's built‑in AI generator
+- [Sheets to Survey](/workflows/sheets-to-flow) — importing the Questions and Option Sets tables (advanced)
 - [Display Types](/concepts/display-types) · [Option Sets](/concepts/option-sets) · [Display Properties](/concepts/display-properties) · [Conditional Visibility](/concepts/conditional-visibility) · [Matrix programs](/concepts/matrix-programs)

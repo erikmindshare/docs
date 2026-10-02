@@ -6,8 +6,8 @@ description: "The questions people actually ask before they commit — where the
 
 ## Where do responses actually go?
 
-Into your own Salesforce org, as records — a custom **Response Object** with a field per question,
-plus a submission record and one record per answer. No sync, no export, no second database. See
+Into your own Salesforce org, as records — a submission record and one record per answer, plus a
+copy in a custom **reporting object** with a field per question. No sync, no export, no second database. See
 [Data & Reporting](/concepts/data-and-reporting).
 
 ## Do respondents need a Salesforce login?
@@ -22,27 +22,30 @@ Experience site, or by internal users only — your choice, per survey.
 
 ## Do I have to use Google Sheets?
 
-No. Every suite is bound to a sheet, and it's the fastest way to write or bulk-edit a long survey —
-but you can [describe a survey in plain language](/workflows/prompt-to-flow) instead, or
-[import one you already run](/workflows/import-an-existing-survey) in Typeform, Google Forms,
-SurveyMonkey or GetFeedback.
+No. You edit questions in the app, on the survey's **Questions** tab. To start, you can
+[describe a survey in plain language](/workflows/prompt-to-flow), paste your questions, start from a
+sample, or [import one you already run](/workflows/import-an-existing-survey) in Typeform, Google
+Forms, SurveyMonkey or GetFeedback. Google Sheet sync is an advanced option for bulk edits — see
+[Sheets to Flow](/workflows/sheets-to-flow).
 
-## What does publishing change in my org?
+## What does releasing change in my org?
 
-On first publish: the Response Object, a reporting field per question, and a page layout. After
-that, publishing only ever **adds** fields.
+On the first release: the reporting object, a reporting field per question, and a page layout. After
+that, a release only ever **adds** fields. Each survey can turn its reporting object off on its
+**Settings** tab, in the **Data** card.
 
 ## If I delete a question, does its data go away?
 
-**No — and this catches people out.** Because publishing only adds, removing a question from your
-sheet leaves its reporting field and every answer already collected exactly where they are. If you
+**No — and this catches people out.** Because a release only adds, removing a question from your
+survey leaves its reporting field and every answer already collected exactly where they are. If you
 must remove collected data, that's an ordinary Salesforce admin task. See
 [What AutoSurvey Creates in Your Org](/admin/objects-permissions-layouts).
 
 ## Can I change a survey that's already collecting responses?
 
-Yes. Reword questions, change scales, add new ones. What you must not do is change a question's
-**API Name** — that creates a *second* question with a second field rather than renaming the first.
+Yes. Reword questions, change scales, add new ones, then release the change. What you must not do is
+change a question's **API Name** — that creates a *second* question with a second field rather than
+renaming the first. The **Questions** tab locks the API Name after the first save.
 See [Questions, Versions & Releases](/concepts/question-library-and-versioning).
 
 ## Can a question depend on an answer from an earlier page?

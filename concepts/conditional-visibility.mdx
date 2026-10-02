@@ -24,6 +24,29 @@ and it writes a valid rule into the cell.
 The builder writes **one condition per rule**. To combine conditions across different questions,
 type the rule yourself using the syntax below.
 
+### In the app
+
+You can also build a rule in the app. On the survey's **Questions** tab, open a question. In the
+**Logic** group, click **Add show-if condition**. The **Show this question when…** window offers:
+
+* **When this question** — the other questions on the **same screen**. On a **Terminal Screen** row
+  the window is **Show this screen when…**, and it offers the questions on **earlier** screens.
+* **Condition** — **equals**, **does not equal**, **is any of**, **is none of**, **is blank** or
+  **is not blank**.
+* **Value**, or **Values** for a list (comma-separated).
+
+Click **Apply**. The app builder also writes one condition per rule, and it does not offer the
+numeric comparisons. To write those, use the sheet.
+
+When a question already has a rule, the window opens on that rule. If you click **Apply** and change
+nothing, the rule stays as it is. A rule that the window cannot edit — for example one with `AND`,
+`OR`, `NOT` or `>=` — opens read-only, with **Close** and no **Apply**. Change that rule in the
+**Show If** cell of the sheet.
+
+The question shows its rule as a sentence, for example *Shown when "Overall, how satisfied are you
+with us?" is Very dissatisfied or Dissatisfied*, with the raw rule under it. In the question list, a
+question with a rule has a **Conditional** chip. Hover over the chip to read the same sentence.
+
 ## Operators
 
 | Operator | Meaning | Example |
@@ -40,11 +63,18 @@ A bare field name is shorthand for `= true` — handy for a checkbox: `Opted_In_
 
 Quote text values with single quotes; leave numbers and `true` / `false` unquoted.
 
+<Note>
+  **`!=` and `NOT IN` are true before an answer.** While the controlling question has no answer, it
+  matches none of the values, so `Status__c != 'Closed'` is true and the row shows. To show the row
+  only after an answer, add a blank check: `ISNOTBLANK(Status__c) AND Status__c != 'Closed'`. `=`,
+  `IN` and the numeric comparisons are false while the question has no answer.
+</Note>
+
 <Warning>
   **The comparison operators are numeric.** They work on `Number`, `NPS`, `Star`, `Slider`,
   `Currency` and `Percent` questions. Point one at a text or choice question and the rule imports
-  with a warning (`ORDERING_ON_NON_NUMERIC`) and then never fires for anyone. The Show-If Builder
-  only offers them on numeric questions, which is the easiest way not to hit this.
+  with a warning (`ORDERING_ON_NON_NUMERIC`) and then never fires for anyone. The Show-If Builder in
+  the sheet sidebar only offers them on numeric questions, which is the easiest way not to hit this.
 </Warning>
 
 ## Combining conditions
@@ -105,6 +135,10 @@ Show If is not only for questions. Put it on any row:
 When a controlling question is on the **same page**, show/hide happens as the respondent types or
 clicks — they don't have to move on for the follow-up to appear. This works for every question type,
 including Long Text and Matrix.
+
+A grid (Matrix) obeys Show If row by row. A grid row whose own rule fails is hidden. The whole grid
+is hidden when the rule on its section fails, or when none of its rows can show. A hidden row is not
+required, and its answer is not sent.
 
 When the controlling question is on an **earlier** page, the rule is evaluated when the later page
 opens, which is the only moment it can be.

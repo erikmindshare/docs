@@ -4,13 +4,14 @@ description: "Where your responses land, which of the three grains to report on,
 ---
 
 
-Responses are Salesforce records the moment they're submitted. There's no sync, no export, and
-nothing to unpack before you can report.
+Responses are Salesforce records the moment they're submitted. There's no export, and nothing to
+unpack before you can report.
 
-## Three grains, and every response writes all of them
+## Three grains for every response
 
-You don't choose a storage model up front. Every submission lands in all three, so you pick the one
-that suits the question you're asking:
+You don't choose a storage model up front. AutoSurvey saves every answer as a **Survey Submission**
+and its **Survey Answer** rows. It also copies each response to your survey's **Response Object** (in
+the app, the **reporting object**), so you pick the grain that suits the question you're asking:
 
 | Grain | One row per | Reach for it when |
 | --- | --- | --- |
@@ -23,6 +24,28 @@ that suits the question you're asking:
   at, and most questions are answered there. Move to Survey Answer only when your question spans
   surveys or waves — that's where the wide layout stops helping.
 </Tip>
+
+## The reporting object is a copy
+
+Your answers are always saved in AutoSurvey. The Response Object is an extra copy for Salesforce
+reports. Each survey shows its state on **Settings** › **Data**, under **Reporting object**:
+
+* **On** — "Responses are also copied to" the object "for reports".
+* **Off** — "Responses are not copied to" the object. Use **Turn off…** if you do not report on it.
+  Your answers stay saved, and the **Results** tab still shows them. If you turn it on again, new
+  responses are copied; responses saved while it was off are not.
+
+A copy can fail or wait. When it does:
+
+* The survey header shows **Reporting: N responses not copied**. Click it to open the **Results** tab.
+* The **Results** tab shows a **Missing from Salesforce reports** card. It lists each response that
+  is not in reports, with the reason and a **Retry** button. **Details** shows the support code.
+* A row that is only waiting says "Waiting to be copied. You do not need to do anything."
+
+<Note>
+  The **Results** tab reads your saved answers, not the copy. A failed copy affects Salesforce reports
+  only. Test runs from **Try it** are not counted in results.
+</Note>
 
 ## What ships ready to run
 
@@ -43,14 +66,15 @@ Five custom report types, so you can build your own without joining anything by 
 | Folder | Contains |
 | --- | --- |
 | **AutoSurvey Survey Reports** | Completion by suite, submission status summary, answers in long format, campaign member status |
-| **AutoSurvey CX Analytics** | Average NPS by channel, average NPS by month, NPS band distribution, and a detractor worklist — plus the **CX Analytics dashboard** built on them |
+| **AutoSurvey CX Analytics** | Average NPS by channel, average NPS by month, NPS band distribution, and a detractor worklist — plus the **CX Analytics Overview** dashboard built on them |
 | **AutoSurvey Raw Response Reports** | Suite submissions and suite answers, at the individual-response level |
 
 <Warning>
   The **Raw Response Reports** folder is deliberately restricted. It shows individual, unaggregated
   responses, so it needs the **Raw Response Access** permission — see
   [Installation & Permissions](/admin/installation-and-permissions). Aggregate reporting doesn't
-  require it.
+  require it. With that access, a survey's **Results** tab also shows a **Reports** menu that opens
+  its **Submissions** and **Answers** reports.
 </Warning>
 
 ## Two things worth doing early

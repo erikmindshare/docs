@@ -1,0 +1,182 @@
+---
+title: "Edit Questions"
+description: "Add, change, move and remove questions on the survey's Questions tab. Every change saves as a draft until you release it."
+---
+
+
+The **Questions** tab of a survey is the main place to edit its questions. You add, change, move and
+remove questions there, and each change saves by itself as a draft. Respondents see nothing new until
+you **Release** the survey. Google Sheet sync is an advanced option for bulk edits — see
+[Sheets to Survey](/workflows/sheets-to-flow).
+
+## List and Preview
+
+The tab has one toolbar line. It shows:
+
+* **List** and **Preview** — two ways to show the questions.
+* **Imported from the sheet …** and a time, if the survey was imported from a sheet.
+* **Revert all changes… (N)**, when the draft has changes that are not released.
+* **Replace all questions…**
+* **Add question**.
+
+When the window is narrow, the toolbar stays on one line. **Replace all questions…** and the import
+note then go into the **⋯** menu at the end of the line.
+
+**List** shows each screen as a group that you can expand or collapse. Each question is a card with
+its display type and chips such as **Conditional**, **Validated**, the option set name or the
+section name. Turn on **Show API names** to see the stored field names.
+
+**Preview** shows each screen as a respondent sees it, with your theme. Answers you give in Preview
+are not saved. Each question has a pencil that opens its editor, and each screen has
+**Add a question here**.
+
+<Note>
+  After you click **Create survey** on the Review screen, the survey opens on the **Questions** tab in
+  Preview. A survey made with the Google Sheet way opens in List. See
+  [Prompt to Survey](/workflows/prompt-to-flow).
+</Note>
+
+## Add questions, screens and sections
+
+* **Add question** on the toolbar adds a question at the end of the last screen.
+* **Add question to this screen**, under the questions of a screen, adds a question to that screen.
+* **Add section**, beside it, adds a question in a new section named **Section N**. The cursor goes
+  to the section name, so you can type a new name.
+* **Add screen**, under the last screen, adds a new screen.
+* Right-click a screen name for **Add question to this screen**, **Add screen** and
+  **Delete screen…**. If the screen has questions, the label is **Delete screen and N questions…**.
+
+A new question starts as **New question**, with the type **Text**, and its editor opens. Pick the
+type in **Display type**. The picker shows the types as tiles in groups: **Text**, **Number**,
+**Date & time**, **Choice**, **Rating & scale**, **Rich input**, **Content & structure** and
+**Other**. Put the pointer on a tile, or move the focus to it, to read what the type does. For each
+type, see [Display Types](/concepts/display-types).
+
+## The question editor
+
+Click a question card, or push Enter or Space on it, to open the editor. The editor opens at the
+side, so the list stays visible. The changes save as you make them. There is no Save button.
+**Close** (or **×**) closes the editor. A click outside the Questions area also closes it.
+
+The editor has these groups. **Content** and **Answer & options** are open first.
+
+| Group | What it holds |
+| --- | --- |
+| **Content** | **Question** text, **Help text**, **Image URL**, **Screen** (pick another screen to move the question there) and **Section / group** |
+| **Answer & options** | **Display type**, **Layout**, **Display properties**, **Option set**, **Required** and **Allow "Other"** |
+| **Logic** | **Add show-if condition**, **Add answer validation** and **Error message** |
+| **Storage & defaults** | The **Field API name** (read-only), **Default value**, and the scale bounds and anchor text for a scale |
+| **Scoring** | **Metric type**, **Primary metric** and **Inverse score**. Shows only for users who can change survey settings |
+| **Advanced** | **Active** (turn it off to keep the question but hide it from respondents), **Sheet row** and **Order** |
+
+For the details, see:
+
+* [Option Sets](/concepts/option-sets) — **Edit options**, shared sets and **Customize for this question**.
+* [Conditional Visibility](/concepts/conditional-visibility) — the show-if window.
+* [Validation Rules](/concepts/validation) — the validation window and the error message.
+* [Display Properties](/concepts/display-properties) — how a control looks.
+* [Scoring & Alerts](/admin/scoring-and-alerts) — metrics.
+
+If you change the display type, values that the new type does not use stay in the group
+**Not used by … — left over from an earlier type**. You can still edit them, or click **Clear these**.
+
+### The Field API name
+
+A new question shows **Field API name** in **Content**. Set it before you close the editor: the new
+question does not save until you close it, and the status line says
+**Saves when you close the question**. After the first save, the name cannot change. It then shows
+read-only in **Storage & defaults**, because the answers already collected are stored under it.
+
+### Screens, info text, images and sections
+
+The editor changes with the kind of row:
+
+* **Screen** — click the pencil beside a screen name. The text field is **Screen name**. **Screen
+  kind** makes the screen an ending or a screen-out. See
+  [Display Types](/concepts/display-types).
+* **Info text** — the text field is **Info text**.
+* **Image** — the text field is **Image description**, which screen readers read. **Image URL** is
+  the picture.
+* **Section** — the text field is **Section heading**.
+
+### Duplicate a question
+
+At the bottom of the editor of a question, click **Duplicate this question**. Give the copy a
+**New API name**, then click **Create question**. The copy gets its own reporting field. Screens,
+info text, images and sections do not have this action.
+
+## Move questions and screens
+
+* Drag a question card to a new place on the same screen.
+* With the keyboard, put the focus on a question card and push **Alt+Up** or **Alt+Down**.
+* To move a question to a different screen, change **Screen** in its editor.
+* To move a screen, click **Move up** or **Move down** beside the screen name.
+
+If a screen move would break the survey, AutoSurvey does not move it. The message says which move it
+refused and why, for example *Moving "Contact" up would break the survey, so the order did not change.*
+A moved screen shows **Moved** until the next release.
+
+## Remove a question or a screen
+
+Click **Remove** on a question card. A dialog asks before AutoSurvey removes it. The screen delete
+dialog names the questions and other items on the screen before it removes them.
+
+After you confirm, a notice shows with **Undo**. Undo works for 10 seconds, or until you work outside
+the question list. Until then, nothing about the removal has saved, and the status line says
+**Saves when Undo ends**.
+
+<Tip>
+  If you close the browser tab while an edit has not saved yet, the browser asks before it leaves the
+  page.
+</Tip>
+
+## The save status
+
+The status line at the top of the list tells you what happened to your last change:
+
+| Status | Meaning |
+| --- | --- |
+| **Saving…** | A save is in progress |
+| **Draft saved · Release to publish** | The change is in the draft. The live survey does not change |
+| **Not saved —** and a reason | The save failed. Your change is still on the screen |
+
+On a survey that is live, the line also says, for example,
+*Live v3 is unchanged until you release.*
+
+If AutoSurvey refuses a change because it would break the survey, the reason shows beside the
+question, and the card shows **Fix needed**.
+
+### Compare with the live release
+
+* **New** — the question is not in the live release yet.
+* **Edited** — the question differs from the live release. **Undo**, beside it, restores the
+  released version of that question.
+* **Revert all changes… (N)** on the toolbar lists every draft change. **Revert all N** puts every
+  question back to the live release. **Keep editing** closes the list. You cannot undo a revert.
+
+## Replace or import all questions
+
+* **Replace all questions…** on the toolbar, or **Populate questions…** / **Change questions…** in
+  the survey's **⋯** menu, opens the ways to write the questions again: describe them, paste them,
+  import CSV/JSON and more. See [Prompt to Survey](/workflows/prompt-to-flow).
+* **Import from sheet**, in the **⋯** menu, replaces the draft with the questions in the connected
+  Google Sheet. It asks first. See [Sheets to Survey](/workflows/sheets-to-flow).
+
+## Validate, try and release
+
+The survey header has these actions:
+
+* **Validate** — shows only on the Questions tab. It checks the connected Google Sheet for errors.
+* **Try it** — run the survey **As yourself** or **As a guest on your site**. Test runs are not
+  counted in results.
+* **Release** — **Release v1** on a new survey, or **Release N changes** when the draft has changes.
+  See [Release & Share](/workflows/deploy-and-verify).
+
+## Related
+
+* [Prompt to Survey](/workflows/prompt-to-flow) — the first draft
+* [Option Sets](/concepts/option-sets)
+* [Conditional Visibility](/concepts/conditional-visibility)
+* [Validation Rules](/concepts/validation)
+* [Sheets to Survey](/workflows/sheets-to-flow) — bulk edits in Google Sheet (advanced)
+* [Release & Share](/workflows/deploy-and-verify)

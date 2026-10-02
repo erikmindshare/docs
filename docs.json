@@ -21,11 +21,12 @@
       {
         "group": "Building a Survey",
         "pages": [
-          "workflows/sheets-to-flow",
           "workflows/prompt-to-flow",
+          "workflows/import-an-existing-survey",
           "workflows/design-with-ai",
-          "concepts/questions-sheet",
-          "workflows/import-an-existing-survey"
+          "workflows/edit-questions",
+          "workflows/sheets-to-flow",
+          "concepts/questions-sheet"
         ]
       },
       {
@@ -51,12 +52,14 @@
       {
         "group": "Distribution",
         "pages": [
+          "workflows/send-a-survey",
           "admin/campaign-distribution"
         ]
       },
       {
         "group": "Data",
         "pages": [
+          "concepts/results-and-responses",
           "concepts/data-and-reporting",
           "api/overview"
         ]
@@ -65,6 +68,8 @@
         "group": "Administration",
         "pages": [
           "admin/setup",
+          "admin/survey-settings",
+          "admin/scoring-and-alerts",
           "admin/installation-and-permissions",
           "admin/objects-permissions-layouts",
           "admin/security-and-privacy"

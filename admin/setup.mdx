@@ -11,7 +11,24 @@ This guide explains every item on the **AutoSurvey Setup Home** page: what it ch
 
 After installing AutoSurvey, open the **AutoSurvey** app and click the **Setup** tab.
 
-The Setup Home page runs automated checks and shows what is ready versus what still needs attention. Most issues can be repaired with a single button click.
+The Setup Home page runs automated checks and shows what is ready and what still needs attention. The summary at the top reads **System Ready**, **Setup Incomplete**, or **Action Required**, and counts the required checks that pass.
+
+When a check needs attention, the summary lists it under **Needs attention**. Click a name in that list to go to the check. Each failing check has one action: a button that runs the fix, a link that opens the Setup page where you make the fix, or a button that opens the part of Setup Home that holds the fix.
+
+### Finish Initial Setup
+
+On a new install, the **Finish Initial Setup** card shows a **Complete Setup** button. Opening Setup Home changes nothing in your org. Only the click does. The click:
+
+- Creates or repairs the internal connection and the Guest Response Queue.
+- Assigns you the **Self Org Access** and **Self Org JWT Access** permission sets.
+- Adds the sample surveys.
+- Tests the connection to the AutoSurvey server, and connects the org to the server if it is not connected yet. When the server asks for proof, Salesforce first asks you to verify the org.
+
+### If Setup Home cannot load for you
+
+- **"AutoSurvey Setup needs access for your user."** Reload the page once. If the message stays, assign the **Setup Bootstrap** permission set, or the **AutoSurvey Full Admin** permission set group, to your user. Then reload again.
+- **"Setup changes on this page need a Salesforce administrator."** Your user does not have the **View Setup and Configuration** permission, so links into Salesforce Setup open "Page not found". Ask a Salesforce administrator to make the change, or to give you that permission.
+- **"Action Required: Enable Callouts"**. Salesforce turned off callouts on an AutoSurvey Named Credential. The card lists each credential that needs it, with an **Open Credential** link. On the credential page, click **Edit**, turn on **Enabled for Callouts**, and save. Then click **Complete Setup**.
 
 ## Required Checks
 
@@ -21,137 +38,206 @@ If a required check fails:
 - The progress indicator reflects it.
 - A repair action appears.
 
+Status badges are **PASS**, **FAIL**, **NOT TESTED**, and **UNKNOWN**. When a check passes, its button changes to **Re-verify**.
+
 ### Admin Access
+
+Shown on Setup Home as **Setup Admin Access**.
 
 | Item | Details |
 | --- | --- |
-| **What it checks** | Whether the current user has the `ASVY_Full_Admin` permission set group (preferred) or all three admin permission sets: `AutoSurvey_Admin`, `ASVY_Deploy_Admin`, and `AutoSurvey_Survey_Admin`. |
-| **Why it matters** | Without admin permissions, you cannot configure surveys, deploy flows, or manage suite settings. |
-| **How to fix** | Click **Assign Admin Access to Me**. AutoSurvey assigns `ASVY_Full_Admin` when available; otherwise it falls back to assigning required individual permission sets. |
-| **Troubleshooting** | If assignment fails, a System Administrator can manually assign permission sets in **Setup -> Permission Sets**. |
+| **What it checks** | Whether your user holds one of these: the **AutoSurvey Full Admin** permission set group, the **Setup Bootstrap** permission set, all three of **AutoSurvey Admin**, **Deploy Admin** and **AutoSurvey Survey Admin**, or the **Deploy Surveys** custom permission. |
+| **Why it matters** | Without admin permissions, you cannot configure surveys, release them, or manage settings. |
+| **How to fix** | A System Administrator assigns **AutoSurvey Full Admin** (recommended) or **Setup Bootstrap** (minimal) in Setup. **Verify Setup Admin Access** checks again. It does not assign anything. |
+| **Note** | Only the Full Admin group carries **PBO Service Access**, which the AutoSurvey Server Connection check needs. The three individual admin sets do not. |
 
 ### Internal Connection
 
 | Item | Details |
 | --- | --- |
-| **What it checks** | Whether the `AutoSurvey_Self_Org` Named Credential exists and points to your current org domain. |
-| **Why it matters** | AutoSurvey uses this connection for internal API and metadata operations (including flow deployment). |
-| **How to fix** | Click **Repair Internal Connection** to create or update the Named Credential to your current org URL. |
-| **After sandbox refresh** | This is the most common check to fail after refresh because org domain URLs change. |
-| **Technical detail** | AutoSurvey uses `ConnectApi.NamedCredentials` with current `URL.getOrgDomainUrl()` and `AutoSurvey_Self_Org` external credential access. |
+| **What it checks** | Whether the **Self_Org** Named Credential exists and points to your current org domain. |
+| **Why it matters** | AutoSurvey uses this connection to call your own org, for example to add reporting fields when you release a survey. |
+| **How to fix** | Click **Repair Self Org Named Credential** to create or update the credential for your current org URL. If callouts are turned off on the credential, the check shows **Open Self_Org in Setup** instead. Turn on **Enabled for Callouts** there, save, and reload Setup Home. |
+| **After sandbox refresh** | This is the most common check to fail after a refresh, because the org domain URL changes. |
 
-### Control Plane Connection
+<a id="control-plane-connection"></a>
 
-This check appears in subscriber orgs (most customers). In control plane orgs, the same slot appears as **Google Credentials** instead — see the next section.
+### AutoSurvey Server Connection
+
+This check appears in customer orgs (most customers). In the AutoSurvey hosting org, the same slot shows **Google Credentials** instead. See the next section.
 
 | Item | Details |
 | --- | --- |
-| **What it checks** | Whether your org is connected to the AutoSurvey control plane (secure intermediary for Google API operations). |
+| **What it checks** | Whether your org is connected to the AutoSurvey server, which makes Google API calls for your org. |
 | **Why it matters** | AutoSurvey needs Google Sheets and Drive access for survey definitions and suite sheet operations. |
-| **How to fix** | Click **Connect to Control Plane** for one-time bootstrap registration. |
-| **Troubleshooting** | Verify outbound HTTPS callouts are allowed and check the `AutoSurvey_Control_Plane` Named Credential configuration. |
-| **Technical detail** | Bootstrap generates/stores HMAC keys (`ASVY_Bootstrap_Secret__c`) and registers org identity for signed control-plane requests. |
+| **How to fix** | Click **Connect to the AutoSurvey Server** for the one-time connection. |
+| **Troubleshooting** | Your user must hold **PBO Service Access** (the Full Admin group and Setup Bootstrap carry it). If it is missing, the check says so and names the permission set. Also make sure outbound HTTPS callouts are allowed. |
 
 ### Google Credentials
 
-This check appears in control plane orgs (the AutoSurvey hosting/dev org), which call Google APIs directly instead of routing through the control plane.
+This check appears only in the AutoSurvey hosting org, which calls Google APIs directly.
 
 | Item | Details |
 | --- | --- |
-| **What it checks** | Whether `Autosurvey_Salesforce_Bot_Google` external credential and Google Named Credentials are configured. |
-| **Why it matters** | The control plane org connects directly to Google APIs through service-account-backed credentials. |
-| **How to fix** | Click **Deploy Google Credentials** to create credentials and required permission set. |
+| **What it checks** | Whether the Google external credential and Google Named Credentials are configured. |
+| **Why it matters** | The hosting org connects directly to Google APIs. |
+| **How to fix** | Click **Deploy Google Credentials** to create the credentials and the required permission set. |
 
 ### Google Sheets Access
 
-This check appears in control plane orgs only.
+This check appears only in the AutoSurvey hosting org.
 
 | Item | Details |
 | --- | --- |
-| **What it checks** | Whether the current user has `Autosurvey_Salesforce_Bot_Google_Access`. |
-| **Why it matters** | Users making Google API callouts need principal access to the external credential. |
+| **What it checks** | Whether the current user has the Google access permission set. |
+| **Why it matters** | Users making Google API callouts need access to the external credential. |
 | **How to fix** | Click **Fix Google Access** to assign the permission set to your user. |
-| **Note** | Subscriber orgs do not need this because Google calls route through the control plane. |
+| **Note** | Customer orgs do not need this, because Google calls go through the AutoSurvey server. |
 
 ### Connection Verification
 
-| Item | Details |
-| --- | --- |
-| **What it checks** | Live connectivity test to Google APIs (direct or via control plane). |
-| **Why it matters** | Verifies end-to-end runtime path, not just static configuration. |
-| **How to fix** | Click **Test Connection** (or **Re-verify**). |
-| **Status values** | **Pass** = successful API response. **Fail** = request returned error. **Not Tested** = no verification run yet. |
-| **Troubleshooting** | Ensure prior checks pass, inspect detail error message/status code, and contact support if control plane errors persist. |
-
-### Response Owner Queue
-
-Shown on Setup Home as **Guest Response Queue**.
+In customer orgs this check is shown as **AutoSurvey Server Verification**.
 
 | Item | Details |
 | --- | --- |
-| **What it checks** | Whether the `AutoSurvey_Response_Owners` queue exists and can own every guest-written survey object. |
+| **What it checks** | A live test call to Google APIs (direct, or through the AutoSurvey server). |
+| **Why it matters** | Verifies the full runtime path, not only the configuration. |
+| **How to fix** | Click **Test Google Connection** (or **Re-verify**). |
+| **Status values** | **PASS** = successful API response. **FAIL** = the request returned an error. **NOT TESTED** = no verification run yet. |
+| **Troubleshooting** | Make sure the checks above pass. Click **Show details** to read the full error. Contact support if server errors continue. |
+
+<a id="response-owner-queue"></a>
+
+### Guest Response Queue
+
+| Item | Details |
+| --- | --- |
+| **What it checks** | Whether the **AutoSurvey Response Owners** queue exists and can own every guest-written survey object. |
 | **Why it matters** | Public (guest / Experience Cloud) survey responses are owned by this queue so anonymous visitors cannot read each other's data. Queues cannot ship inside a managed package, so it is created at setup time. Without it, guest survey saves fail. |
-| **How to fix** | Click **Create Response Owner Queue**. The action is idempotent — safe to re-run, and it also repairs a queue that exists but is missing objects. |
-| **Status values** | **Pass** = queue exists and owns all guest survey objects. **Fail** = queue is missing, or exists but cannot own some objects (the detail lists which). |
+| **How to fix** | Click **Create Response Owner Queue**. The action is safe to run again. It also repairs a queue that exists but is missing objects. |
+| **Status values** | **PASS** = queue exists and owns all guest survey objects. **FAIL** = queue is missing, or exists but cannot own some objects (the detail lists which). |
+
+<a id="sample-library"></a>
+
+### Samples and Reminders
+
+| Item | Details |
+| --- | --- |
+| **What it checks** | Whether all shipped sample surveys are present, and whether the hourly reminder job is registered. |
+| **Why it matters** | Example surveys and starter templates use the samples. Without the reminder job, survey reminders are not sent. |
+| **How to fix** | Click **Restore Samples and Reminders**. It restores both. |
+
+<a id="self-org-sign-in"></a>
+
+### AutoSurvey Sign-In
+
+| Item | Details |
+| --- | --- |
+| **What it checks** | Whether AutoSurvey can sign in to this org as you, through its app **AutoSurvey Self Org JWT**. |
+| **Why it matters** | AutoSurvey uses this sign-in to add reporting fields when you release a survey. If it fails, the first release fails. **System Ready** waits for this check to pass. |
+| **How to fix** | Click **Authorize AutoSurvey**, then click **Allow** on the Salesforce page that opens. Each user who releases surveys does this once. If you do not have the **Self Org Access** permission set, the row first shows **Grant sign-in access**. Click it, then click **Authorize AutoSurvey**. If an admin set the app policy to "Admin approved users are pre-authorized", the row shows **Open External Client App Manager** instead. |
+| **Status values** | **NOT TESTED** until the sign-in answers. **PASS** = AutoSurvey signed in. **FAIL** = the detail says why. |
+
+<a id="captcha-keys"></a>
+
+### CAPTCHA Keys
+
+This check appears only when a public survey link is active and its CAPTCHA mode is not **Never**.
+
+| Item | Details |
+| --- | --- |
+| **What it checks** | Whether reCAPTCHA keys are saved. |
+| **Why it matters** | Keys let AutoSurvey challenge a surge of anonymous starts. Without them, the start caps are the only limit, and past the hourly cap every respondent on that survey is refused until the hour passes. |
+| **How to fix** | Click **Enter CAPTCHA keys**. Setup Home opens the [CAPTCHA Configuration](#captcha-configuration) form and moves to the Site Key field. |
+
+<a id="guest-start-cap"></a>
+
+### Guest Start Cap
+
+This check appears only when the hourly guest start cap refused respondents in the last 24 hours.
+
+| Item | Details |
+| --- | --- |
+| **What it checks** | Which survey the cap closed, when, and for how many respondents. |
+| **Why it matters** | The cap closes the whole survey to anonymous respondents until the hour passes. |
+| **How to fix** | Click **Raise the cap in Setup** to raise **Max Guest Starts Per Hour**, or enter reCAPTCHA keys so a surge is challenged instead of refused. |
 
 ## Permission Sets
 
-Setup Home shows installed AutoSurvey permission sets, assignment counts, and assignment details.
+This section lists every permission set AutoSurvey ships, with what it grants and who should hold it. Each row shows badges: **Installed** or **Missing**, the number assigned, **Required** or **Optional**, and **You Have It** or **You Don't Have It**. Click **Manage Assignments** to open the assignment page in Salesforce Setup.
+
+Five sets are badged **Required**:
 
 | Permission Set | Purpose |
 | --- | --- |
-| **AutoSurvey_Admin** | Core admin access to AutoSurvey objects and settings. |
-| **ASVY_Deploy_Admin** | Deployment/schema permissions, including `ASVY_Deploy` custom permission. |
-| **AutoSurvey_Survey_Admin** | Runtime survey administration and management access. |
-| **ASVY_Super_User** | Elevated troubleshooting and diagnostic access. |
-| **ASVY_Self_Org_Access** | Access to `AutoSurvey_Self_Org` Named Credential for self-org callouts. |
-| **AutoSurvey_Guest_Access** | Minimum access for Experience Cloud guest users taking surveys. |
+| **AutoSurvey Admin** | Core admin setup and configuration access. |
+| **Deploy Admin** | Reporting-field setup and setup operations, for admins who release surveys. |
+| **AutoSurvey Survey Admin** | Survey administration access. |
+| **PBO Service Access** | Calls to the AutoSurvey server. Complete Setup and the server checks refuse without it. The Full Admin group and Setup Bootstrap carry it. |
+| **Self Org JWT Access** | Marks the users who release surveys and add reporting fields. Complete Setup assigns it to the admin who clicks. Each of these users also clicks **Authorize AutoSurvey** once on the [AutoSurvey Sign-In](#self-org-sign-in) row. |
 
-> Tip: For most admins, assign **ASVY_Full_Admin** (permission set group) instead of individual sets.
+The other rows (for example **Super User**, **Setup Bootstrap**, **Self Org Access**, **AutoSurvey Guest Access**, and the BYOK sets) are optional and depend on how you use AutoSurvey. See [Installation & Permissions](/admin/installation-and-permissions).
+
+> Tip: For most admins, assign the **AutoSurvey Full Admin** permission set group instead of individual sets.
 
 ## Prepare for Uninstall
 
 The **Uninstall Preparation** card readies the org for uninstalling the AutoSurvey package. Clicking **Prepare for Uninstall** removes every removable AutoSurvey permission set and permission set group assignment for **all users in the org**, then scans for uninstall blockers it cannot clear for you (such as a custom object of yours with a relationship field pointing at an AutoSurvey object) and lists them with instructions.
 
 <Warning>
-This action is destructive and org-wide: it revokes AutoSurvey access for every user, not just you. And uninstalling the package afterward permanently deletes all survey response data stored in the package's objects. Export responses first — the card shows how many submissions are affected and requires you to acknowledge the export before the button enables.
+This action is destructive and org-wide: it revokes AutoSurvey access for every user, not just you. And uninstalling the package afterward permanently deletes all survey response data stored in the package's objects. Export responses first. The card shows how many submissions are affected, and **Open the export screen** takes you to the export. The button stays off until you tick "I've exported my responses, or don't need them".
 </Warning>
 
-The result reports what was removed, any profile-owned assignments Salesforce requires you to clear manually, and remaining blockers to clear by hand before the uninstall will run. **Ready** means no known blockers remain — a scan, not a guarantee: an unpublished Experience Builder draft or a deleted-but-not-erased custom object can still block the uninstall without being visible to any check.
+The result reports what was removed, any profile-owned assignments Salesforce requires you to clear manually, and remaining blockers to clear by hand before the uninstall will run. **Ready** means no known blockers remain. It is a scan, not a guarantee: an unpublished Experience Builder draft or a deleted-but-not-erased custom object can still block the uninstall without being visible to any check.
 
-## Control Plane Security
+<a id="control-plane-security"></a>
 
-This section appears for subscriber orgs after control plane connection succeeds.
+## AutoSurvey Server Security
+
+This section appears in customer orgs after the AutoSurvey server connection succeeds.
 
 ### HMAC Key Rotation
 
 | Item | Details |
 | --- | --- |
-| **What it does** | Rotates the HMAC key used for org-to-control-plane request signing. |
-| **When to rotate** | Periodically (for example quarterly) or immediately if key compromise is suspected. |
-| **Grace period** | Previous key remains valid for 7 days to avoid service interruption. |
-| **Key ID** | Setup displays current key ID and rotation timestamp. |
+| **What it does** | Rotates the HMAC secret your org uses to authenticate with the AutoSurvey server. Click **Rotate Key**. |
+| **When to rotate** | Periodically (for example quarterly) or immediately if you think the key is compromised. |
+| **Grace period** | The previous key remains valid for 7 days to avoid service interruption. |
+| **Key ID** | The card shows the current **Key ID** and **Last Issued** time. |
 
 ## Recommended Checks
+
+Each **Activate** button in this section sets an AutoSurvey Lightning record page as the org default for one object: Contact, Lead, Campaign, or Survey Submission. Nothing changes until you click. You can undo each change in Setup, under **Object Manager → Lightning Record Pages**.
 
 ### Survey Submission Record Page
 
 | Item | Details |
 | --- | --- |
-| **What it checks** | Whether the packaged `Survey_Submission__c` Lightning Record Page is activated. |
-| **Why it matters** | Without activation, users see default layout instead of AutoSurvey submission experience. |
-| **How to fix** | Click **Open Lightning Record Pages**, locate the AutoSurvey page, and activate as needed. |
+| **What it checks** | Whether the packaged Survey Submission Lightning record page is the org default. |
+| **Why it matters** | Without it, users see the default layout instead of the AutoSurvey submission page. |
+| **How to fix** | Click **Activate**. To review the page in Setup, click **Open in New Tab** (**Review in New Tab** when the check passes). |
+
+### Contact, Lead and Campaign Record Pages
+
+Setup Home shows one card for each packaged CRM record page: **Contact Record Page**, **Lead Record Page**, and **Campaign Record Page**. Each card reads the org default for that object on desktop and phone.
+
+| Item | Details |
+| --- | --- |
+| **Status values** | **PASS** = the AutoSurvey page is the org default. **ACTION NEEDED** = it is not. You may keep another page on purpose. |
+| **How to fix** | Click **Activate**. The card shows **STARTED** while Salesforce applies the change, then shows the result. After a recorded activation, the button reads **Activate again**. |
 
 ### Publishing Health
 
 | Item | Details |
 | --- | --- |
-| **What it checks** | The last 7 days of publishing activity: reporting-field setup steps that failed during survey publishes (the `Metadata_Deploy_Request__c` deploy transport) and survey responses that failed to write back to their reporting fields. |
-| **Why it matters** | A publish whose reporting setup failed, or a response that never copied into reporting fields, leaves reports and exports incomplete even though responses themselves are captured safely. |
-| **How to fix** | On failure, the check lists each affected survey or response with its error text. For failed reporting-setup steps, use the [reporting drift repair](#reporting-drift-repair) further down the page — the **Go to reporting repair** button jumps straight to it. For failed write-backs, open that survey in Survey Suites and click **Retry** on the **Reporting copy incomplete** card at the top of the page. |
-| **Status values** | **Pass** = no failed publishes or write-backs in the last 7 days. **Fail** = failures found; each is listed. **Not Tested** = responses are still pending write-back — usually resolves within a few minutes. |
+| **What it checks** | The last 7 days of release activity: reporting-field setup steps that failed, and survey responses that failed to write back to their reporting fields. |
+| **Why it matters** | A release whose reporting setup failed, or a response that never copied into reporting fields, leaves reports and exports incomplete even though responses themselves are captured safely. |
+| **How to fix** | On failure, the check lists each affected survey or response with its error text. For failed reporting-setup steps, use the [reporting drift repair](#reporting-drift-repair) further down the page. The **Go to reporting repair** button goes straight to it. For failed write-backs, open that survey, go to its **Results** tab, and click **Retry** on the **Missing from Salesforce reports** card. |
+| **Status values** | **PASS** = no failed releases or write-backs in the last 7 days. **FAIL** = failures found; each is listed. **NOT TESTED** = responses are still waiting for write-back. This usually resolves within a few minutes. |
 
 ### Raw Response Access
+
+Shown on Setup Home as **Share the raw-response report folder**.
 
 Raw-response reports and CSV/ZIP exports show **individual** survey responses. Aggregate Insights apply
 disclosure floors so small groups can't be re-identified; individual responses have no such floor, so
@@ -159,10 +245,10 @@ they are gated to authorized **raw-response administrators** only.
 
 | Item | Details |
 | --- | --- |
-| **What it checks** | Whether the raw-response report folder is shared with the right users and the raw-response permission set is assigned. |
+| **What it checks** | How many active users hold the **AutoSurvey: Raw Response Access** custom permission, through any permission set or profile. |
 | **Why it matters** | Reveals individual, potentially identifying responses. Access is deliberately narrow so raw exports don't leak past the people entitled to see them. |
-| **How to fix** | This is an **instructional** check, not a one-click repair — the **folder share and the permission set only work together**, and neither is safe to change automatically. Share the raw-response report folder with your raw-response administrators, then assign them the raw-response permission set. |
-| **Status values** | **Not Tested** is expected here — the card is guidance, not an automated verification. |
+| **How to fix** | This is not a one-click repair. The **folder share and the permission set only work together**, and neither is safe to change automatically. Share the raw-response report folder with your raw-response administrators, then assign them the **AutoSurvey Raw Response Access** permission set. On a failure, **Go to permission sets** opens the Permission Sets section. |
+| **Status values** | **PASS** = at least one active user can export raw responses (the detail gives the count). **NOT TESTED** = no active user holds the permission yet. |
 
 <Warning>
 Raw-response access exposes individual answers. Grant it only to users who are entitled to see
@@ -171,88 +257,121 @@ identifying data, and prefer aggregate Insights (which enforce disclosure floors
 
 ### Survey Reports Access
 
+Shown on Setup Home as **Share the Survey Reports folder**.
+
 The packaged **"AutoSurvey Survey Reports"** folder holds the aggregate/summary reports meant for
-**every internal user**. Its metadata ships as `PublicInternal`, but Salesforce **ignores packaged
-report-folder shares at install**, so the folder lands **hidden** until an admin shares it once.
+**every internal user**. Salesforce **ignores packaged report-folder shares at install**, so the folder
+lands **hidden** until an admin shares it once.
 
 | Item | Details |
 | --- | --- |
 | **What it checks** | Whether the packaged **AutoSurvey Survey Reports** folder is shared with internal users. |
-| **Why it matters** | Without the share, the summary reports are invisible even though they're intended for the whole org — a packaging quirk, not a permissions decision you made. |
-| **How to fix** | Click **Share the Survey Reports folder**. The one-click action grants internal-user access; the button disappears once the folder is shared. |
-| **Status values** | **Pass** = folder shared with internal users. **Not Tested** / **Fail** = still hidden — click the share button. |
+| **Why it matters** | Without the share, the summary reports are invisible even though they're intended for the whole org. This is a packaging limit, not a permissions decision you made. |
+| **How to fix** | Click **Share with all internal users**. The button disappears once the folder is shared. |
+| **Status values** | **PASS** = folder shared with internal users. **NOT TESTED** / **FAIL** = still hidden. Click the share button. |
+
+## Optional Capabilities
+
+AutoSurvey works without any of these. Each capability unlocks an extra way to collect responses, and lists what it needs and where to set it up. The section is collapsed by default. Click **Show section** to open it.
+
+- **Show survey suites**: an org-wide switch. A suite holds several forms of one survey. Turn it on when you need variations by audience or wave. Until it is on, AutoSurvey says "survey" everywhere. **Learn more** opens the audiences-and-waves guide.
+- **Email invitations**: needs a verified send-from address, the survey base URL, email deliverability, and domain authentication (DKIM). Click **Set up email** to open the email setup steps on this page.
+- **Public and member surveys**: needs Digital Experiences turned on.
+- **AI survey generation**: needs AI models in the AutoSurvey model catalog.
+
+Each item shows **Ready**, **Setup needed**, or **Couldn't verify**, with an **Open Setup** link where the fix is in Salesforce Setup.
+
+<a id="ai-models"></a>
+
+## AI Models & Tiers
+
+- **Hosted AI allowance**: shows how much hosted AI this org has left this month. If the org uses its own key, no allowance applies.
+- **AI provider**: choose **Hosted** (AutoSurvey's key, metered against this org's monthly allowance) or **Bring your own key** (this org's own OpenAI or Anthropic key, no allowance). With Bring your own key, enter each provider's key here and click **Save key** (or **Replace key**).
+- **Default Tiers**: choose which AI model each tier runs on. Authors pick a tier when they generate a survey. Only admins change what a tier means.
+- **Model updates from the AutoSurvey server**: shows when AutoSurvey last checked for new models, and has a switch to **Apply new model catalogs automatically**.
 
 ## Reporting Drift Repair
 
-The **Check every live survey for reporting drift** card scans all live surveys for reporting setup that did not finish — missing reporting fields or missing field access. Responses are always captured safely even when reporting drifts; drift only affects reports and exports. This is the remedy [Publishing Health](#publishing-health) points at when reporting-setup steps fail.
+The **Check every live survey for reporting drift** card scans all live surveys for reporting setup that did not finish: missing reporting fields or missing field access. Responses are always captured safely even when reporting drifts; drift only affects reports and exports. This is the remedy [Publishing Health](#publishing-health) points at when reporting-setup steps fail.
 
-Click **Scan** to list any drifted surveys, each with a one-line summary. **Review & repair** opens the same disclosure used by the publish flow: you see exactly which fields and permissions will change before the repair re-runs reporting setup for that survey.
+Click **Scan for drift** to list any drifted surveys, each with a one-line summary. **Review & repair** shows you exactly which fields and permissions will change before the repair runs reporting setup again for that survey.
+
+## Scheduled Jobs
+
+AutoSurvey runs its background work from two shared jobs. The panel shows each job's state, last run, and next run.
+
+- **Essential jobs** run every hour. They are always on, because AutoSurvey needs them (for example survey reminders and scheduled close).
+- **Optional jobs** run every day at 02:00 (for example log cleanup and expired draft cleanup). Use the **Run the optional jobs** switch to turn them off or on.
 
 ## Public Survey Access
 
-Enable this option if surveys should run for unauthenticated respondents via Experience Cloud.
+Public links and QR codes run on an Experience Cloud site. Complete the steps in this section to collect responses from people who do not sign in.
+
+<a id="survey-base-url"></a>
+
+### Survey Base URL
+
+Enter the **Base Survey URL** and click **Save URL**. This value builds the survey links in email invitations. The public link and the QR code use your Experience site.
 
 ### Experience Cloud Site Setup
 
 To support guest respondents:
 
-1. Create/activate an Experience Cloud site (**Digital Experiences -> All Sites** or **Setup -> Sites**).
-2. Assign `AutoSurvey_Guest_Access` to the site guest user.
-3. Deploy a survey flow and publish an Experience page containing the flow.
+1. Create or open your Experience Cloud site in **Setup → Sites and Domains**.
+2. Assign the **AutoSurvey Guest Access** permission set to the site guest user.
+3. Release your survey and share its live link. Guests can respond without signing in once the site is ready.
+
+If Digital Experiences is not turned on in your org, Setup Home says so and links to the Digital Experiences settings.
 
 ### Your Experience Sites
 
-Setup automatically detects sites and readiness:
-- **Ready**: Guest user has required access.
-- **Not configured**: Guest user still missing required access.
-- **Active survey flows**: Count of active AutoSurvey flows in org.
+Setup automatically detects active sites and their readiness:
+- **Ready**: The guest user has the required access.
+- **Not configured**: The guest user still needs access. Click **Assign guest access** to open Permission Sets.
+- **Default**: The site AutoSurvey uses by default.
 
 ### CAPTCHA Configuration
 
-AutoSurvey uses **Google reCAPTCHA v2** ("I'm not a robot") for bot protection on public surveys.
+AutoSurvey uses **Google reCAPTCHA v2** ("I'm not a robot") for bot protection on public surveys. The card appears when the [CAPTCHA Keys](#captcha-keys) check applies. Click **Configure keys** to open the form.
 
 #### Set up CAPTCHA
 
-1. Open [Google reCAPTCHA admin console](https://www.google.com/recaptcha/admin/create).
-2. Create a key using **reCAPTCHA v2 -> I'm not a robot Checkbox**.
-3. Add your Experience Cloud domain.
-4. Paste Site Key and Secret Key into Setup Home.
+1. Open the [Google reCAPTCHA admin console](https://www.google.com/recaptcha/admin/create).
+2. Create a key using **reCAPTCHA v2 → "I'm not a robot" Checkbox**.
+3. Add your Experience Cloud site domain. Setup Home lists the domains of your detected sites.
+4. Paste the **reCAPTCHA Site Key** and **reCAPTCHA Secret Key** into Setup Home and click **Save CAPTCHA Keys**.
 
 #### CAPTCHA status indicators
 
 | Status | Meaning |
 | --- | --- |
 | **Keys not configured** | No keys saved; no CAPTCHA protection active. |
-| **Keys configured, hostname not set** | CAPTCHA works, but hostname verification not enforced. |
+| **Configuration incomplete** | Only one of the two keys is saved. Both are required. |
+| **Keys configured, hostname not set** (PARTIAL) | CAPTCHA works, but hostname verification is not enforced. |
+| **Secret key verification failed** | The keys are saved, but Google did not accept the secret key. Review the key and save again. |
 | **Keys configured and hostname set** | Full configuration with hostname verification. |
 
 #### Secret key verification
 
-When keys are saved, AutoSurvey verifies Secret Key with Google:
-- **Secret key verified**: Key accepted.
-- **Secret key rejected**: Invalid key.
+When you save the keys, AutoSurvey verifies the secret key with Google and shows the result under the form. The secret key field is write-only: leave it blank to keep the current key.
 
 #### Expected hostname (optional)
 
-Set hostname to your Experience Cloud domain to enforce origin validation.
+Set **Expected Hostname** to your Experience Cloud domain to reject tokens from other hosts. If Setup Home finds an active site, click **Use suggested domain**.
 
-> Note: Required CSP and Remote Site entries for reCAPTCHA are package-provided.
+> Note: The CSP and Remote Site entries that reCAPTCHA needs are included in the package.
 
 ### Default Favicon
 
-Sets the org-wide default browser-tab icon for public survey links. Each survey resolves its favicon in three tiers: the survey's own favicon setting, then this org default, then the built-in AutoSurvey icon — so the org default applies to every survey that has not set its own.
+Sets the org-wide default browser-tab icon for public survey links. Each survey resolves its favicon in three tiers: the survey's own favicon setting, then this org default, then the built-in AutoSurvey icon. So the org default applies to every survey that has not set its own.
 
-Enter a public http(s) URL or a root-relative `/path` (up to 255 characters) and click **Save Favicon URL**. Leave blank to use the AutoSurvey default icon.
+Choose an image from **Your computer**, **A web address**, or **Built-in artwork**, and click **Save Favicon URL**. Leave it blank to use the AutoSurvey default icon.
 
 ## Optional Integrations
 
-### OpenAI BYOK (Bring Your Own Key)
+### Bring your own AI keys (OpenAI and Anthropic)
 
-Optional for orgs that want customer-managed OpenAI credentials for AI features.
-
-## AI Tier Profiles
-
-Manage default/custom AI tiers for generation, naming, and shortening workflows.
+Optional, for orgs that want to use their own AI accounts. The AI tiers use models from both vendors, so a BYOK org needs a key for **each** provider its tiers use. Enter the keys in the **AI provider** chooser under [AI Models & Tiers](#ai-models).
 
 ## Respondent Confidentiality Note
 
@@ -261,14 +380,20 @@ An org-wide confidentiality policy controlling whether surveys open with a soft 
 | Policy | Effect |
 | --- | --- |
 | **Off** (default) | No confidentiality note is added. New surveys start with a blank welcome unless the author writes one. |
-| **On by default** (`OnByDefault`) | The note is seeded onto each new survey's Welcome message. Authors can reword or remove it per survey. |
+| **On by default** | The note is seeded onto each new survey's Welcome message. Authors can reword or remove it per survey. |
 | **Required** | The note is seeded **and enforced**: every survey always shows the confidentiality note on its welcome screen, even if an author clears or replaces the welcome. |
 
-The wording is an editable org-wide default (up to 255 characters); leave it blank to use the built-in text. The note is a soft reassurance respondents see once — it is not a legal guarantee and not a substitute for a Consent question.
+The wording is an editable org-wide default (up to 255 characters); leave it blank to use the built-in text. Click **Save Policy** to save. The note is a soft reassurance respondents see once. It is not a legal guarantee and not a substitute for a Consent question.
+
+## Other Cards
+
+- **Invitation Code**: enter a code and click **Redeem** to apply trial upgrades, extended access, or special plan entitlements to this org.
+- **Sandbox Linking** (production orgs): click **Generate Link Code** to get a production link code.
+- **Connect to Production** (sandboxes): paste the production link code and click **Link to Production**. The sandbox then shares the production AI usage pool.
 
 ## Diagnostics
 
-### Show System Details
+### Show system details
 
 Displays:
 - Package Version
@@ -277,7 +402,7 @@ Displays:
 
 ### Copy Diagnostic Info
 
-Copies a support bundle with check states and org configuration. Use this when contacting support.
+Copies a support bundle with check states and org configuration. Use this when contacting support. The **Contact Support** link at the top of the page opens a support form.
 
 ## Sandbox Considerations
 
@@ -285,7 +410,7 @@ After sandbox refresh:
 
 1. Post-install automation does not re-run.
 2. Internal connection usually needs repair.
-3. Control plane bootstrap may need to be re-run.
+3. The AutoSurvey server connection may need to be run again.
 4. Connection verification should be run again.
 
 Setup shows a sandbox reminder banner in sandbox environments.
@@ -294,20 +419,20 @@ Setup shows a sandbox reminder banner in sandbox environments.
 
 ### "Page not found" for Digital Experiences
 
-Register Salesforce Sites domain first in **Setup -> Sites and Domains -> Sites**, then create Experience site.
+Register a Salesforce Sites domain first in **Setup → Sites and Domains → Sites**, then create the Experience site.
 
 ### Setup checks show UNKNOWN
 
-Open details, retry repair, and use **Copy Diagnostic Info** for support.
+Read the check's detail, run the action again, and use **Copy Diagnostic Info** for support.
 
 ### Internal connection fails after sandbox refresh
 
-Expected behavior due to org domain URL changes. Run **Repair Internal Connection**.
+Expected behavior due to org domain URL changes. Click **Repair Self Org Named Credential**.
 
 ### CAPTCHA says hostname missing
 
-Refresh the page after saving keys. Status should update from persisted config.
+Set **Expected Hostname** in the CAPTCHA form and save. Setup Home reads the state again after each save.
 
-### Control plane connection fails
+### AutoSurvey server connection fails
 
-Confirm outbound HTTPS callouts are allowed and verify `AutoSurvey_Control_Plane` Named Credential.
+Make sure your user holds **PBO Service Access**, that outbound HTTPS callouts are allowed, and that callouts are enabled on the AutoSurvey Named Credentials.

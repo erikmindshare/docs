@@ -1,10 +1,10 @@
 ---
 title: "Quickstart"
-description: "Build, publish and answer a real survey in about fifteen minutes — starting from a template rather than a blank sheet."
+description: "Build, release and answer a real survey in about fifteen minutes — starting from a sample rather than a blank page."
 ---
 
 
-The fastest way to understand AutoSurvey is to publish something and answer it yourself. This takes
+The fastest way to understand AutoSurvey is to release something and answer it yourself. This takes
 about fifteen minutes and ends with a working survey you can send to someone.
 
 <Note>
@@ -12,80 +12,88 @@ about fifteen minutes and ends with a working survey you can send to someone.
   outstanding checks, clear those before starting — see [Setup Home](/admin/setup).
 </Note>
 
-## 1. Create a suite
+## 1. Start a new survey
 
-Open the **Survey Suites** tab and choose **New Survey**.
+Open the **Surveys** tab and click **New Survey**.
 
-A *suite* is the container: it holds your questions, its own Google Sheet, its releases, and the
-responses that come back. One suite per survey programme is the usual shape.
-
-## 2. Start from a template
-
-You could start from an empty sheet — but the quickest useful survey is a template, and four ship
-with the product:
-
-| Template | What it covers |
-| --- | --- |
-| **Customer Satisfaction (CSAT)** | How happy customers are after a purchase or support interaction, and what drives it |
-| **Net Promoter Score (NPS)** | The 0–10 recommend question, the reason behind it, and a follow-up opt-in |
-| **Event Feedback** | Overall rating, what worked across sessions, venue and networking, and what people want next |
-| **New Customer Onboarding** | Friction in the first weeks — how easy setup was, and where people are stuck |
-
-Pick one. Its questions and choice lists are written into your suite's Google Sheet.
-
-<Tip>
-  Two **demos** also ship as complete, runnable surveys — no building required. **Display-Type
-  Gallery** has one question of every display type, which is the fastest way to see what each
-  control actually looks like. **Customer Satisfaction (demo)** is a complete CSAT survey. Demos
-  start with no responses, so their reports open empty — the fast path is to open the demo in the
-  runner, submit one test response yourself, then open the reports.
-</Tip>
-
-## 3. Look at it, and change one thing
-
-Open the suite's Google Sheet. Every question is a row on the **Questions** tab.
-
-Change something small so you can see the loop work — reword a question, or set one to
-`Required = TRUE`. Then open the **AutoSurvey** sidebar (the **AutoSurvey** menu) and choose
-**Run Validation**.
+If AutoSurvey asks **Create in which workspace?**, pick a workspace and click **Continue**. A
+workspace is a folder for surveys. It does not change who can answer a survey.
 
 <Note>
-  Validation checks your workbook. The stricter check happens at import, and the two look at
-  different things — so a clean sidebar isn't a guarantee. That's normal; import is the real test.
-  See [Troubleshooting](/support/troubleshooting).
+  If an admin turned on **Show survey suites** on Setup Home, the app says *suite* where this guide
+  says *survey* — for example **New Suite** and **Create suite**. A suite is a survey with more than
+  one form. Most orgs never need it.
 </Note>
 
-## 4. Import
+## 2. Start from a sample
 
-Import the suite into Salesforce.
+On **Choose how to start**, select **Start from a sample**. The sample library groups its surveys
+by topic, for example *Customer experience* and *Onboarding and adoption*, and you can type in
+**Filter samples** to find one. Open a sample to see **What it asks**, then click
+**Use this sample**.
 
-Importing never makes anything live. Your changes land as **Unpublished changes** and wait for you,
-which means you can import as often as you like while you're working.
+<Tip>
+  Want to look before you build? On the empty Surveys page, **Explore a sample survey** opens
+  **Example surveys**. **Try a ready-made sample** creates a complete survey you can open and run
+  straight away. **Display-Type Gallery** has one question of every display type — the fastest way
+  to see what each control looks like. **Customer Satisfaction (demo)** is a complete CSAT survey.
+  Demos start with no responses, so their results open empty.
+</Tip>
 
-## 5. Publish
+## 3. Review and create
 
-Open the **Publish & Share** panel.
+The **Review** step shows the questions before anything is created. Switch between **List** and
+**Preview** to read them as a list or as the respondent sees them.
 
-Before you commit, it shows what will change — in particular how many reporting fields this publish
-will add to your Response Object. On a first publish that number is roughly your question count,
-because the object is being built.
+Check three fields at the top:
 
-Click **Release suite** (on a later version the button reads **Release v2**, **Release v3**, and
-so on). A dialog — *Review changes before releasing* — gives you a last look; click **Release**.
-The survey is live immediately, and its public link goes live with it.
+| Field | What it does |
+| --- | --- |
+| **Title** | The survey name. You can rename it later. |
+| **Workspace** | Where the survey goes. You can move it later. |
+| **Survey ID** | Part of the public link — the hint shows how your link ends. It cannot change after you create the survey. |
+
+Below them, **Look** lets you pick a theme and a palette. It is optional, and you can change it any
+time on the **Design** tab. **Advanced** holds the description and where answers are stored; both
+have defaults.
+
+Click **Create survey**. The survey opens on its **Questions** tab, in **Preview**.
+
+## 4. Change one thing, and try it
+
+Change something small so you can see the loop work. In **Preview**, click the pencil on a question
+to open its editor. Reword the question, or turn on **Required**, then click **Close**. The status
+line reads **Draft saved · Release to publish**.
+
+Click **Try it** in the survey header to run the survey yourself. If your org has a public site,
+**Try it** offers **As yourself** and **As a guest on your site**. Test runs are not counted in
+results.
 
 <Note>
-  Reporting fields are provisioned in the background just after go-live. If you see *"Reporting
-  setup didn’t start — your release is live, but responses may not appear in reports yet. Use
-  “Review & repair reporting” from Get responses to retry."*, the survey is still live and still
-  capturing every response — run **Review & repair reporting** from **Get responses** when
-  convenient. Responses are never at risk while that runs.
+  You edit questions in the app. Google Sheet sync is an advanced option for bulk edits — the
+  **Sheet sync** button in the header opens it. See [Sheets to Flow](/workflows/sheets-to-flow).
+</Note>
+
+## 5. Release
+
+Nothing you change is live until you release it. In the survey header, click **Release v1**. On a
+later version the button counts your changes, for example **Release 3 changes**.
+
+The **Release version 1** dialog shows what changes for respondents, in the survey, and in
+Salesforce — including the reporting fields this release adds. Click **Release version 1**. The
+survey is live immediately, and its public link goes live with it. The dialog then shows
+**Version 1 is released**, with **Go to Send** to share it.
+
+<Note>
+  Reporting setup runs in the background just after go-live. If the dialog says *Reporting setup
+  failed. Version 1 is released.*, the survey is still live and AutoSurvey still saves every
+  response. Click **Repair reporting** when convenient.
 </Note>
 
 ## 6. Answer your own survey
 
-In **Publish & Share**, the **Public link** row of the **Channels** band now shows the live link,
-a **Copy link** button, and a QR code (under **QR ▾**).
+Open the **Send** tab and click **All channels**. The **Public link** row has a **Copy link** button and a QR
+code (under **QR ▾**). If the row says the link needs setup, click **Set up…** and follow the steps.
 
 <Warning>
   **Open it in a private window.** You're signed in to Salesforce, so the link will work for you
@@ -97,16 +105,17 @@ Fill it in and submit.
 
 ## 7. Find the response
 
-Open your Response Object. There's one record for the survey you just completed, with a field per
+Open the survey's **Results** tab. Your response is there. The **Responses** tab in the app lists
+every response, and AutoSurvey copies each one to the survey's reporting object, with a field per
 question — ordinary Salesforce data you can report on, chart, and automate against.
 
-That's the whole loop: **write → validate → import → publish → collect**.
+That's the whole loop: **start → edit → try → release → send → collect**.
 
 ## Where to go next
 
 <CardGroup cols={2}>
-  <Card title="Write your own" href="/workflows/sheets-to-flow">
-    The Questions tab in full — screens, sections, and the three columns that are actually required.
+  <Card title="Edit in bulk" href="/workflows/sheets-to-flow">
+    Google Sheet sync (advanced) — screens, sections, and the three columns that are actually required.
   </Card>
   <Card title="Start from a prompt" href="/workflows/prompt-to-flow">
     Describe a survey and have the questions drafted for you.

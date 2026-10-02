@@ -7,19 +7,40 @@ description: "Every tab in the app and what it's for — where you build a surve
 Open the **App Launcher** and choose **AutoSurvey**. Eleven tabs — six of them AutoSurvey's own,
 and one of those is where you'll spend almost all your time.
 
-## Survey Suites — where you build
+## Surveys — where you build
 
-**The entry point.** Everything starts here: create a survey, open one you're working on, import
-from its Google Sheet, and publish it.
+**The entry point.** Everything starts here: create a survey, open one you're working on, edit its
+questions, and release it.
 
-A **suite** is the container — its questions, its bound Google Sheet, its releases, and the
-responses that come back. From a suite you reach:
+The page has two parts:
+
+* **The survey list** on the left. Its heading is the name of the current workspace — a folder for
+  surveys. Use it to switch workspace, and **New Survey** to start a survey. The list toggle at the
+  top left of the survey header hides or shows the list.
+* **The open survey** on the right, with one header and five tabs.
+
+The survey header carries the same controls on every tab:
 
 | | |
 | --- | --- |
+| **Try it** | Run the survey yourself, as yourself or as a guest on your site. Test runs are not counted in results |
+| **Release** | Appears when there is something to release — **Release v1** on a new survey, **Release N changes** later. Beside it, the release state (for example *draft* or *live*) opens release history, the public link, and close or reopen |
+| **Validate** | Checks the questions. On the Questions tab only |
+| **Sheet sync** | Google Sheet sync, an advanced option for bulk edits. Its dot shows the sync state |
+| **⋯** | The one menu for everything else: rename, move to another workspace, sheet actions, repair reporting, **Stop accepting responses…**, **Reopen collection…** and delete |
+
+The five tabs:
+
+| | |
+| --- | --- |
+| **Questions** | Build and edit the questions, in **List** or **Preview**. Changes save as a draft until you release |
 | **Design** | How the survey looks — themes, palettes, brand, welcome and ending copy. See [Themes & Design](/concepts/themes-and-design) |
-| **Send** | Sending it out, and the campaign tools |
-| **Publish & Share** | Taking a release live and getting the link. See [Publish & Share](/workflows/deploy-and-verify) |
+| **Send** | How people get the survey — the public link and QR code, in-app, site members and email |
+| **Results** | The responses that came back, reporting health, and a link to CX Analytics |
+| **Settings** | How it runs, answers, scoring and alerts, data (including the reporting object), and the questions sheet |
+
+A survey that stops accepting responses shows as **Closed**. **Reopen collection…** in the **⋯**
+menu opens it again.
 
 <Tip>
   If you are ever unsure where to start, start here. Every other tab in this list is something you
@@ -29,11 +50,12 @@ responses that come back. From a suite you reach:
 ## Setup — where an admin gets the org ready
 
 One-time configuration and the health checks that tell you it worked: connections, permissions,
-public survey access, CAPTCHA. See the [Setup Home Guide](/admin/setup).
+public survey access, CAPTCHA. It also holds the **Show survey suites** switch, which lets one
+survey have more than one form. See the [Setup Home Guide](/admin/setup).
 
-## Submissions — where responses land
+## Responses — where responses land
 
-A browser over every response, with filters and paging. Open an individual submission to read what
+A browser over every response, with filters and paging. Open an individual response to read what
 someone actually answered.
 
 <Note>
@@ -46,7 +68,7 @@ someone actually answered.
 A cross-survey view built on your scored questions, with period-over-period movement.
 
 Filter by metric (**NPS**, **CSAT**, **CES**), date range, survey, form, channel, audience, wave or
-region, and see how each has moved against the previous period.
+country, and see how each has moved against the previous period.
 
 <Note>
   CX Analytics reads the score **stamped onto each submission**, so it only shows questions you
@@ -55,8 +77,8 @@ region, and see how each has moved against the previous period.
 </Note>
 
 <Tip>
-  A survey's own results view links straight through to this tab already filtered to that survey, so
-  you rarely need to set the filters by hand.
+  A survey's own **Results** tab links straight through to this tab already filtered to that survey,
+  so you rarely need to set the filters by hand.
 </Tip>
 
 ## Theme Library — where the org's themes live
@@ -65,8 +87,8 @@ The org-level shelf: which themes and palettes this org has, which are available
 one-click way to get the latest.
 
 <Note>
-  **The Library stocks the shelf; the Design page styles a survey.** Pulling a theme here makes it
-  available in the org. Adopting one happens on a survey's own Design page. See
+  **The Library stocks the shelf; the Design tab styles a survey.** Pulling a theme here makes it
+  available in the org. Adopting one happens on a survey's own **Design** tab. See
   [Themes & Design](/concepts/themes-and-design).
 </Note>
 
@@ -87,6 +109,6 @@ The app also carries **Campaigns**, **Leads** and **Contacts** — used by campa
 
 ## Related
 
-* [Quickstart](/quickstart) — build and publish something in fifteen minutes
-* [Setup Home Guide](/admin/setup) · [Publish & Share](/workflows/deploy-and-verify)
+* [Quickstart](/quickstart) — build and release something in fifteen minutes
+* [Setup Home Guide](/admin/setup) · [Release and share a survey](/workflows/deploy-and-verify)
 * [Data & Reporting](/concepts/data-and-reporting) · [Themes & Design](/concepts/themes-and-design)

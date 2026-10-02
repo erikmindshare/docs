@@ -40,8 +40,21 @@ Reporting is handled through read-only permission sets, not by opening runtime o
 ### 5) Secret handling and logging hygiene
 
 - API keys and secrets are stored using Salesforce-recommended patterns (for example Named Credentials / External Credentials).
+- In **Bring your own key** mode, an admin enters each OpenAI or Anthropic key in the **AI provider** section on Setup Home. The key is saved, encrypted, in an External Credential in your org. It is not written to any record field and is not shown again.
 - Secrets are never returned to the browser.
 - Logging is sanitized to avoid exposing sensitive values.
+
+### 6) Limits on public survey starts
+
+- Each public survey accepts a limited number of anonymous starts per hour (200 by default). One browser that starts the same survey again and again is refused sooner (10 starts per hour by default), while the survey stays open to everyone else.
+- A refused respondent reads that the refusal is temporary and about how many minutes to wait.
+- When anonymous starts reach 80% of the hourly limit, and again when the limit is hit, the survey owner and the AutoSurvey admins get a Salesforce notification (bell) and an email. A respondent refused at the limit reads that the owner has been told.
+- Setup Home shows a **Guest Start Cap** check when a survey hit its limit in the last 24 hours.
+- A survey's CAPTCHA mode is **Auto** (the default), **Always** or **Never**. **Auto** shows a reCAPTCHA challenge to anonymous respondents only when the survey gets a sudden burst of starts. Without reCAPTCHA keys, **Auto** never challenges, and the hourly limit protects the survey. While a public link is active on a survey whose mode is not **Never**, Setup Home has a required **CAPTCHA Keys** check.
+
+### 7) What a support request sends
+
+The **What we'll send** preview in the support panel shows the exact text that **Send to AutoSurvey** sends and **Copy diagnostics** copies. It has no field for survey questions, responses, API keys or secrets. Some fields are free text (the text you type, setup check details and messages), so read them before you send.
 
 ## Designed for AppExchange-grade controls
 
@@ -81,7 +94,7 @@ review usually asks for this list.
 
 ### Whether a respondent is identified
 
-Each suite sets **Identify respondent** to `Off`, `Optional` or `Required`.
+Each survey sets **Identify the respondent** to `Off`, `Optional` or `Required`, on the **Answers** card of its **Settings** tab.
 
 | Value | What the respondent sees | What you get |
 | --- | --- | --- |
@@ -90,24 +103,28 @@ Each suite sets **Identify respondent** to `Off`, `Optional` or `Required`.
 | `Required` | A registration step **before** question 1 | Their answers are linked to them |
 
 `Optional` is the setting to use when you want to stay in touch without tying a person to their
-answers. The default is not to identify anyone.
+answers. The default is not to identify anyone. `Optional` and `Required` promise the person a
+results report, so the survey needs a scheduled close date or a report cadence (on the Send tab)
+before you can turn them on.
 
 **Anonymous responses.** `Off` captures no responder name, no email and no record link. AutoSurvey
-still stores a session key on the response so a part-finished survey can be resumed. That key
+still stores a session key on the response so a part-finished survey can be resumed. A resume also
+needs a separate secret that only the respondent's browser holds. That key
 identifies a session, not a person, and nothing joins it to a Contact, Lead or User unless you
 switch identification on.
 
 ### The confidentiality note
 
-Setup Home carries an **org-wide** confidentiality policy with three values:
+Setup Home carries an **org-wide** **Confidentiality note policy**, in the **Respondent
+Confidentiality Note** section, with three values:
 
 | Value | Effect |
 | --- | --- |
-| `Off` | No confidentiality note (the default) |
-| `OnByDefault` | New surveys are seeded with the note. An author may edit or remove it |
-| `Required` | **Every** survey always shows the note. Authors cannot remove it |
+| **Off** | No confidentiality note (the default) |
+| **On by default** | New surveys are seeded with the note on their Welcome message. An author may edit or remove it |
+| **Required** | **Every** survey always shows the note. Authors cannot remove it |
 
-`Required` is the setting for an org that must make the same promise on every survey. You can edit
+**Required** is the setting for an org that must make the same promise on every survey. You can edit
 the wording of the default note in the same place.
 
 ### Masking an answer
@@ -138,13 +155,14 @@ instructions. The legal pack below states our commitments in full.
 ### Where your data lives
 
 - **Survey responses stay in your own Salesforce org.** They are stored in AutoSurvey's managed
-  objects (and an optional customer-owned reporting object you map). Responses are **not** sent to
-  Mindshare Studio, are **not** stored on our control plane, and are **not** sent to any AI service.
+  objects (and an optional customer-owned reporting object, which each survey can turn off). Responses are **not** sent to
+  Mindshare Studio, are **not** stored on the AutoSurvey server, and are **not** sent to any AI service.
 - **Survey design content** (the questions you author, whether via AI generation in Salesforce or
   the Google Sheets add-on) is processed in your org and, where the Sheets add-on is used, hosted in
   our managed Google Workspace.
-- **Account, licensing, and AI-usage metadata** is held in our hosted control plane (org ID,
-  domain, plan, AI keys, token/spend telemetry).
+- **Account, licensing, and AI-usage metadata** is held in our hosted AutoSurvey server (org ID,
+  domain, plan, hosted AI keys, token/spend telemetry). A key you bring yourself (BYOK) stays in
+  your org.
 
 ### AI features
 
@@ -152,7 +170,7 @@ The optional AI features (question generation) send only the **survey
 design content you author** to an AI provider (OpenAI or Anthropic, depending on the model selected)
 — never respondent answers. Analytics ("Insights") and export run inside your org with no AI. In
 **BYOK** mode, AI calls go directly from your org to your provider; in **hosted** mode AutoSurvey
-uses our managed key and meters token usage through our control plane.
+uses our managed key and meters token usage through the AutoSurvey server.
 
 ### Sub-processors
 

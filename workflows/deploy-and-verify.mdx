@@ -1,103 +1,122 @@
 ---
-title: "Publish & Share"
-description: "What publishing actually does, why your survey goes live before reporting setup finishes, and how to share the link with people who have no Salesforce login."
+title: "Release & Share"
+description: "What releasing actually does, why your survey goes live before reporting setup finishes, and how to share the link with people who have no Salesforce login."
 ---
 
 
 Importing a survey never makes it live. **Releasing** does — and it takes effect immediately.
 
-Open your suite from the **Survey Suites** tab and go to the **Publish & Share** panel.
+Open your survey from the **Surveys** tab. The survey header shows its state: **Draft** before the
+first release, then **vN · Accepting responses** (or **Not accepting responses**, **Paused** or
+**Closed**). When the draft has changes that are not live, the header shows a **Release** button. It
+reads **Release v1** before the first release, then **Release 1 change** or **Release N changes**.
 
 ## Step 1 — See what will change
 
-The panel shows three things before you commit to anything:
+Click the **Release** button. The **Release version N** dialog opens. It lists what this release
+does, in three groups:
 
 | | |
 | --- | --- |
-| **Current release** | What's live now — its label, when it published, and who published it. Blank if nothing has gone live yet |
-| **Unpublished changes** | Appears when anything is waiting to go live — a new import, settings-only changes, or sheet edits you haven't re-imported yet |
-| **Reporting-field summary** | How many new fields this release will add to your Response Object |
+| **For respondents** | What changes for respondents — for example questions and screens that are added, changed or removed |
+| **In the survey** | Changes to the survey's own settings |
+| **In Salesforce** | What the release changes in your org — for example *This release adds N reporting fields*, or *No new reporting fields needed* |
+
+A survey with more than one form also shows **Forms in this release**, with each form's version now
+and after the release.
+
+**Try draft** opens the draft in a new tab, so you can answer it before anyone else sees it.
+**Keep editing** closes the dialog and changes nothing.
 
 <Tip>
   If the new-field count looks higher than you expect, check the Questions tab for accidental extra
   rows before you release — each question row mints exactly one reporting field, so stray rows
-  inflate the count. That number is the cheapest early warning the panel gives you.
+  inflate the count. That number is the cheapest early warning the dialog gives you.
 </Tip>
 
-## Step 2 — The Response Object (first release only)
+## Step 2 — The reporting object
 
-Responses are stored in a Salesforce custom object — the **Response Object**. Each completed survey
-creates a record, and each question gets a reporting field on it.
+AutoSurvey always saves every answer. The **reporting object** is an extra copy for Salesforce
+reports: each completed survey creates a record on it, and each question gets a reporting field.
 
-| What the summary says | What happens |
+| What **In Salesforce** says | What happens |
 | --- | --- |
-| The object doesn't exist | It's created by your first release |
-| The object exists, all fields present | Nothing changes |
-| The object exists, N fields missing | This release adds N fields |
+| *This release creates the reporting object.* | Your first release creates it |
+| *No new reporting fields needed.* | Nothing changes in the org |
+| *This release adds N reporting fields.* | This release adds N fields |
 
-<Warning>
-  **The Response Object is locked after the first release**, so responses already collected can't be
-  orphaned by a later change. Decide where responses should live before that first release, not
-  after.
-</Warning>
+The **Data** card on the survey's **Settings** tab shows the reporting object. Its name is set when
+the survey is created and cannot change. You can turn the reporting object off and on there.
 
 ## Step 3 — Release
 
-Review the summary and click **Release suite** — the button reads **Release v2**, **Release v3** and
-so on when a staged version is waiting. A **Review changes before releasing** dialog recaps exactly
-what this release will do; its **Release** button mints the new release, which becomes live
-immediately.
+When the release changes your org, tick the **I approve …** box. It names the org changes that this
+release makes. Then click
+**Release version N** (or **Release version N to M forms**). The new version is live immediately.
+
+The dialog then shows **Version N is released**, and a toast confirms it — on a first release:
+*The survey is accepting responses.* The success view lists the **Ways to reach respondents**: the
+internal link, the public link and email invitations, each with its next action. **Try version N**
+opens the live version, **Go to Send** opens the Send tab, and **Done** closes the dialog. If the
+survey is closed, the release still happens and collection stays closed.
 
 <Note>
-  **Going live never waits on reporting setup.** The release is live the moment you click **Release**;
-  provisioning the new reporting fields happens in the background afterwards, usually within a
-  minute. Respondents can start answering straight away.
+  **Going live never waits on reporting setup.** The release is live the moment you click the
+  release button; provisioning the new reporting fields happens in the background afterwards,
+  usually within a minute. Respondents can start answering straight away.
 </Note>
 
 ### If reporting setup needs attention
 
-Occasionally the background field setup doesn't finish first time. When that happens the panel
-warns: *"Reporting setup didn’t start — your release is live, but responses may not appear in
-reports yet. Use “Review & repair reporting” from Get responses to retry."* A banner also stays on
-the release panel until it's fixed, with the full reason and fix guidance for known failures.
+Occasionally the background field setup does not finish first time. The dialog then warns, for
+example: *"Reporting setup failed. Version N is released."* The survey header shows **Reporting
+needs repair** until it is fixed.
 
-The important part: **the survey stays live and every response is still captured.** Reporting-field
-state does not affect whether answers are saved — it affects where they show up for reporting.
-**Repair reporting…** (which opens the **Review & repair reporting** dialog) is safe to run as many
-times as you like; it re-checks what's needed and starts provisioning again.
+The important part: **the survey stays live and every response is still captured.** AutoSurvey saves
+each response; some answers do not show in reports until you repair reporting. **Repair reporting…**
+(in the survey's **⋯** menu, or the **Repair reporting** button in the warning) opens the **Repair
+reporting** dialog. It is safe to run as many times as you like; it re-checks what is needed
+and starts provisioning again.
 
 ## Step 4 — Share it
 
-Once a release is live, the **Public link** row of the **Get responses** band gives you the link: a
-**Copy link** button, and a **QR ▾** menu with an on-screen scannable preview plus **Download PNG**
-and **Copy image** for print or in-person use. The confirmation you see right after releasing offers
-**Copy public link** too.
+Go to the survey's **Send** tab. **Who can respond** says who can answer now, for example *Now:
+anyone with the public link can respond.* Before the first release it says *Nobody yet*.
+
+Under **All channels**, the **Public link** row gives you the link: a **Copy link** button, a **QR ▾** menu with **Download
+PNG** and **Copy image**, and a **Start at** picklist that makes the link open at a chosen question.
+**Pause public link…** stops new visits through the link until you resume it. The **In-app** row
+gives the internal link for people who sign in to Salesforce, and shows how many people have access.
+**＋ New send ▾** opens **Email people…**, **Email a campaign…** and **Assign in-app…**.
 
 ### If respondents don't have a Salesforce login
 
 Most surveys go to people outside your org. The **Public link** row's readiness checks cover
 everything a public link needs — an Experience site bound, the runner page reachable on it, guest
-access granted, and this survey serving a live release — and tell you which piece isn't ready.
-**Public link setup** in the release panel is where you pick the Experience site that serves the
-link. (CAPTCHA is configured org-wide on the **Setup** tab, not per survey.)
+access granted, and this survey serving a live release — and **What’s missing** tells you which
+piece is not ready. **Public link setup…** in the release-state menu of the survey header is where
+you pick the Experience site that serves the link. (CAPTCHA is configured org-wide on the **Setup**
+tab, not per survey.)
 
 <Warning>
   **A public survey that isn't fully set up fails for the respondent, not for you.** You are logged
-  in, so the link works when you test it. Use the **Public link** row's readiness checks, or open
-  the link in a private window, before you send it to anyone.
+  in, so the link works when you test it. Use the **Public link** row's readiness checks, or use
+  **Try it ▾ → As a guest on your site**, before you send it to anyone.
 </Warning>
 
 ## Nudging people who haven't answered
 
-For surveys sent to people inside your org, the **Follow-up reminders** line on the Get responses
-surface opens a **reminder schedule** — one per suite, with its own cadence, audience and copy. You
-can preview exactly who is due right now before anything sends.
+For surveys sent to people inside your org, the **Follow-up reminders:** line on the Send tab
+shows the reminder schedule — one per survey, with its own cadence, audience and copy.
+**Edit schedule…** opens it, and **Turn off** stops it. You can preview exactly who is due right now
+before anything sends.
 
 <Warning>
   **Reminders don't actually send until the user the reminder job runs as has the Reminders Live
   permission.** Granting it to anyone else changes nothing — the check is on the scheduled job's
   running user. Without it the schedule still works and **Send now** still runs — but it only writes
-  a dry-run record and emails nobody. The panel shows a banner whenever live sending is off. If
+  a dry-run record and emails nobody. The reminders line shows **Dry-run mode** whenever live
+  sending is off. If
   reminders "aren't arriving", check that permission first. See
   [Installation & Permissions](/admin/installation-and-permissions).
 </Warning>
@@ -121,15 +140,27 @@ Whether a respondent who leaves mid-survey can pick up where they were depends o
 
 ## Verifying a release
 
-1. The **Current release** row shows your new release, with today's date.
-2. Open the live link — in a private window if the survey is public.
-3. Submit one test response.
-4. Confirm the record on the Response Object.
+1. The survey header shows **vN · Accepting responses** with the new version number.
+2. **Release history** (in the survey's **⋯** menu, or the release-state menu) lists the new
+   version.
+3. Open **Try it ▾** and pick **As yourself** or **As a guest on your site**. Test runs are not
+   counted in results.
+4. For a real check, open the live link in a private window and submit one response.
+5. Confirm the record on the reporting object.
 
 ## Releasing again after changes
 
-Edit the sheet, import, and the panel shows **Unpublished changes** again. Release when you're ready.
-The previously live release stays as history.
+Edit the questions or the design, or import from the sheet. On the **Questions** tab, a question that
+is not in the live release yet shows **New**, and a question that differs from it shows **Edited**.
+**Undo** on a row restores the released version of that question, and **Revert all changes… (N)**
+drops all draft changes. The header shows **Release N changes** again. Release when you are ready.
+Earlier versions stay in **Release history**.
+
+## Stopping collection
+
+**Stop accepting responses…** (in the release-state menu or the **⋯** menu) closes the survey. The
+header then shows **Closed**, and **Reopen collection…** opens it again. AutoSurvey does not retire a
+survey from the app; a closed survey can always reopen.
 
 <Note>
   Releasing again on a survey that already has responses is safe. Existing responses keep the fields
@@ -138,7 +169,7 @@ The previously live release stays as history.
 
 ## Related
 
-* [Sheets to Survey](/workflows/sheets-to-flow) — getting changes into the suite
+* [Sheets to Survey](/workflows/sheets-to-flow) — getting changes into the survey
 * [Data & Reporting](/concepts/data-and-reporting) — what to do with the responses
-* [Objects, Permissions, Layouts](/admin/objects-permissions-layouts) — what publishing creates in your org
+* [Objects, Permissions, Layouts](/admin/objects-permissions-layouts) — what releasing creates in your org
 * [Troubleshooting](/support/troubleshooting)

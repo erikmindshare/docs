@@ -1,0 +1,138 @@
+---
+title: "Results and Responses"
+description: "What the Results tab shows, how to browse and export every response, and how to read one response in the Response Viewer."
+---
+
+AutoSurvey shows your responses in three places. The **Results** tab of a survey gives a summary.
+The **Responses** page lists every response, with filters, Insights and Export. The **Response
+Viewer** shows one response, answer by answer.
+
+## The Results tab
+
+In the **Surveys** tab, open a survey and click **Results**. It is the tab after **Send**.
+
+### Responses
+
+The **Responses** section starts with the count of finished responses, for example "214 responses",
+across all releases. Click **Refresh** to read the numbers again. A second click on the **Results**
+tab does the same.
+
+Below the count:
+
+* **Sends** — how many sends produced these responses, and the latest ones. **See sends** opens the
+  **Send** tab. With no sends, the line says "No sends yet" and the link is **Go to Send**.
+* **Accepting since** or **Closed since** — when collection started or stopped. **Stop accepting responses…** and
+  **Reopen collection…** are here too, for a person who can manage the survey.
+
+### Answers so far
+
+**Answers so far** lists every question in survey order, with how many responses answered it and a
+short summary:
+
+| Question kind | Summary |
+| --- | --- |
+| NPS | The score and its parts, for example "NPS +40 · 12 promoters · 5 passives · 3 detractors" |
+| Choice | The top four options by count, then "and N more". A scored option set also shows its score |
+| Checkbox | **Yes** and **No** by count |
+| Number, Rating, Percent, Currency | The average and the range. A Percent answer shows "%" and a Currency answer shows its currency |
+| Date and time | The earliest and the latest answer, in your Salesforce time zone |
+| Text | The two newest answers. **Read all N** opens all answers in place; **Show less** closes them |
+
+A masked answer shows "••••••", never its value. A rich-text answer shows its formatting. You need
+raw response access to read text answers here. **View all responses ›** opens the full list.
+
+### Digest
+
+Below the answers, the digest shows:
+
+* **finished**, **started**, and the percentage "of those who started finished".
+* **Primary score**, with "n = N" beside it. This shows only when the survey has a primary score
+  question. **Combined score** shows when a combined score exists.
+* "last response 2h ago", and a bar chart of recent days. **Show 30 days** widens it.
+* **Channel results** — how many responses each channel started.
+
+Use **Releases** to see one release only. The default is **All releases**. The live release says
+"(live)". With one release chosen, a line says "Showing v2 · 214 responses".
+
+### Links to more detail
+
+* **View full results →** opens the **Responses** page for this survey.
+* **Analyze:** **Insights** opens the same page with Insights open. **Export** opens it with finished,
+  real responses chosen, so the file matches the number you saw. **CX Analytics** opens the CX
+  Analytics page, filtered to this survey.
+* **Reports ▾** opens the **Submissions** and **Answers** reports for this survey. It shows only for a
+  person with raw response access, and only when the reports are installed.
+
+### When there are no responses
+
+Until the first response, the tab says "No responses yet. A response appears here when someone
+finishes the survey. Use Send to share it."
+
+<Note>
+  Test runs are not counted. The count says "N test runs shown below, not counted", and the
+  **Test runs** line at the bottom has a **See test runs** link.
+</Note>
+
+If some responses are not in the reporting object, the tab also shows a **Missing from Salesforce
+reports** card with a **Retry** button per response. See
+[Data & Reporting](/concepts/data-and-reporting#the-reporting-object-is-a-copy).
+
+## The Responses page
+
+**View full results →** opens the **Responses** page, titled "Responses · *survey name*". The
+**Responses** tab in the app opens the same page for all surveys.
+
+* **Filters** — **Status** (**All**, **Draft**, **Submitted**, **Invalid**), **Data Quality**
+  (**All**, **Live**, **Excluded**, **Test**, **Ignored**, **AI Flagged**, with counts),
+  **Activity** (**All**, **Today**, **7d**, **30d**, **90d**) and **Search** by name or code.
+  **More filters** adds **Form**, **Audience**, **Wave**, **Release**, **Responder Type**,
+  **Latest responses only** and **Show empty drafts**.
+* **Chips** — each active filter shows as a chip, for example "Release: v2". Click its **×** to
+  remove it. **Reset** clears all filters.
+* **Saved view** — the page remembers your filters for the next time you open it. A link from the
+  **Results** tab starts from its own filters.
+* **Pages** — the footer says "1–25 of 500". Use **First**, **Back** and **Next**. **Rows per page**
+  is **25**, **50** or **100**.
+* **Dates** — **Last Saved** and **Submitted** show in your Salesforce time zone.
+
+**Insights** shows totals, completion, submissions over time, drop-off by screen, choice
+distribution, Net Promoter Score, numeric questions (count, average, min, max) and free-text
+responses for one question at a time. It shows when a survey is chosen.
+
+**Export** offers **Submission List (CSV)**, **Responses — Long Format (CSV)**, **Responses — Wide
+Format (CSV)**, **Question Codebook (CSV)**, **Picklist Options (CSV)** and **Analysis Package
+(ZIP)**. The dialog states what the file contains, for example "Exports finished responses for
+*survey*, real responses only, all releases." You can choose an **Anonymous export** and **Include
+Test/Ignored responses**. Click **Download**.
+
+### Row actions
+
+The menu at the end of each row has:
+
+* **Open Response Viewer** — opens the response.
+* **Open Flat Response** — opens the copy in the reporting object, when one exists.
+* **Mark as Test**, **Mark as Ignored**, **Restore (clear data quality)** — needs the **Mark Data
+  Quality** permission.
+* **Delete** — needs the **Delete Submission** permission. It also deletes the reporting copy, and
+  it cannot be undone.
+
+## The Response Viewer
+
+The Response Viewer shows one response, screen by screen.
+
+* The title is the survey name. Click it to open that survey on its **Results** tab. **All
+  responses** opens the **Responses** page for the survey.
+* **Data Quality**, **Delete** and **Print** are at the top right, with the same permissions as on
+  the **Responses** page.
+* A masked answer is hidden. A person with the **Reveal Masked Answers** permission sees **Reveal
+  masked values**. Masking hides the value on screen; it does not encrypt it.
+* A rich-text answer shows its formatting.
+
+The **⋯** menu has **Refresh**, **Copy all**, **Show Field Label**, **Compact density**, **Show
+completion counts**, **Show unanswered** and **Show help text**.
+
+<Tip>
+  The **⋯** menu also has developer items (**Show Field API Name**, **Show Field Data Type**, **Show
+  raw values**, **Debug**). They show only when an admin sets the component's mode to admin on the
+  record page. The record page that AutoSurvey installs does not show them.
+</Tip>

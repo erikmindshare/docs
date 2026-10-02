@@ -1,6 +1,6 @@
 ---
 title: "Introduction"
-description: "What AutoSurvey is, what it puts in your Salesforce org, and the three ways to start a survey."
+description: "What AutoSurvey is, what it puts in your Salesforce org, and the ways to start a survey."
 ---
 
 
@@ -14,49 +14,60 @@ into it** — no integration, no export step, no second system holding your data
 A survey tool bolted onto Salesforce gives you responses in someone else's database and a nightly
 sync. AutoSurvey doesn't have that seam:
 
-* **Responses are Salesforce records.** Each completed survey is a record on a custom object in
-  your org, with a reporting field per question. Report on it, chart it, roll it up, automate off
-  it — like any other object.
+* **Responses are Salesforce records.** AutoSurvey saves each completed survey as records in your
+  org, and copies it to a reporting object with a reporting field per question. Report on it, chart
+  it, roll it up, automate off it — like any other object.
 * **It runs on your infrastructure.** Surveys are served from your org, under your sharing rules
   and your security settings.
 * **Respondents don't need a login.** A survey can be answered by anyone with the link, by
   community users, or only by internal staff — your choice, per survey.
 
-## Three ways to start
+## Ways to start
+
+Click **New Survey** on the **Surveys** tab. The **Choose how to start** screen offers six ways.
+These three are the most common:
 
 <CardGroup cols={3}>
   <Card title="Describe it" href="/workflows/prompt-to-flow">
-    Say what you want in plain language and AutoSurvey drafts the questions and choice lists.
+    Say what you want in your own words and the AI drafts the questions and choice lists.
   </Card>
-  <Card title="Write it in Sheets" href="/workflows/sheets-to-flow">
-    Every suite is bound to a Google Sheet — the fastest way to build something long or edit in bulk.
+  <Card title="Start from a sample" href="/quickstart">
+    Pick a ready-made survey from the sample library and change it to fit.
   </Card>
-  <Card title="Bring one with you" href="/workflows/sheets-to-flow">
+  <Card title="Bring your survey" href="/workflows/import-an-existing-survey">
     Import an existing survey from Typeform, Google Forms, SurveyMonkey or GetFeedback.
   </Card>
 </CardGroup>
 
-You can mix them: generate a draft, edit it in the sheet, and publish.
+You can also **Paste your questions**, **Import CSV/JSON**, or use **Bulk start in Google Sheet
+(advanced)**. Every way ends on the same **Review** step, where you check the questions before you
+create the survey. After that you edit the survey on its **Questions** tab, and you **Release** it
+when it is ready. Google Sheet sync stays available as an advanced option for bulk edits — see
+[Sheets to Flow](/workflows/sheets-to-flow).
 
 ## What appears in your org
 
-Nothing is created until you **publish**. Importing a survey never touches your schema.
+Nothing is created in your schema until you **release**. Creating or importing a survey never
+touches your schema.
 
-On the first publish of a suite, AutoSurvey creates:
+On the first release of a survey, AutoSurvey creates:
 
 | | |
 | --- | --- |
-| **A Response Object** | The custom object your responses are stored on — one record per completed survey |
+| **A reporting object** | The custom object that gets a copy of each response — one record per completed survey |
 | **A reporting field per question** | So every answer is reportable without unpacking anything |
 | **A page layout** | So the records are readable the moment they arrive |
 
-Later publishes only ever **add** reporting fields. They never remove one, so a report built last
+Later releases only ever **add** reporting fields. They never remove one, so a report built last
 quarter keeps working.
 
+Each survey can turn its reporting object off on its **Settings** tab, in the **Data** card. AutoSurvey
+still saves every response when the reporting object is off.
+
 <Note>
-  Your survey goes live the moment you publish. Provisioning the reporting fields happens in the
-  background straight afterwards — and responses are captured either way, so a survey is never
-  waiting on schema to start collecting. See [Publish & Share](/workflows/deploy-and-verify).
+  Your survey goes live the moment you release it. Reporting setup runs in the background straight
+  afterwards — and AutoSurvey saves responses either way, so a survey never waits on schema to start
+  collecting. See [Release and share a survey](/workflows/deploy-and-verify).
 </Note>
 
 ## Where a survey runs
@@ -70,5 +81,5 @@ The same survey can be given to any of these without rebuilding it:
 ## Next
 
 <Card title="Quickstart" href="/quickstart" horizontal>
-  Build and publish a working survey in about fifteen minutes.
+  Build and release a working survey in about fifteen minutes.
 </Card>

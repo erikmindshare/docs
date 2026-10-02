@@ -1,0 +1,179 @@
+---
+title: "Send a Survey"
+description: "Use the survey's Send tab to see who can respond, share the public link or QR code, give in-app access, and email people."
+---
+
+The **Send** tab of a survey is where you get the survey to respondents. It shows who can respond
+now, the state of each channel, and the sends you made.
+
+You must release the survey before you can send it. To release, see
+[Release & Share](/workflows/deploy-and-verify).
+
+## Who can respond
+
+The block at the top of the tab says who can answer the survey now.
+
+* Before the first release, it says: *Nobody yet. The survey has no released version.*
+* After a release, it shows the version (for example *Version 2 is released · Accepting
+  responses*) and one sentence about reach now. For example: *Now: anyone with the public link can
+  respond.* If the public link is paused or not ready, the sentence says that only people you send
+  the survey to can respond.
+* When collection is closed, it says that links show a closed message, and that a response in
+  progress can finish. A link sends you to Results to reopen collection.
+* When email is not set up, it says *Email is not set up* and links to the **Email** row.
+
+### When a control is off
+
+When **＋ New send ▾** is off, the reason shows as text next to the button, not in a tooltip. Before
+the first release it says *Release version 1 first. Then you can send.* On a closed survey it says
+*Collection is closed. Reopen collection to send.*, or that you need permission to reopen.
+
+## Help me choose, or All channels
+
+After the first release, two tabs show. **Help me choose** asks *How should I send this?* and
+recommends a channel. If that channel is not ready, it tells you to fix it first. **All channels**
+shows the channel rows. The Send tab remembers your choice.
+
+## The channel rows
+
+The **Channels:** line gives a short summary, for example *All 4 channels ready*. Click it to show
+or hide the rows. **Check again** reads the state of every channel again.
+
+Each row has a status chip:
+
+| Chip | Meaning |
+| --- | --- |
+| **Active** / **Ready** | The channel works. |
+| **Needs attention** | A channel that already collected responses has a problem. |
+| **Not set up** | The channel is not set up. A channel that never collected a response shows this, not **Needs attention**. |
+| **Partly set up** | The channel works, but a setup step is not done. |
+| **Paused** | You paused the public link. |
+| **Closed** | Collection for the survey is closed. |
+
+### Public link
+
+The **Public link** row is for people with no Salesforce login. Anyone with the link can respond
+without signing in. The link runs on an Experience site in your org, so the org needs a guest site
+first. If the link is not ready, the row shows **Set up…** and, when you open it, **What’s missing**
+with each check that is not done. See [Setup Home Guide](/admin/setup).
+
+When the link is ready, the row gives you:
+
+* **Copy link**, and **QR ▾** with a preview of the code, **Download PNG** and **Copy image**.
+
+Open the row (the **▾** chevron) to see more:
+
+* **Who can respond** — **Anyone with the link**, or **Invitation required**. If you have
+  permission, **Require an invitation…** or **Allow anyone with the link…** changes it.
+* **Start at** — the link opens at a question you choose, not at the start. **Beginning** is the
+  default. With a question chosen, the link opens on the screen of that question and hides
+  **Previous** there. Required questions before it are still asked before the survey can be
+  submitted.
+* The full link, and an **Embed** snippet with **Copy snippet**. The QR code and the snippet use
+  the same link as **Copy link**, so they follow **Start at** too.
+* **Pause public link…** — a new visitor sees a paused message and cannot start. Anyone already
+  answering can finish. The link and QR code stay valid. **Resume public link…** turns it on again.
+
+The release dialog has a **Public link** view too: it says what the link is, whether it works now,
+and what to do next.
+
+### In-app
+
+The **In-app** row is for people in your Salesforce org. They take the survey inside the app.
+The count reads, for example, *3 with access*: the people who hold the permission set of the
+survey. Releasing gives that access to the person who releases.
+
+**Open in app** opens the survey. Open the row for **Copy internal link** and the setup checks.
+If a check fails, **Fix →** shows on the row.
+
+### Site members
+
+The **Site members** row is for people who sign in to your Experience site, for example a partner
+portal. Without a site, the row says *Needs an Experience site.* Open the row for the setup steps
+under **Set up member access**. When all steps are done, the row gives the members link with
+**Copy link**, and **Assign members…** adds people.
+
+### Email
+
+The **Email** row covers list and campaign sends. You start them from **＋ New send ▾**.
+AutoSurvey sends email only from a **verified send-from address** (an org-wide email address that
+Salesforce verified). If there is none, the row shows **Set up email**. It opens the email setup
+panel in the row. **Hide setup** closes it.
+
+## Set up email
+
+The **Set up email invitations** panel has two tasks:
+
+1. **Add a verified send-from address** — the steps, and **Open Org-Wide Email Addresses in Setup**.
+2. **Verify your email domain with DKIM** — the steps, and **Open DKIM Keys in Setup**. The panel
+   does not show this task when it is done. AutoSurvey can check the DKIM key. It cannot check SPF
+   and DMARC.
+
+**Check again** reads the email setup again. When the panel finds a verified address, the chip on
+the Email row changes with no page reload. You need permission to change Setup. If you do not have
+it, send the steps to your Salesforce administrator.
+
+<Warning>
+  Email also needs the **survey base URL**, set on Setup Home in the **Public Survey Access**
+  section. Without it, an email invitation has no survey link. **Help me choose** blocks email until
+  the base URL is set.
+</Warning>
+
+## New send
+
+**＋ New send ▾** is the one way to start a send. The first line of the menu says what you send,
+for example *Sends version 2 · Accepting responses*. The menu has:
+
+* **Email people…** — pick Leads, Contacts or Users, or paste addresses. No campaign is needed.
+* **Email a campaign…** — send to the members of a Salesforce campaign. See
+  [Campaign Survey Distribution](/admin/campaign-distribution).
+* **Assign in-app…** — no email. The survey shows in the Salesforce app of the people you assign.
+
+Each send makes a tracked round in **Send activity**.
+
+## Email people
+
+The **Email people** dialog sends a survey invitation to each person.
+
+1. Use **Find people** or **Paste addresses** to add recipients.
+2. Click **Preview recipients**.
+3. Write the **Subject** and the **Body**.
+4. Choose the **From** address.
+5. Click **Send me a test**. AutoSurvey sends this email, from this address, to you only. Its link
+   opens a test run, which does not count in results.
+6. Click **Send**, then **Confirm & send**.
+
+If there is no verified send-from address, the dialog says so when it opens: *This email cannot be
+sent yet: there is no verified send-from address.* You can still pick people. **Set up email**
+shows the email setup panel in the dialog. **Back** returns to your picked people and your message.
+
+If the **From** address is not verified, or its domain has no active DKIM key, the dialog says so
+when you choose it.
+
+After the send, the dialog says **Sending started**.
+
+## Send activity
+
+After the first send, **Send activity** shows the last send, the **Accepted** and **Failed**
+counts, and **Responses**. **See responses in Results →** opens the Results tab.
+
+Below it, the **Sends**, **People** and **Registrations** tabs list the detail. The **People** tab
+lists email invitations (list, campaign or flow) and public-link registrations. In-app access does
+not make an invitation, so in-app people are not on the People tab. The **In-app** row counts them.
+
+## Follow-up reminders
+
+The **Follow-up reminders:** line shows **On** or **Off**. When reminders are on, it shows
+**Edit schedule…** and **Turn off**. When they are off, it shows **Turn on**. When live sending is off, it shows **Dry-run mode**: reminders run but send no email.
+See [Nudging people who haven't answered](/workflows/deploy-and-verify#nudging-people-who-havent-answered).
+
+## When the survey is closed
+
+When collection is closed, the **Public link**, **In-app** and **Site members** rows show **Closed**
+in place of **Active**. A row with a problem keeps its own chip. **＋ New send ▾** is off.
+The reminders line does not show. To open the survey again, see
+[Stopping collection](/workflows/deploy-and-verify#stopping-collection).
+
+## Related
+
+* [Release & Share](/workflows/deploy-and-verify) · [Campaign Survey Distribution](/admin/campaign-distribution) · [Setup Home Guide](/admin/setup)

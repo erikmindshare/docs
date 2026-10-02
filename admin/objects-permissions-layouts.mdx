@@ -1,37 +1,40 @@
 ---
 title: "What AutoSurvey Creates in Your Org"
-description: "What publishing adds to your schema, what it never touches, and where responses actually live."
+description: "What a release adds to your schema, what it never touches, and where responses actually live."
 ---
 
 
-## Nothing happens until you publish
+## Nothing happens until you release
 
 Installing AutoSurvey adds its own objects to your org, the way any package does. **Building a
-survey changes nothing** — you can create suites, write questions, and import as often as you like
+survey changes nothing** — you can create surveys, write questions, and import as often as you like
 without a single schema change.
 
-**Publishing** is the only step that touches your schema.
+**Release** is the step that touches your schema. The one other step is turning a survey's
+reporting object on (see below): on a released survey, that runs the same reporting setup at once.
 
-## What the first publish creates
+## What the first release creates
+
+When the survey's reporting object is on, the first release creates:
 
 | | |
 | --- | --- |
-| **A Response Object** | A custom object holding one record per completed survey |
+| **A reporting object** | A custom object holding one record per completed survey |
 | **A reporting field per question** | So every answer is reportable directly, with no unpacking |
 | **A page layout** | So those records are readable as soon as they arrive |
 
 <Note>
-  The generated Response Object is created **in your org, unprefixed** — it arrives as
+  The generated reporting object is created **in your org, unprefixed** — it arrives as
   `Your_Object__c`, yours to use, report on and extend like any object you built yourself. Only
   AutoSurvey's own packaged objects carry the `atsv__` namespace prefix. Worth knowing when you go
   looking for it in Setup.
 </Note>
 
-## What later publishes do
+## What later releases do
 
 This is the part worth being precise about, because it decides whether your reports survive:
 
-| Change | What publishing does |
+| Change | What a release does |
 | --- | --- |
 | You added a question | Adds a reporting field |
 | A question is unchanged | Leaves its field exactly as it is |
@@ -39,8 +42,8 @@ This is the part worth being precise about, because it decides whether your repo
 | You reworded a question | The field keeps its API name |
 
 <Note>
-  **A publish only ever adds.** Every field in a publish plan is marked either *add* or *already
-  exists* — there is no third option, and nothing in the publish path can delete a field or an
+  **A release only ever adds.** Every field in a release plan is either new or already on the
+  object — there is no third option, and nothing in the release path can delete a field or an
   object. A report you built last quarter keeps working after a survey is edited.
 </Note>
 
@@ -52,22 +55,30 @@ This is the part worth being precise about, because it decides whether your repo
 </Warning>
 
 <Warning>
-  **The Response Object is locked after the first publish**, so responses already collected can't be
-  orphaned by pointing the suite somewhere else. Decide where responses should live before that
-  first publish.
+  **The reporting object's name is set when the survey is created and cannot change**, so responses
+  already copied can't be orphaned by pointing the survey somewhere else.
 </Warning>
+
+### Turning the reporting object off
+
+Each survey can turn its reporting object off, on the **Data** card of the survey's **Settings**
+tab. Answers are always saved in AutoSurvey and show on the Results tab; the reporting object is
+an extra copy for Salesforce reports. While it is off, new responses are not copied, a release does
+not create or update the object, and nothing is deleted. When you turn it on again, new responses
+are copied; responses saved while it was off are not. See [Survey Settings](/admin/survey-settings).
 
 ## Where a response actually lives
 
-A completed survey writes to three places at once, and each is good at something different:
+A completed survey writes to up to three places at once, and each is good at something different:
 
 | | What it holds | Best for |
 | --- | --- | --- |
 | **Survey Submission** | One record per response — who, when, which release, what state | Operational reporting, completion rates |
 | **Survey Answer** | One record per answer | Analysis across changing question sets, and drop-off |
-| **Your Response Object** | One record per response, one field per question | Ordinary reports, dashboards and roll-ups |
+| **Your reporting object** | One record per response, one field per question | Ordinary reports, dashboards and roll-ups |
 
-You don't choose between them — every submission produces all three. See
+Every submission produces a Survey Submission and its Survey Answers. It is also copied to the
+reporting object while that object is on for the survey. See
 [Data & Reporting](/concepts/data-and-reporting).
 
 ## The objects the package installs
@@ -78,13 +89,13 @@ You mostly won't touch these, but they're what you'll see in Setup:
 | --- | --- |
 | **Suite** | A survey programme — the container for everything below |
 | **Form** | One survey variant within a suite |
-| **Publish Release** | A published version, and what was in it |
+| **Publish Release** | A released version, and what was in it |
 | **Survey Submission** / **Survey Answer** | The responses |
 | **Survey Assignment** | Who has been asked to complete what |
 | **Survey Invitation** / **Survey Send Ledger** | Invitations sent, and their delivery record |
 | **Campaign Survey** | The link between a Salesforce Campaign and a survey |
 
-## On your Contact, Lead and Campaign records
+## On your Contact, Lead, Case and Campaign records
 
 AutoSurvey also ships record-page components, so survey activity shows up where your team already
 works:
@@ -92,11 +103,12 @@ works:
 | Record | Shows |
 | --- | --- |
 | **Contact** and **Lead** | That person's survey history — what they were sent, and what they answered |
+| **Case** | A **Customer feedback** card with the newest survey answer about that Case: the score, what the customer said, and earlier answers. **View full response** opens the response. The **AutoSurvey Case Record Page** carries the card |
 | **Campaign** | Distribution and response rollups for the campaign. See [Campaign Survey Distribution](/admin/campaign-distribution) |
 
 <Warning>
   **These are Lightning record pages, and a record page does nothing until it is assigned.** If your
-  Contacts show no survey history, or a Campaign is missing its AutoSurvey panel, it is almost always
+  Contacts show no survey history, a Case has no Customer feedback card, or a Campaign is missing its AutoSurvey panel, it is almost always
   this — the page ships, but assigning it as the record page for that object is a manual step in
   Setup → Object Manager. Nothing warns you, because as far as the app is concerned everything
   installed correctly.
@@ -104,11 +116,12 @@ works:
 
 ## Permissions
 
-Permission sets come with the package at install — publishing does not create or change them. See
+Permission sets come with the package at install. The reporting setup also creates or updates the
+permission sets for a survey's reporting object. See
 [Installation & Permissions](/admin/installation-and-permissions).
 
 ## Related
 
-* [Publish & Share](/workflows/deploy-and-verify) — the publish step itself
+* [Release & Share](/workflows/deploy-and-verify) — the release step itself
 * [Data & Reporting](/concepts/data-and-reporting) — reporting on what you collect
 * [Installation & Permissions](/admin/installation-and-permissions) · [Security & Privacy](/admin/security-and-privacy)

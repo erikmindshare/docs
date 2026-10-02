@@ -8,6 +8,14 @@ Every row in the **Questions** sheet has a **Display Type** — the kind of cont
 sees and the kind of value it collects. You pick it from the dropdown in the `Display Type` column
 (the allowed values live on the **DisplayTypes** tab).
 
+In the AutoSurvey question editor, open a question and go to **Answer & options**. The
+**Display type** control is a grid of icon tiles in groups: Text, Number, Date & time, Choice,
+Rating & scale, Rich input, and Content & structure. Hover over a tile, or move keyboard focus to
+it, to see one sentence about what the type does. Some tiles show a friendly name: **Yes / No** is
+`YesNo`, **Checkboxes** is `Checkbox` with an Option Set, and **Ending** is `Terminal Screen`. The
+stored value does not change. You make a new screen with **+ Add screen**, not with a tile, and a
+Section's type is locked.
+
 <Note>
   Some display types need a list of choices — set that with the **Option Set** column. See
   [Option Sets](/concepts/option-sets). Per-type tuning (star count, slider range, upload limits,
@@ -21,7 +29,7 @@ sees and the kind of value it collects. You pick it from the dropdown in the `Di
 | --- | --- | --- |
 | `ShortText` · `Text` | Single line of text | No |
 | `Text Area` | Multiple lines (short) | No |
-| `Text Area (Long)` · `LongText` | Long free text | No |
+| `Text Area (Long)` · `LongText` *(aliases `Long Text`, `LongTextArea`)* | Long free text | No |
 | `Text Area (Rich)` | Formatted (rich) text | No |
 | `Masked Text` *(alias `Text (Encrypted)`)* | Masked text input | No |
 
@@ -39,15 +47,19 @@ both are kept as written.
 
 | Display Type | Collects | Option Set? |
 | --- | --- | --- |
-| `Number` | A number | No |
+| `Number` | A whole or decimal number (for example `6.5`) | No |
 | `Percent` | A percentage | No |
 | `Currency` | A money amount (set the ISO code in Display Properties) | No |
 | `Date` | A date | No |
 | `DateTime` | A date and time | No |
 | `Time` | A time of day | No |
 | `Email` / `Phone` / `URL` | Contact info, with light format validation | No |
-| `YesNo` *(aliases `Boolean`, `yes no`, `true/false`)* | A single yes/no toggle | No |
-| `Checkbox` *(no Option Set)* | A single tick box | No |
+| `YesNo` *(aliases `Boolean`, `yes no`, `true/false`)* | A single yes/no tick box | No |
+| `Checkbox` *(no Option Set)* | A single yes/no tick box | No |
+
+A `YesNo` question and a `Checkbox` question with no Option Set show one tick box beside the
+question text, with the help text under it. In the question editor, use the **Yes / No** tile for
+this. The **Checkboxes** tile is for a list of options.
 
 ## Choice questions (need an Option Set)
 
@@ -56,12 +68,12 @@ These render your **Option Set** as the choices:
 | Display Type | UX | Select |
 | --- | --- | --- |
 | `Picklist` *(aliases `Dropdown`, `Choice`, `Select`)* | Dropdown | One |
-| `Radio` · `RadioHorizontal` · `RadioVertical` | Radio buttons | One |
+| `Radio` | Radio buttons | One |
 | `Likert5` *(alias `Likert`)* | A 1–5 agreement scale | One |
 | `MultiPicklist` | Multi-select picklist | Many |
 | `Multi` | Multi-select | Many |
-| `CheckboxHorizontal` · `CheckboxVertical` | Checkbox group ("select all that apply") | Many |
-| `Checkbox` *(with an Option Set)* | Checkbox group | Many |
+| `Checkbox` *(with an Option Set)* | Checkbox group ("select all that apply") | Many |
+| `RadioHorizontal` · `RadioVertical` · `CheckboxHorizontal` · `CheckboxVertical` | Legacy spellings of `Radio` and `Checkbox` with a fixed layout | One / Many |
 
 <Tip>
   `Likert5` ships as its own display type with a 1–5 range. You can also build any other scale as a
@@ -70,10 +82,25 @@ These render your **Option Set** as the choices:
 </Tip>
 
 <Note>
-  Option layout is set **twice over**: by the display type name (`RadioHorizontal` vs
-  `RadioVertical`) *or* by the `orientation` Display Property on a bare `Radio` / `Checkbox`. Both
-  work. If you set neither, the survey decides from how many options there are.
+  Set the option layout with the `orientation` Display Property on a `Radio` or `Checkbox`
+  question. In the question editor, this is the **Layout** control beside the display type:
+  **Auto**, **Vertical** or **Horizontal**. **Auto** clears the property, and the survey then
+  decides from how many options there are. The four split spellings (`RadioHorizontal`,
+  `RadioVertical`, `CheckboxHorizontal`, `CheckboxVertical`) still work, but the tile grid does not
+  offer them. When you change the Layout of a question stored with a split spelling, the editor
+  changes its type to `Radio` or `Checkbox`.
 </Note>
+
+On a choice question you can also:
+
+* **Shuffle the options** for each respondent with the `randomize` Display Property (`random`, or
+  `flip` for the reverse order to half of respondents). Each respondent keeps their own order. Add
+  `randomizeIgnoreLast` to keep the last option at the bottom.
+* **Make an option exclusive** on a checkbox question with the `exclusive` Display Property — for
+  example `exclusive=NON` for a "None of these" option with the value `NON`. Ticking it clears the
+  other ticks, and ticking another option clears it.
+
+See [Display Properties](/concepts/display-properties).
 
 ## Ratings & ordering
 
@@ -146,9 +173,9 @@ Set the wording and the link in Display Properties:
 | --- | --- |
 | `Screen` | Starts a new page in the survey |
 | `Section` | Groups questions inside a screen under a heading or card |
-| `DisplayText` *(alias `Label`)* | Static text shown to the respondent — instructions, headings |
-| `Image` | A picture shown to the respondent. Collects no answer |
-| `Matrix` *(alias `Radio Matrix`)* | A "multiple-choice grid": `Matrix` rows sharing one column Option Set. See [Matrix programs](/concepts/matrix-programs) |
+| `DisplayText` *(alias `Label`)* | Static text shown to the respondent — instructions, headings. Shown as a heading; set `textSize` to `body` to show it at the size of question text |
+| `Image` | A picture shown to the respondent. Collects no answer. It has no Required, Scoring or Default Value. In the question editor, set the picture with **Image URL** in the **Content** group |
+| `Matrix` *(alias `Radio Matrix`)* | A "multiple-choice grid": `Matrix` rows sharing one column Option Set. On a one-question-per-screen survey, set `oneRowPerScreen` to show each row on its own screen. See [Matrix programs](/concepts/matrix-programs) |
 | `Terminal Screen` | **Ends the survey here**, and records whether they finished or were screened out |
 
 ### Terminal Screens — ending early and screening out
@@ -168,9 +195,11 @@ same rule syntax as any other row. That is how you screen someone out:
 | Thanks — you're not eligible | `Terminal Screen` | `{"status": "screened_out"}` | `q_role = "Contractor"` |
 
 <Tip>
-  You don't have to write this JSON by hand. The **Display Properties Builder** in the sidebar
-  offers an **"Ends the survey as"** choice on Terminal Screen rows — pick **Completed** or
-  **Screened out** and it writes the value for you.
+  You don't have to write this JSON by hand. In the AutoSurvey editor, open the screen and set
+  **Screen kind** to **Ending — completes the survey** or **Ending — screens out (disqualifies)**.
+  In Google Sheets, the **Display Properties Builder** in the sidebar offers an **"Ends the survey
+  as"** choice on Terminal Screen rows — pick **Completed** or **Screened out** and it writes the
+  value for you.
 </Tip>
 
 <Warning>
@@ -191,7 +220,7 @@ same rule syntax as any other row. That is how you screen someone out:
 
 ## Aliases and unrecognized values
 
-The importer normalizes common variants to the canonical name — `Long Text` → `LongText`,
+The importer normalizes common variants to the canonical name — `Long Text` / `LongTextArea` → `LongText`,
 `Dropdown` / `Choice` / `Select` → `Picklist`, `Percentage` → `Percent`, `Radio Matrix` → `Matrix`,
 `Boolean` / `true/false` → `YesNo`, `Label` → `DisplayText`.
 
@@ -207,6 +236,10 @@ Both stop the import. They agree on an untouched sheet — but they are differen
 edit the **DisplayTypes** tab they can disagree in either direction: a row you added there passes
 the sidebar and fails the import, and a name you deleted fails the sidebar even though the import
 would have accepted it.
+
+When you make a new survey in AutoSurvey, the **Review** step runs the import check before it
+creates anything. It lists each refused row, and **Create** stays off until you fix or remove the
+row.
 
 <Note>
   The two checks also treat a recognized-but-non-canonical spelling differently. The **import**

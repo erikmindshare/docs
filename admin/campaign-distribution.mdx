@@ -12,45 +12,64 @@ The whole experience lives on a panel on the Campaign record page inside the **A
 | Requirement | Why |
 | --- | --- |
 | **AutoSurvey Setup Home is healthy** | The panel depends on a working org. Open the **Setup** tab and confirm required checks pass first. See the [Setup Home Guide](/admin/setup). |
-| **Admin permissions** | You need `ASVY_Deploy_Admin` (or the `ASVY_Full_Admin` group). The panel is hidden from guest users and non-admins. |
-| **A deployed survey form** | The Campaign is linked to a **Form**, which belongs to a survey **Suite**. Create and deploy a survey first. |
+| **Admin permissions** | You need the **Deploy Admin** permission set (or the **AutoSurvey Full Admin** permission set group). Guest users cannot use the panel. |
+| **A released survey form** | The Campaign is linked to a **Form**, which belongs to a survey. Create and release a survey first. |
 | **(Public surveys) An Experience Cloud site** | To collect responses from unauthenticated respondents, publish the survey flow on an Experience page and assign `AutoSurvey_Guest_Access` to the site guest user. See [Setup Home → Public Survey Access](/admin/setup). |
 
 ## Open the panel
 
 1. Switch to the **AutoSurvey** app (App Launcher → AutoSurvey).
 2. Click the **Campaigns** tab and open (or create) a Campaign.
-3. The **AutoSurvey Campaign Distribution** panel appears on the record page.
+3. Open the **Survey Distribution** tab on the record page. The **Campaign Distribution** panel is
+   there.
+
+You can also start from a survey: on the survey's **Send** tab, **＋ New send ▾ → Email a campaign…**
+sends the survey to a campaign.
 
 > The custom Campaign record page is applied **only inside the AutoSurvey app**. Your organization's default Campaign page in other apps is not changed.
 
 Every field on the panel has an inline help icon (the small circled **i**). Hover or click it for a quick explanation.
 
-## Step 1 — Configure delivery
+## Quick send
+
+The top of the panel, **Send a survey to recipients**, sends a survey in one step:
+
+1. Pick the **Survey**.
+2. Under **Recipients (N)**, click **+ Add** to add people to the campaign.
+3. Click **Add & Send** (it reads **Add & Send to N people** when it has recipients).
+
+If email or a public site is not ready, the panel says so. **Set up email** opens the email setup in
+place. For the full set of controls, click **Advanced settings**. The steps below are in that
+section.
+
+## Step 1 — Configure campaign
 
 | Field | What it does |
 | --- | --- |
 | **Form** | The survey form sent to this campaign's members. Each eligible member receives a unique, single-use link to this form. Changing the form after links exist starts a new survey for members who have not completed the old one. |
-| **Delivery Enabled** | Turn **on** to allow this campaign to generate invitation links and deliver surveys. Turn **off** to pause delivery without losing existing links or responses. |
-| **Save Settings** | Saves the selected Form and Delivery Enabled values to the Campaign record. |
-
-After you pick a form and click **Save Settings**, the **Suite** for that form is shown under Distribution status.
+| **Survey run mode** | How the survey runs. The only mode is **Runner (LWC)**. |
+| **Delivery enabled** | Turn **on** to allow this campaign to generate invitation links and deliver surveys. Turn **off** to pause delivery without losing existing links or responses. |
+| **Allow invitation retakes** | Turn **on** to let members of this campaign retake the survey. |
+| **Save Settings** | Saves these values to the Campaign record. |
 
 ## Distribution status
 
-A live snapshot of this campaign's survey progress. Counts are computed fresh each time the panel loads.
+Step 6, **Track invitation activity**, shows a live snapshot of this campaign's survey progress.
+Counts are computed fresh each time the panel loads. A status line names the survey and counts the
+members, the tokens (members who already have an invitation link for the selected form) and the
+completions. Members without a Contact or Lead, or who have opted out of email, are skipped when
+generating links. Four tiles follow:
 
 | Metric | Meaning |
 | --- | --- |
-| **Suite** | The survey suite that contains the selected form. |
-| **Members** | Total campaign members. Members without a Contact or Lead, or who have opted out of email, are skipped when generating links. |
-| **Tokens** | Members who already have an invitation link generated for the selected form. |
 | **Started** | Members who have opened their invitation and begun the survey. |
 | **In Progress** | Members with a saved but not-yet-completed submission. |
 | **Completed** | Members who finished the survey. |
 | **Abandoned** | Drafts whose invitation expired before completion (partial answers are kept). |
 
-## Step 2 — Build the survey link
+**View reports** opens the survey reports. Member-level status is on the **Members** tab.
+
+## Step 2 — Build survey links
 
 This section assembles a merge-ready link for public (unauthenticated) distribution.
 
@@ -101,7 +120,7 @@ The moment a member completes the survey, the Campaign's **Total Completed**, **
 
 ## Validate the survey URL
 
-The **Survey Link** step checks your link configuration automatically — no manual step required. It runs when you open the step and re-runs automatically after you click **Save Settings**. When everything resolves correctly, it shows **"Link points to a live, published survey (`<suite>` / `<form>`)."** If something's wrong (for example, the selected form is missing a suite or form code, or the survey base URL isn't configured in Setup), it shows **"Link configuration needs attention"** with the specific issues listed. Use the passive **Re-check** button to run the check again on demand, such as after fixing an issue elsewhere in Setup.
+Step 4, **Test delivery**, checks your link configuration automatically — no manual step required. Its **B. Link configuration** line shows the result. The check runs when the panel opens and re-runs automatically after you click **Save Settings**. When everything resolves correctly, it shows **"Link points to a live, published survey (`<suite>` / `<form>`)."** If something's wrong (for example, the selected form is missing a survey or form code, or the survey base URL isn't configured in Setup), it shows **"Link configuration needs attention — see details below."** with the specific issues listed. Use the passive **Re-check** button to run the check again on demand, such as after fixing an issue elsewhere in Setup.
 
 ## Reporting
 
@@ -119,7 +138,8 @@ See [Data and Reporting](/concepts/data-and-reporting) for the underlying object
 
 AutoSurvey sends campaign invitation emails directly from the Campaign
 Distribution panel — no external email tool or Salesforce List Email is
-required.
+required. Step 3, **Compose email invitation**, holds the email. Step 5,
+**Send survey emails**, sends it.
 
 <Note>
   Emails sent to a list carry an **unsubscribe link** automatically — insert it with
@@ -139,16 +159,24 @@ Prerequisites:
 - **Delivery Enabled** is on
 - Invitation links were generated
 - Org deliverability is **All email**
+- The subscription is active (otherwise the panel shows **Renew to send campaigns.**)
 
 Workflow:
 
 1. Review the audience summary (`eligible`, `already sent`, `completed`,
    `opted out`, `no identity`, `suppressed`, `missing email`, `need links`).
-2. Enter subject + body.
+2. Enter the **Email subject** and the **Email body (HTML allowed)**.
 3. Include `%%LINK%%` in the body where each member-specific survey URL should
    be inserted (AutoSurvey appends the link if the placeholder is missing).
-4. Pick an Organization-Wide From address (optional).
-5. Click **Send Emails**.
+4. Optionally turn on **Embed first question (one-touch)**, so the email shows the
+   first question and a click records the answer. **Capture mode** sets how:
+   **Instant** submits the clicked answer at once; **Validated** asks the
+   respondent to confirm in the browser, so an email scanner that follows links
+   cannot record an answer.
+5. Pick a **From address**, then click **Save**. **Send Emails** stays off until the subject, the
+   body and the From address are saved. **Set up email** helps you add a From address.
+6. In step 4, **Test delivery**, enter a test recipient and click **Send Test Email**.
+7. Click **Send Emails (N)**.
 
 Delivery visibility:
 
@@ -170,7 +198,7 @@ Delivery visibility:
 Default send policy:
 
 - Already-sent invitations are skipped by default.
-- Turn on **Resend to all eligible** to include already-sent invitations.
+- Turn on **Resend to all eligible (including already sent)** to include already-sent invitations.
 - If one or more members are in **need links**, Send is blocked to prevent a
   partial batch. Click **Generate links for missing members** first, then send.
 - You can resend only specific invitations with **Resend selected (N)**, or use
@@ -235,6 +263,6 @@ For the full data-handling model, see [Security and Privacy](/admin/security-and
 | **"Campaign must be linked to a form…"** | Select a **Form** and click **Save Settings** before generating links. |
 | **Many members suppressed** | Members already have an active invitation for the same form from another campaign, or have opted out of email. Review the generation summary. |
 | **No Experience sites listed / all "Not configured"** | The site must be **Active** (publish and activate it in Experience setup — use the **Open Experience setup** link by the Experience Site Domain field), and the guest user must have `AutoSurvey_Guest_Access` assigned. Newly created sites are inactive until you activate them. See [Setup Home → Public Survey Access](/admin/setup). |
-| **"Link configuration needs attention"** | Check the listed issues: confirm a form is selected, that it (or its suite) has both a suite code and form code, and that the survey base URL is configured in Setup. Click **Re-check** after fixing an issue. |
-| **Panel not visible on the Campaign** | Confirm you are in the **AutoSurvey** app and have admin permissions (`ASVY_Deploy_Admin`). |
+| **"Link configuration needs attention"** | Check the listed issues: confirm a form is selected, that it (or its survey) has both a survey code and form code, and that the survey base URL is configured in Setup. Click **Re-check** after fixing an issue. |
+| **Panel not visible on the Campaign** | Confirm you are in the **AutoSurvey** app, open the **Survey Distribution** tab, and check that you have the **Deploy Admin** permission set. |
 | **Counts look stale** | Cached rollups refresh within moments of each completion; check **Last Sync** on the Campaign. If a refresh was missed, the nightly sync catches it up — allow one nightly cycle to elapse. |

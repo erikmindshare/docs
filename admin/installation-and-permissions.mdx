@@ -24,28 +24,46 @@ everyone should get a group.
 ## AutoSurvey never assigns these for you
 
 <Warning>
-  **Setup Home checks your permissions. It never grants them.** The admin-access check reads what
-  your user already holds and reports what is missing; it performs no assignment. This is
-  deliberate — a managed package that assigned its own permission sets would not pass AppExchange
-  security review. Every set on this page is assigned by a System Administrator, by hand, from
+  **Setup Home checks your admin permissions. It never grants them.** The admin-access check reads
+  what your user already holds and reports what is missing; it performs no assignment. A System
+  Administrator assigns every admin set and group on this page by hand, from
   **Setup → Permission Sets → Manage Assignments**.
+
+  The only exceptions are the two sign-in sets, which grant no object, field or Apex access.
+  **Complete Setup** assigns **Self Org Access** and **Self Org JWT Access** to the admin who
+  clicks it. **Grant sign-in access** on the **AutoSurvey Sign-In** row assigns **Self Org Access**
+  to the user who clicks it.
 </Warning>
 
 One set stops setup outright if it is missing: **PBO Service Access**
-(`atsv__PBO_Service_Access`). It carries the external credential AutoSurvey uses to reach its
-control plane, so the **Control Plane Connection** check fails without it. The failure names the
+(`atsv__PBO_Service_Access`). It carries the external credential AutoSurvey uses to reach the
+AutoSurvey server, so the **AutoSurvey Server Connection** check fails without it. The failure names the
 set and says the same thing:
 
-> Your user does not have access to the AutoSurvey control plane credential, so no request was
+> Your user does not have access to the AutoSurvey server credential, so no request was
 > sent. … Ask a System Administrator to assign the "PBO Service Access" permission set
 > (`atsv__PBO_Service_Access`) … AutoSurvey does not assign permission sets for you.
 
 <Note>
   **AutoSurvey Full Admin carries `PBO_Service_Access`. The three individual admin sets do not.**
   If you assigned `AutoSurvey_Admin`, `Deploy_Admin` and `AutoSurvey_Survey_Admin` one at a time
-  instead of assigning the group, Control Plane Connection keeps failing until you add
+  instead of assigning the group, AutoSurvey Server Connection keeps failing until you add
   `PBO_Service_Access` as well. Assigning the group is the shorter route.
 </Note>
+
+## Everyone who releases surveys: the sign-in sets
+
+AutoSurvey signs in to your org as the user who releases a survey, to add the survey's reporting
+fields. Each user who releases surveys needs:
+
+| Assign | Why |
+| --- | --- |
+| **Self Org JWT Access** | Marks the users who release surveys and add reporting fields. Setup Home badges it **Required**. |
+| **Self Org Access** | Lets AutoSurvey use the **Self Org** credential to call back into your own org |
+
+Each of these users also approves the AutoSurvey sign-in app once: on Setup Home, on the
+**AutoSurvey Sign-In** row, click **Authorize AutoSurvey**, then click **Allow**. Until then, the
+first release fails. See [Setup Home](/admin/setup#self-org-sign-in).
 
 ## Respondents outside your staff
 
@@ -80,7 +98,6 @@ Each of these unlocks one connection and does nothing otherwise:
 | **OpenAI BYOK Access** / **Anthropic BYOK Access** | Using your own AI provider key |
 | **GetFeedback API Access** | Importing from a private GetFeedback account |
 | **SurveyMonkey API Access** | Importing from a private SurveyMonkey account |
-| **Self Org Access** | The **Self Org** external credential, used when AutoSurvey routes callouts back into your own org |
 
 ## Delegating single actions
 
@@ -92,7 +109,8 @@ role around it:
 | **Publish Survey** | Take a release live |
 | **Close Survey** / **Pause Collection** / **Retire Survey** | Change a survey's lifecycle state |
 | **Send Invitations** / **Assign Recipients** | Send a survey out and choose who gets it |
-| **Reminders Live** | Let reminder schedules actually send |
+| **Reminders Live** | Let reminder schedules actually send. An admin must also turn on **Send reminder email for real** in AutoSurvey Settings; until then, reminders run as a dry run |
+| **Choose AI Models** | Choose the AI model for each step of one survey build in the New Survey wizard (the Custom tier). It never changes the org's tiers |
 | **Delete Submission** | Delete a response |
 | **Reveal Masked Answers** | See the contents of a masked answer |
 | **Mark Data Quality** | Flag a response's data quality |
@@ -112,7 +130,7 @@ Several permission sets exist as building blocks and aren't meant to be assigned
   the group.
 * **Setup Bootstrap**, a minimal set for whoever runs first-time setup: the setup-gating permission,
   plus just what Setup Home needs before the full admin sets are assigned — the app and its tabs,
-  Apex access for the setup pages, the control-plane connection, and two Suite fields.
+  Apex access for the setup pages, the AutoSurvey server connection, and two Suite fields.
 * **AutoSurvey Flat Object Access**, which intentionally contains no permissions in the core package.
 * **AutoSurvey SuiteKey Reporting TEMPLATE**, which is a pattern to copy per suite, not a set to
   assign.

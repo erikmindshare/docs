@@ -1,12 +1,34 @@
 ---
 title: "Sheets to Survey"
-description: "Write your survey in Google Sheets, validate it in the sidebar, and import it into Salesforce — the bulk-editing and version-control path."
+description: "Sheet sync, the advanced option: write your survey in Google Sheets, validate it in the sidebar, and import it into Salesforce — the bulk-editing path."
 ---
 
 
-Every AutoSurvey suite is bound to a **Google Sheet**. The sheet is where the survey is written:
-one row per question, per section heading, per page break. It is the fastest way to build something
+The **Questions** tab of a survey is the main place to write and change questions. **Sheet sync**
+is an advanced option beside it: a **Google Sheet** that holds the same survey, one row per
+question, per section heading, per page break. The sheet is the fastest way to build something
 long, to change fifty questions at once, and to see the whole survey on one screen.
+
+## Where the sheet comes from
+
+* **Create survey** makes a questions sheet for the new survey.
+* The start way **Bulk start in Google Sheet (advanced)** in **New Survey** creates the survey
+  first, with a blank sheet. You name the Google accounts that can open it, comma-separated. Click
+  **Create with a blank sheet**, then click **Open the sheet**.
+* A survey can also have no sheet. The **Settings** tab then says *This survey has no questions
+  sheet. Questions are edited on the Questions tab.* Click **Connect a sheet…** to paste a
+  **Google Sheet URL or ID**, or click **Get New Sheet** for a new one.
+
+The **Sheet sync** button in the survey header opens the sheet. When the survey has no sheet, it
+starts the steps to connect one. The **Sheet sync** group of the **⋯** menu holds the sheet actions: **Import from sheet**, **Borrow questions from a sheet…**, **Change sheet…** and
+**Disconnect sheet**. The **Settings** tab card **The questions sheet** shows the sheet, with
+**See who has access** and **Share the sheet…**.
+
+<Note>
+  Google opens the sheet only for an account it is shared with. If Google shows *You need access*,
+  share the sheet with the Google account you use in that browser. You can give several accounts,
+  comma-separated. Each account can edit the survey's questions in the sheet.
+</Note>
 
 ## The tabs
 
@@ -60,9 +82,11 @@ Building a survey in the sheet is a three-step loop you'll run many times:
     Some findings are auto-fixable and the sidebar offers to apply them.
   </Step>
   <Step title="Import">
-    Import the suite into Salesforce. This is the stricter check — it sees the whole survey, not just
-    the workbook, and it's where problems like an unreachable page or a rule pointing forward in time
-    are caught.
+    In the survey, open **⋯** → **Sheet sync** → **Import from sheet**. The confirm dialog tells you
+    that the questions, option sets and settings in the sheet replace the draft of the survey, and
+    that a question that is not in the sheet leaves the draft. Released versions do not change.
+    This is the stricter check — it sees the whole survey, not just the workbook, and it's where
+    problems like an unreachable page or a rule pointing forward in time are caught.
   </Step>
 </Steps>
 
@@ -74,9 +98,9 @@ Building a survey in the sheet is a three-step loop you'll run many times:
 
 ## Importing never goes live
 
-An import always lands as **Unpublished changes**. Nothing reaches a respondent until you publish,
-so you can import as often as you like while you're working. See
-[Publish & Share](/workflows/deploy-and-verify).
+An import always lands as **Draft changes**. Nothing reaches a respondent until you click
+**Release**, so you can import as often as you like while you're working. See
+[Release & Share](/workflows/deploy-and-verify).
 
 ## A worked example — a two-page feedback survey
 
@@ -104,11 +128,11 @@ Use the sheet for **volume and repeatability**: long surveys, bulk edits, a surv
 quarter, a change you want to review before it lands.
 
 Reach for [Prompt to Survey](/workflows/prompt-to-flow) when you have no draft yet, and for the
-in-app editor when you're changing one thing.
+**Questions** tab when you're changing one thing.
 
 ## Related
 
 * [The Questions Sheet](/concepts/questions-sheet) — every column, in full
 * [Display Types](/concepts/display-types) · [Display Properties](/concepts/display-properties) · [Option Sets](/concepts/option-sets)
 * [Conditional Visibility](/concepts/conditional-visibility) — the `Show If` column
-* [Publish & Share](/workflows/deploy-and-verify) · [Troubleshooting](/support/troubleshooting)
+* [Release & Share](/workflows/deploy-and-verify) · [Troubleshooting](/support/troubleshooting)

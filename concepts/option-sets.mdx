@@ -23,23 +23,23 @@ Each row is one choice in a set.
 | `Option Set` | Yes | The set name. Repeat it on every row that belongs to the set |
 | `Label` | Yes | The text the respondent sees |
 | `Key` | No | The stable value that gets stored. Defaults to the Label if blank. Also accepted as `Value` |
-| `Score` | No | Accepted but **currently has no effect** — the value isn't stored, and nothing reads it. Numeric scoring and analytics come from the `Key` (or the Label, when `Key` is blank), so put scores in the `Key` column |
-| `Is Default` | No | Accepted (also as `Is_Default`) but **currently has no effect** — the value isn't stored, and nothing pre-selects from it. To pre-select an answer, use the `Default Value` column on the Questions sheet |
+| `Score` | No | The number this answer contributes when the question is scored. On a single-choice question and on a grid row, the chosen option's score is saved as the answer's numeric value, and the Results tab shows its average and range. A multi-choice question does not use it |
+| `Is Default` | No | Pre-selects this option when the question first appears. Also accepted as `Is_Default`. On a multi-choice question, every default option is ticked. On a single-choice question, the first default option in the order is selected. A `Default Value` on the question row wins over it |
 | `Order` | No | The position of this choice in the list |
 | `Image URL` | No | An absolute image URL, to render this choice as a picture. Also accepted as `Image_URL`. Not in the shipped template — add the column yourself |
 
-**Example — a 5-point agreement scale, scored 1–5 through its keys:**
+**Example — a 5-point agreement scale, scored 1–5:**
 
-| Option Set | Label | Key | Order |
-| --- | --- | --- | --- |
-| `Agreement5` | Strongly disagree | 1 | 1 |
-| `Agreement5` | Disagree | 2 | 2 |
-| `Agreement5` | Neutral | 3 | 3 |
-| `Agreement5` | Agree | 4 | 4 |
-| `Agreement5` | Strongly agree | 5 | 5 |
+| Option Set | Label | Key | Score | Order |
+| --- | --- | --- | --- | --- |
+| `Agreement5` | Strongly disagree | 1 | 1 | 1 |
+| `Agreement5` | Disagree | 2 | 2 | 2 |
+| `Agreement5` | Neutral | 3 | 3 | 3 |
+| `Agreement5` | Agree | 4 | 4 | 4 |
+| `Agreement5` | Strongly agree | 5 | 5 | 5 |
 
-The `Key` is what gets stored and reported on, so the score lives there — a numeric reporting
-column receives 1–5 while respondents read the labels.
+The `Key` is what gets stored in the question's reporting column, so a numeric reporting column
+receives 1–5 while respondents read the labels. The `Score` gives the same numbers to scoring.
 
 Then on the Questions sheet, set `Option Set` = `Agreement5` for any question that uses it.
 
@@ -48,6 +48,24 @@ Then on the Questions sheet, set `Option Set` = `Agreement5` for any question th
   means you can reword a label later without breaking existing responses or the Show If rules that
   compare against it.
 </Tip>
+
+## Edit an option set in AutoSurvey
+
+You can also edit option sets in the AutoSurvey question editor. Open a choice question and go to
+**Answer & options**:
+
+* Pick a set in **Option set**, or choose **+ Create a new option set…** and name it.
+* Under the picker, the editor says if the set is shared (**Shared by N questions.**) or
+  **Used by this question only.**, and shows the first options.
+* **Edit options** (or **Edit shared options** for a shared set) opens the option set editor in a
+  dialog. Each option has a **Label** and a **Value**. The Value follows the label until you type a
+  value of your own. Drag a row, or use **Move up** and **Move down**, to change the order.
+  **Show questions** lists the questions that use a shared set.
+* Open **Scoring & default** in the dialog to set a **Score** and **Is default** for each option.
+* **Customize for this question** copies the whole set under a new name. Only this question moves
+  to the copy. The other questions keep the shared set.
+
+Saved changes are a draft. Respondents see them after you **Release** the survey.
 
 ## Picture choices
 
@@ -111,14 +129,16 @@ they did.
 ## Reuse
 
 The point of Option Sets is reuse: define `Likert5` once and reference it from a dozen questions, or
-from every row of a [matrix](/concepts/matrix-programs). Editing the set updates every question that
-uses it on the next import.
+from every row of a [matrix](/concepts/matrix-programs). Editing the set changes every question that
+uses it. To change the options of one question only, use **Customize for this question** (see
+above).
 
 ## "Other (please specify)"
 
 The choice key **`__OTHER__`** is reserved. Don't add it to the Option Set yourself — instead turn on
 an Other option with the `allowOther` token in the question's
-[Display Properties](/concepts/display-properties). When selected, it reveals a free-text box.
+[Display Properties](/concepts/display-properties), or with the **Allow “Other”** switch in the
+question editor. When selected, it reveals a free-text box.
 Import blocks any Option Set row whose key resolves to `__OTHER__`.
 
 <Note>
