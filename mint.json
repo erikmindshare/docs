@@ -107,6 +107,7 @@
       "group": "Document Request (in development)",
       "pages": [
         "document-request/overview",
+        "document-request/quick-start",
         "document-request/admin-setup",
         "document-request/staff-guide",
         "document-request/client-guide",

@@ -1,0 +1,86 @@
+---
+title: "Quick Start"
+description: "Create a template, add its items, make it Active, and send the first request to a client."
+---
+
+<Warning>
+**In development.** Document Request is a feature of the AutoSurvey package that is in development. The text, screens and limits on these pages can change.
+</Warning>
+
+This page takes you from an empty org to a sent request. The example sends an intake request to the fictional client Jordan Rivera at Harbor Community Health.
+
+## Before you start
+
+- You have the `Document_Request_User` permission set. See [Admin Setup](/document-request/admin-setup#permission-sets).
+- To create templates, you need Create and Edit on the Document Request Template and Document Request Template Item objects. A System Administrator has this access.
+- The Contact page shows the Document Requests panel. See [The Contact page](/document-request/admin-setup#the-contact-page).
+
+## Open the app
+
+Open the App Launcher. Search for **Document Requests**. Open the app **AutoSurvey - Document Requests**. The app has four tabs:
+
+| Tab | Use it to |
+| --- | --- |
+| Contacts | Open a client and send a request from the panel. |
+| Document Requests | List all requests and open one to review it. |
+| Document Review Queue | See the items that wait for your review. |
+| Document Request Templates | Create and change templates. |
+
+If the app is not in the App Launcher, open the tab by its name in the App Launcher search instead.
+
+## Create a template
+
+<Steps>
+  <Step title="Start a template">
+    Open the **Document Request Templates** tab. Click **New**.
+  </Step>
+  <Step title="Fill in the fields">
+    Enter a **Name**, for example "Family Support Intake", and a **Code**, for example "FSS_INTAKE". Leave **Status** as Draft. Set **Parent Object API Names** to `Contact`. Set **Default Due Days** to 14 and **Expiry Days** to 30. Turn on **Channel Email**.
+  </Step>
+  <Step title="Save">
+    Click **Save**. The template record page opens.
+  </Step>
+</Steps>
+
+## Add the items
+
+<Steps>
+  <Step title="Add an item">
+    On the template record page, find the **Document Request Template Items** related list. Click **New**.
+  </Step>
+  <Step title="Describe the item">
+    Enter a **Label**, for example "Photo ID". Set **Item Kind** to File Upload. Set **Sort Order** to 1. Turn on **Is Required**. Set **Review Rule** to Staff review.
+  </Step>
+  <Step title="Save and repeat">
+    Click **Save**. Add the next item the same way. Example: "Consent to share information" with Item Kind Acknowledgment and Sort Order 2.
+  </Step>
+</Steps>
+
+For each field, see [Template item fields](/document-request/admin-setup#template-item-fields).
+
+## Make the template Active
+
+Open the template. Click **Edit**. Set **Status** to Active. Click **Save**. Only an Active template shows in the panel.
+
+## Send the first request
+
+<Steps>
+  <Step title="Open the client">
+    Open the **Contacts** tab. Open Jordan Rivera.
+  </Step>
+  <Step title="Start the request">
+    In the **Document Requests (In development)** panel, click **New request**.
+  </Step>
+  <Step title="Choose the template">
+    Choose "Family Support Intake". The panel lists its items.
+  </Step>
+  <Step title="Send">
+    Check the **Due date**. Add a **Message** if you want. Click **Send**. The panel shows "Request sent".
+  </Step>
+</Steps>
+
+## Follow the request
+
+- Open the request from the panel or from the **Document Requests** tab. The record page shows each item, its attempts and the event trail.
+- Open the **Document Review Queue** tab to see the items that wait for review.
+- To review an item, see [Review an item](/document-request/staff-guide#review-an-item).
