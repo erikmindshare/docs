@@ -104,6 +104,17 @@
       ]
     },
     {
+      "group": "Document Request (in development)",
+      "pages": [
+        "document-request/overview",
+        "document-request/admin-setup",
+        "document-request/staff-guide",
+        "document-request/client-guide",
+        "document-request/security-and-privacy",
+        "document-request/known-gaps"
+      ]
+    },
+    {
       "group": "Support",
       "pages": [
         "support/troubleshooting",

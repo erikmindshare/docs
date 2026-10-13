@@ -1,0 +1,80 @@
+---
+title: "Document Request Overview"
+description: "What Document Request does, how a request moves from sent to reviewed, and what \"in development\" means."
+---
+
+<Warning>
+**In development.** Document Request is a feature of the AutoSurvey package that is in development. The text, screens and limits on these pages can change. These pages make no promise about dates, pricing or availability.
+</Warning>
+
+Document Request lets your staff ask a client for documents and forms. The client opens a link on a phone. The client sends each item. Staff review the items.
+
+<Note>
+All examples on these pages use fictional data. The example organization is Harbor Community Health. The example client is Jordan Rivera. The example staff are Alex Morgan (reviewer), Priya Natarajan and Sam Okafor. The example program is Family Support Services.
+</Note>
+
+## Who reads which page
+
+| You are | Read |
+| --- | --- |
+| An administrator | [Admin Setup](/document-request/admin-setup) |
+| A staff member who sends and reviews | [Staff Guide](/document-request/staff-guide) |
+| A client (or you help one) | [Client Guide](/document-request/client-guide) |
+| A security or privacy reviewer | [Security & Privacy](/document-request/security-and-privacy) |
+| Anyone who needs to know the limits | [Known Gaps](/document-request/known-gaps) |
+
+## The flow: request, item, attempt, review
+
+<Steps>
+  <Step title="Request">
+    A staff member creates a request for a Contact from a template. The request has a due date and an optional message. The client gets a link.
+  </Step>
+  <Step title="Item">
+    The request holds one or more items. An item is one thing the client must give. Example: "Photo ID".
+  </Step>
+  <Step title="Attempt">
+    Each time the client sends something for an item, the system records an attempt. A new send makes a new attempt. The old attempt stays as history.
+  </Step>
+  <Step title="Review">
+    Staff accept or reject each attempt that needs review. The system accepts some items. A rejected item goes back to the client with a reason.
+  </Step>
+</Steps>
+
+When every required item is accepted or waived, the request is complete. A complete request is read-only.
+
+## Item kinds
+
+| Kind | What the client does | Default review |
+| --- | --- | --- |
+| File Upload | Takes a photo or chooses a file | Staff review |
+| Acknowledgment | Types a name and ticks a box | Auto-accept |
+| Short Form | Answers a form | Auto-accept |
+| Scored Instrument | Answers a scored form | Auto-accept |
+| Signed Document | Reads, signs and sends a document | Staff review |
+
+A template can change the review rule for an item to **Staff review** or **Auto-accept**.
+
+## Statuses
+
+**Request:** Draft, Open, Complete, Cancelled.
+
+**Item:** Not Started, In Progress, Received, Accepted, Rejected, Waived.
+
+**Attempt:** Received, Accepted, Rejected, Superseded. An attempt is Superseded when the client sends a replacement.
+
+**Finalization** (signed documents only): Not needed, Pending, Finalized, Failed. Staff cannot accept a signed document until it is Finalized.
+
+## What "in development" means
+
+- The feature is not finished. Some parts are built but not switched on. See [Known Gaps](/document-request/known-gaps).
+- The client page says "In development". Staff screens show "(In development)" in some titles.
+- Live reminder email is off by default. A reminder pass writes a dry-run log and sends no email.
+- The text-message (SMS) path is not active.
+- Nothing here is a promise of a date, a price or an offer.
+
+## Where things are
+
+- **Contact record:** the "Document Requests (In development)" panel. Staff create and send requests here.
+- **Request record:** the review screen. Staff review items, copy the link, cancel, and reassign the reviewer here.
+- **Document Review Queue tab:** all items that wait for review.
+- **Client page:** an Experience site page that the client opens with the link.

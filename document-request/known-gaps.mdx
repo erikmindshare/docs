@@ -1,0 +1,52 @@
+---
+title: "Document Request Known Gaps"
+description: "What is not finished, not tested or not yet decided for Document Request, in plain words."
+---
+
+<Warning>
+**In development.** Document Request is in development. This page lists open items. It is a first draft. It makes no promise about dates, pricing or availability.
+</Warning>
+
+## Not yet tested
+
+- The staff screens ran in a browser as each staff role (11 test users). 41 cases passed. 11 cases are blocked (for example, the test org has no finalized signed document). 62 cases are not built yet.
+- These tests also ran: the client page tests in a browser (44 passed, 0 failed) and the permission tests in Apex (41 passed).
+- The look of real reminder email and text messages is not tested. The test org could not capture a message.
+- Tests for the case "no site link" on the client page are not done.
+- Zoom and screen-size checks, and an accessibility review, are not done.
+- No person has done a security review of the client page.
+
+## Not built or not active
+
+- **Live reminder email** is off. The text-message (SMS) flow is Draft and inactive.
+- The **reminder pass** and the **renewal job** are not scheduled.
+- **No malware scan** of files. No AI review of files.
+- **No chain checkpoint** object. The chain check only reads the chain.
+- **No Attempt record page.**
+- **No screen to erase** a person. Erasure is code only.
+- **No way in the screens to create a Draft request.**
+- No template tab ships with the package.
+- The Document Request panel shows in other apps (Sales, Service and your own apps) only after an administrator sets the AutoSurvey Contact Record Page as the org default for Contact. The package cannot do this at install. Until then, a user who has the Document Request permission sets but not `AutoSurvey_App_Access` sees no panel. See [Admin Setup: The Contact page](/document-request/admin-setup#the-contact-page).
+- On the AutoSurvey Contact Record Page, the panel is below the **Survey History** list. A user who has only `Document_Request_User` has no access to the survey history Apex class, so the Survey History card can show an access message above the panel. This was not checked in the UI.
+
+## Open questions
+
+- Waiving a required item needs `Waive_Required_Items` but not the Review permission. A user with only the waive permission can waive a required item. This is not decided.
+- Any user with Read access sees every request. There is no limit by owner or team.
+- The button **Run reminder pass (demo)** runs for every request in the org. The message on the button talks about "this request".
+- `Waive_Required_Items` is in no shipped permission set.
+
+## Limits you can meet
+
+- A one-page form can lose answers if the client reloads before Next or Submit.
+- The file limit is never above 3.5 MB. The template field Max File MB can set a lower limit for an item. It cannot set a higher one.
+- The picture checks on the client device are advice only.
+- Large chain checks read again only 25 files.
+- The panel on the Contact shows 10 requests.
+- The client page header shows the Salesforce org's own organization name (Company Information). No AutoSurvey setting changes it.
+
+## See also
+
+- [Overview](/document-request/overview)
+- [Admin Setup](/document-request/admin-setup)
+- [Security & Privacy](/document-request/security-and-privacy)

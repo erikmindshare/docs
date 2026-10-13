@@ -1,0 +1,171 @@
+---
+title: "Document Request Staff Guide"
+description: "How staff create, send, review, resend, reassign and cancel document requests."
+---
+
+<Warning>
+**In development.** Document Request is in development. Screens and text can change. This page makes no promise about dates, pricing or availability.
+</Warning>
+
+Read the [overview](/document-request/overview) for the flow.
+
+You need the `Document_Request_User` permission set. Your administrator gives it to you. See [Admin Setup](/document-request/admin-setup).
+
+## Create and send a request
+
+<Steps>
+  <Step title="Open the Contact">
+    Open the Contact record, for example Jordan Rivera.
+  </Step>
+  <Step title="Find the panel">
+    Find the panel **Document Requests (In development)**.
+  </Step>
+  <Step title="Start a request">
+    Select **New request**. You need the Send permission.
+  </Step>
+  <Step title="Choose a template">
+    Choose a template. The panel lists its items. It marks each item as "Required" or "No form linked".
+  </Step>
+  <Step title="Set the due date">
+    Set the **Due date**. It must be tomorrow or later. The default is today plus the template Default Due Days (14 if empty).
+  </Step>
+  <Step title="Add a message">
+    Add a **Message** if you want. The limit is 2000 characters.
+  </Step>
+  <Step title="Send">
+    Select **Send**. The panel shows "Request sent".
+  </Step>
+</Steps>
+
+If the list is empty, the panel says "No active templates. Ask an administrator to add one." Only Active templates show.
+
+The panel shows the 10 newest requests. Each row shows:
+
+- The link state: "Not opened", "Opened" or "Link expired".
+- The progress: "N of M accepted".
+- "N waiting for review".
+
+Select **Show items** to see the items and **Hide items** to hide them.
+
+The system sends the link by email. The text-message path is not active. You can also copy the link on the request record page (see below) and give it to the client in another way.
+
+## Copy or open the link
+
+Open the request record. Use **Copy link** to copy the client link. The screen says "Link copied". **Open link** opens the client page.
+
+## Hand the device to the client
+
+Use this procedure when the client is in the office and uses your tablet.
+
+1. In the panel, select **Hand to client on this device**.
+2. The page opens in a new tab. The screen says "Hand-off started. Give the device to the client. The link works for 30 minutes."
+3. Give the device to the client.
+4. The client finishes and taps **Finish and hand back**.
+
+The button shows only when all of these conditions are true: you can create requests, the request is Open, and the template has **Allow Staff Device** on. All seeded templates have it off. The server refuses a hand-off when a condition is not met.
+
+To stop early, select **End hand-off**. The screen says "Hand-off ended". The hand-off also ends when you resend, when you cancel, or when 30 minutes pass. Attempts from a hand-off record "Staff device" as where they were captured.
+
+## Resend the link
+
+Select **Resend** on an Open request. Resend:
+
+- stops the old link (the system records "Link Revoked"),
+- ends any active hand-off,
+- makes a new link (the system records "Link Reissued").
+
+The panel says "Link resent. The old link no longer works. A new link is ready." You can resend only an Open request. You need the Review permission.
+
+## Reminders
+
+The system can remind the client by email. Live reminder email is off in the default setup. The review screen says so: "Live reminder email is off. A reminder pass writes a dry-run log and sends no email. This feature is in development."
+
+<Warning>
+The button **Run reminder pass (demo)** runs the pass for **every** request in the org. Do not use it in a shared org unless you intend to. See [Known Gaps](/document-request/known-gaps).
+</Warning>
+
+## Review an item
+
+Open the request record. Each item that waits for review shows the attempt.
+
+1. Select **Preview file** to open the file in the Salesforce file preview. Select **Download file** to save a copy. A badge "Not malware-scanned" shows. The system does not scan files.
+   - An image file shows on the card. If the image cannot load, the card says "This file cannot be shown as an image. It can be damaged or not an image. Download the file to check it."
+2. For a signed document, wait until finalization is done. Before that, the screen says "Accept is possible when finalization is done (status: …)".
+3. Select **Accept**. The screen says "Item accepted".
+
+### Reject
+
+1. Select **Reject**.
+2. Choose a reason. Suggested reasons: Blurry or cut off; Wrong document; Out of date; Missing page or side; Unreadable file; Signature missing; Other. The system keeps any reason that is not blank (up to 255 characters).
+3. Add a **Message to the recipient** if you want (up to 1000 characters).
+4. Select **Send back**. The screen says "Item sent back".
+
+If you do not choose a reason, the screen says "Choose a reason before you send the item back."
+
+The client sees "Staff asked for a new one:" followed by the reason, and can send a replacement. For a rejected attempt, **Compare with the rejected attempt** shows the old and the new side by side.
+
+### Waive
+
+Select **Waive** and then **Waive item**. The reason field says "Reason (required)" for a required item and "Reason (optional)" for an optional item.
+
+- Waiving an optional item needs the Review permission.
+- Waiving a required item needs the `Waive_Required_Items` permission. A reason is required.
+
+A request with a waived item ends with "All done. Thank you." on the client page.
+
+## Upload a signed paper copy
+
+Use this procedure when a client cannot sign online and signs a paper copy at the office (the paper fallback). This path is **in development**.
+
+1. Scan or photograph the signed paper copy. Use a JPG, PNG or PDF file under 3.5 MB.
+2. Open the request record. On the signed document item, select **Upload signed paper copy**.
+3. Choose the file and select **Record paper copy**. The screen says "Paper copy recorded".
+
+The button shows only when you have the Review permission, the request is Open, and the item is Not Started, In Progress or Rejected. The system stores the file on the item and records "Paper Copy Recorded" in the event trail, with your name and the file fingerprint. The card says "Signed paper copy, recorded by" followed by your name. The item then waits for review, the same as an item that the client sends. If the template accepts items automatically, the item is accepted immediately.
+
+A paper copy is not a sealed online signature. It has no Document ID and does not show in the **Signed documents** check. The client page says "The office recorded your signed paper copy. You do not need to sign online."
+
+## Reassign the reviewer
+
+1. Select **Reassign reviewer**.
+2. Choose a user (for example Priya Natarajan).
+3. Select **Save reviewer**. The screen says "Reviewer changed".
+
+You need the Review permission. The button is hidden for Cancelled or Complete requests.
+
+## Cancel a request
+
+1. Select **Cancel request**.
+2. Enter a reason if you want. The system keeps the first 255 characters.
+3. Select **Yes, cancel request**, or **Keep request** to go back.
+
+The screen says "Request cancelled". Cancel works on a Draft or Open request. It stops the client link, ends any hand-off, and stops reminders. The system records "Request Cancelled".
+
+## Verify a signed document
+
+The request record has a card **Signed documents** in the sidebar.
+
+- Select **Check now** to run the check. The check only reads. It does not change data.
+- The card shows "Chain intact", "Chain break found" or "No finalized documents yet".
+- If the chain is broken, the card names the first document with a break.
+- The table lists each attempt: finalization state, Document ID, file and previous check values, chain link and the stored-file check (Matches, Does not match, Missing, Not checked).
+- The check reads again up to 25 stored files. The other files show "Not checked".
+- For a failed finalization (or one that stays pending for a long time), **Re-run** makes the file again. You need the Review permission.
+
+The **Event trail** table lists each event: Type, Occurred at, Actor and Detail. The Detail shows readable "Key: value" text separated by " · ", and the text wraps inside the card. Point to a Detail cell to see the full text. The review screen shows "Event chain verified" or "Event chain broken at sequence N" for the audit trail. The device facts come from the browser and are not verified. See [Security & Privacy](/document-request/security-and-privacy).
+
+## The review queue
+
+Open the tab **Document Review Queue**.
+
+- Choose "Awaiting my review" or "Awaiting review - all".
+- Each row can show "Overdue" and "Not malware-scanned".
+- Use **Open**, **Preview file**, **Accept**, **Reject** and **Reassign reviewer**.
+- The refresh button is "Reload the queue".
+- If the queue is empty, it says "No items wait for review." For your own scope, it also tells you to choose "Awaiting review - all".
+
+You can also use the list views on the Document Request Item object. See [Admin Setup](/document-request/admin-setup#list-views).
+
+## Draft requests
+
+The panel creates Open requests. This page does not describe a way to create a Draft request in the screens.

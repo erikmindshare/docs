@@ -1,0 +1,81 @@
+---
+title: "Document Request Security & Privacy"
+description: "How the client link works, how it is revoked, how data is erased, and how a signed document is checked."
+---
+
+<Warning>
+**In development.** Document Request is in development. This page describes what the feature does today. It is not a security review by an independent person. See [Known Gaps](/document-request/known-gaps).
+</Warning>
+
+## The client link and its token
+
+- The link holds a random token. The token is 32 to 64 characters long.
+- The token is stored on a Survey Invitation record. It has a purpose: `DOCUMENT_REQUEST` for the client, or `DOCUMENT_REQUEST_HANDOFF` for a staff device.
+- The system refuses a token for one purpose where the other purpose is necessary.
+- The default life of a link is 30 days. A template can set a different number (Expiry Days). A hand-off link lives 30 minutes.
+- The page refuses a token that is missing, wrong, expired, replaced or cancelled. The client sees "This link is not valid.", "This link has expired. Ask the office that sent it for a new link." or "This link is no longer valid." The page gives no more detail.
+- The guest user of the site has **no** object access to the Document Request objects. The token lets the server read one request only. A client cannot get to the items of another request.
+- A repeated send with the same key makes one attempt only.
+- A complete request is read-only.
+- The token shows in the page address and in the page reference script tag of the site page. This was reviewed and accepted.
+
+## Revoking a link
+
+| Action | What happens |
+| --- | --- |
+| Resend | The old invitation expires now (event "Link Revoked"). Any hand-off ends. A new invitation starts (event "Link Reissued"). |
+| Cancel | The invitation and the hand-off end. Reminders stop. |
+| Expire | The link stops at its expiry time. |
+| Erase | The system deletes the invitation with the request. See [Erasure](#erasure). |
+
+A hand-off also ends when the client taps **Finish and hand back**, when staff select **End hand-off**, or after 30 minutes.
+
+## What the system records
+
+- Each request has an audit trail of events (for example Link Reissued, Request Cancelled, Reminder Sent). Each event links to the event before it with a SHA-256 value. The review screen says "Event chain verified" or names the first break.
+- Events do not hold email addresses.
+- Each attempt records where it was captured: Recipient device or Staff device. For a hand-off, events record the staff member who started it.
+- The client device reports the "auto check" result for a picture. The server does not verify it.
+- The system does **not** scan files for malware. Review screens show "Not malware-scanned".
+
+## Signed documents and seal verification
+
+When a client signs:
+
+1. The system stores the signature image and the agreement text hash.
+2. It builds a PDF with a certificate page. The certificate has the Document ID, the agreement text hash, the signer's name and relationship, the consent to sign, the times, where it was captured, the device summary, the IP address and the hash of the signature image.
+3. Each signed document links to the signed document before it in the same request. The first link starts from a value made from the request ID. Each link is a SHA-256 of the previous link, the attempt key, the Document ID, the snapshot hash and the signature hash.
+
+The **Check now** button on the verify card reads the chain. It reads again up to 25 stored files and compares their hash. It names the first break. It changes nothing.
+
+The device facts (browser, IP address) come from the browser and the request. The office does not verify them. When a person signs for someone else, the office does not check identity or authority. The certificate says "Not verified".
+
+A file check value is stored on the attempt. It is not printed inside the file.
+
+## Erasure
+
+`SurveyRespondentErasureService.eraseByEmail` deletes these records for a person:
+
+- the requests (matched by request email or by Contact),
+- their items, attempts and events,
+- the invitation and the reminder log rows,
+- every linked file, including the finished PDF.
+
+The system scrubs a form submission made through a form item. It does not delete it. The erasure report holds counts only.
+
+<Note>
+There is **no screen** to start an erasure today. An administrator or developer runs it.
+</Note>
+
+## Reminders and email
+
+Live reminder email is off by default. It needs the `Reminders_Live` permission and the org setting. When it is off, the system only writes a dry-run log. The system does not send a reminder to an address that has opted out.
+
+## Access for staff
+
+Staff get access through `Document_Request_User` and custom permissions. See [Admin Setup](/document-request/admin-setup). Any user with Read access to the objects can see every request.
+
+## See also
+
+- [Overview](/document-request/overview)
+- [Client Guide](/document-request/client-guide)
