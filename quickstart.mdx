@@ -1,18 +1,140 @@
 ---
 title: "Quickstart"
-description: "Build, release and answer a real survey in about fifteen minutes — starting from a sample rather than a blank page."
+description: "Log in to your AutoSurvey trial org, open the sample survey that is already there, answer it, see where responses go, and start your own survey from a sample."
 ---
 
 
-The fastest way to understand AutoSurvey is to release something and answer it yourself. This takes
-about fifteen minutes and ends with a working survey you can send to someone.
+The fastest way to understand AutoSurvey is to answer a survey yourself and then build your own.
+If you have an AutoSurvey trial, your org is already set up and it already holds a sample survey.
+This page starts there. It takes about fifteen minutes.
+
+<Note>
+  **No trial?** If you installed AutoSurvey in your own org, finish **Setup Home** first and then go
+  to [Build a survey in your own org](#build-a-survey-in-your-own-org) below.
+</Note>
+
+## 1. Open your login email
+
+When your trial org is ready, Salesforce sends you an email with a link to set your password. The
+email comes from Salesforce, not from AutoSurvey. Nobody else knows the password that you set.
+
+Click the link and choose a password. After that, you log in on the Salesforce login page with the
+username that came with your trial.
+
+<Frame caption="You log in on the Salesforce login page. The first time, Salesforce can ask for a one-time email code or ask you to set up an authenticator app. That is normal and happens once.">
+  <img src="/images/quickstart/01-log-in.png" alt="The Salesforce login page, with a Username field and a Log In button." />
+</Frame>
+
+If you do not see the AutoSurvey tabs after you log in, open the App Launcher (the grid of dots at
+the top left) and choose **AutoSurvey**.
+
+## 2. Open the sample survey
+
+Click the **Surveys** tab. Your trial org already holds one survey,
+**Customer Satisfaction (demo)**. It is released and it accepts responses. Click its name in the
+list on the left.
+
+<Frame caption="The Surveys tab of a trial org. The sample survey is already in the list.">
+  <img src="/images/quickstart/02-seeded-survey.png" alt="The AutoSurvey Surveys tab with Customer Satisfaction (demo) in the survey list and a Select a survey panel on the right." />
+</Frame>
+
+The survey opens with its name, **v1 · Accepting responses**, and **Public link active** in the
+header. Below the header are five tabs: **Questions**, **Design**, **Send**, **Results** and
+**Settings**.
+
+## 3. Preview it and find its link
+
+Open the **Questions** tab and click **Preview**. You see each screen as a respondent sees it. Use
+the **Screen** numbers to move between screens.
+
+<Frame caption="Questions tab, Preview. This is what a respondent sees.">
+  <img src="/images/quickstart/03-preview.png" alt="The Questions tab in Preview, showing screen 1 of 4 of Customer Satisfaction (demo) with five answer choices." />
+</Frame>
+
+Then open the **Send** tab and click **All channels**. The **Public link** row shows **ACTIVE**.
+Anyone with this link can answer, with no sign-in. Click **Copy link** to copy it, or open **QR ▾**
+for a QR code.
+
+<Frame caption="Send tab, All channels. The public link is active as soon as the survey is released.">
+  <img src="/images/quickstart/03-share-link.png" alt="The Send tab with All channels selected. The Public link row shows ACTIVE with Copy link and QR buttons. In-app, Site members and Email rows are below it." />
+</Frame>
+
+<Note>
+  In a trial org, **Email** shows **NOT SET UP**. That does not stop the public link. Send email
+  invitations later, after you set up email.
+</Note>
+
+## 4. Answer it
+
+Click **Try it** in the survey header. It offers two ways:
+
+- **As yourself** runs the survey inside Salesforce.
+- **As a guest on your site** opens the public page that your respondents see.
+
+Test runs from **Try it** are not counted in results.
+
+<Frame caption="Try it runs the survey without adding a response to your results.">
+  <img src="/images/quickstart/04-try-it.png" alt="The Try it menu open, with As yourself and As a guest on your site." />
+</Frame>
+
+To add a real response, paste the public link from step 3 into a **private browser window** and
+answer the survey there. You are signed in to Salesforce in your normal window, so a private window
+is the only way to see exactly what a respondent sees.
+
+<Frame caption="The public survey page, opened from the public link with no sign-in.">
+  <img src="/images/quickstart/04-public-page.png" alt="The public page of Customer Satisfaction (demo), showing the first question, Overall, how satisfied are you with us?, with five choices and a Next button." />
+</Frame>
+
+## 5. Find the response
+
+Open the survey's **Results** tab. The **RESPONSES** panel counts finished responses. Click
+**Refresh** after you submit. Before anyone answers, it says that no responses are there yet.
+
+<Frame caption="The Results tab before the first response. A response shows here when someone finishes the survey.">
+  <img src="/images/quickstart/05-results.png" alt="The Results tab with a RESPONSES panel that reads Accepting responses, 0 responses, and No responses yet." />
+</Frame>
+
+The **Responses** tab of the app lists every response from every survey. AutoSurvey also copies
+each response to the survey's reporting object, with a field for each question. That is ordinary
+Salesforce data: you can report on it, chart it and automate against it.
+
+## 6. Build your own survey
+
+Go back to the **Surveys** tab and click **New Survey**. If AutoSurvey asks
+**Create in which workspace?**, pick a workspace and click **Continue**. A workspace is a folder for
+surveys. It does not change who can answer a survey.
+
+**Choose how to start** offers six ways. The fastest is **Start from a sample**. The samples are in
+groups by topic, for example *Customer experience* and *Onboarding and adoption*. Type in
+**Filter samples** to find one. Open a sample to see **What it asks**, then click
+**Use this sample**.
+
+<Frame caption="New Survey, Start from a sample. Open a sample to see what it asks.">
+  <img src="/images/quickstart/06-start-from-a-sample.png" alt="The New survey dialog on Choose how to start, with Start from a sample selected and the Net Promoter Score (NPS) sample open." />
+</Frame>
+
+**Review your survey** shows the questions before anything is created. Check the **Title**, the
+**Workspace** and the **Survey ID**, then click **Create survey**.
+
+<Frame caption="Review your survey. Nothing is created until you click Create survey.">
+  <img src="/images/quickstart/06-review.png" alt="The Review your survey screen with Title, Workspace and Survey ID fields, the questions listed by screen, and a Create survey button." />
+</Frame>
+
+To go on from here — change a question, release the survey, and send it — follow
+[Build a survey in your own org](#build-a-survey-in-your-own-org), from
+[Review and create](#review-and-create).
+
+## Build a survey in your own org
+
+This is the full loop for an org where you installed AutoSurvey yourself: **start → edit → try →
+release → send → collect**.
 
 <Note>
   You need AutoSurvey installed and setup finished first. If the **Setup Home** page shows
   outstanding checks, clear those before starting — see [Setup Home](/admin/setup).
 </Note>
 
-## 1. Start a new survey
+### Start a new survey
 
 Open the **Surveys** tab and click **New Survey**.
 
@@ -25,7 +147,7 @@ workspace is a folder for surveys. It does not change who can answer a survey.
   one form. Most orgs never need it.
 </Note>
 
-## 2. Start from a sample
+### Start from a sample
 
 On **Choose how to start**, select **Start from a sample**. The sample library groups its surveys
 by topic, for example *Customer experience* and *Onboarding and adoption*, and you can type in
@@ -40,7 +162,7 @@ by topic, for example *Customer experience* and *Onboarding and adoption*, and y
   Demos start with no responses, so their results open empty.
 </Tip>
 
-## 3. Review and create
+### Review and create
 
 The **Review** step shows the questions before anything is created. Switch between **List** and
 **Preview** to read them as a list or as the respondent sees them.
@@ -59,7 +181,7 @@ have defaults.
 
 Click **Create survey**. The survey opens on its **Questions** tab, in **Preview**.
 
-## 4. Change one thing, and try it
+### Change one thing, and try it
 
 Change something small so you can see the loop work. In **Preview**, click the pencil on a question
 to open its editor. Reword the question, or turn on **Required**, then click **Close**. The status
@@ -74,7 +196,7 @@ results.
   **Sheet sync** button in the header opens it. See [Sheets to Flow](/workflows/sheets-to-flow).
 </Note>
 
-## 5. Release
+### Release
 
 Nothing you change is live until you release it. In the survey header, click **Release v1**. On a
 later version the button counts your changes, for example **Release 3 changes**.
@@ -90,7 +212,7 @@ survey is live immediately, and its public link goes live with it. The dialog th
   response. Click **Repair reporting** when convenient.
 </Note>
 
-## 6. Answer your own survey
+### Answer your own survey
 
 Open the **Send** tab and click **All channels**. The **Public link** row has a **Copy link** button and a QR
 code (under **QR ▾**). If the row says the link needs setup, click **Set up…** and follow the steps.
@@ -103,7 +225,7 @@ code (under **QR ▾**). If the row says the link needs setup, click **Set up…
 
 Fill it in and submit.
 
-## 7. Find the response
+### Find your response
 
 Open the survey's **Results** tab. Your response is there. The **Responses** tab in the app lists
 every response, and AutoSurvey copies each one to the survey's reporting object, with a field per
