@@ -1,0 +1,53 @@
+---
+title: Answers to records
+description: The Make a record from each response topic of Interview Mode. What the choices do, and what the record write feature really changes.
+---
+
+# Answers to records
+
+Each response makes a record, for example a Case. The answers fill the fields of the record.
+
+<Note>
+Interview Mode is in development. It is not available in installed AutoSurvey orgs yet. This page tells you what the interview does when it is available.
+</Note>
+
+## Before you start
+
+This topic belongs to the feature **Record writes**. An admin turns it on in AutoSurvey Setup. When the feature is off, the interview shows the topic as turned off, and the Set up next card shows the state **Feature is off**.
+
+## When the interview asks
+
+The interview asks this question when your brief says to create a case, or when the survey is an application or a request.
+
+The question is: **Make a Salesforce record from each response?** The screen selects the recommended choice first. You can click a different choice.
+
+## The choices
+
+| Choice | What you see | What AutoSurvey changes |
+| --- | --- | --- |
+| **Yes, make a record** (recommended) | A Set up next card opens the record map for this survey. | No setting changes. After Create, the card **Map the answers to records** shows. |
+| **No** | Answers stay in AutoSurvey. | Nothing. |
+
+## The Set up next card
+
+| Card part | Value |
+| --- | --- |
+| **What and why** | You chose to save answers on Salesforce records. In the survey settings, map each answer to a field. |
+| **Who** | You, or an admin |
+| **Link** | **Open the survey settings**. It opens the survey workspace with this survey. |
+| **Done** | When the survey has an answer-to-field map. |
+
+## Change it later
+
+Open the survey **Settings** tab, section **Data**, then **Answers written to records**. See [Survey settings](/admin/survey-settings).
+
+## Limits
+
+- The record write feature writes answers to fields of the record that the response is linked to. It does not make a new record, for example a new Case.
+- The interview does not make the field map. You map each answer on the Settings tab.
+
+## Related
+
+- [Survey settings](/admin/survey-settings) — the Data section.
+- [Data and reporting](/concepts/data-and-reporting) — where the answers are stored.
+- [Interview Mode](/interview-mode) — how the interview works.

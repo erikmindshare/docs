@@ -1,0 +1,37 @@
+---
+title: Show and hide questions
+description: The Show and hide questions topic of Interview Mode. What the choices send to the AI, and how you add the rules yourself.
+---
+
+# Show and hide questions
+
+Show and hide logic shows a question only when an earlier answer matches. For example, "Why not?" shows only after the answer No.
+
+<Note>
+Interview Mode is in development. It is not available in installed AutoSurvey orgs yet. This page tells you what the interview does when it is available.
+</Note>
+
+## When the interview asks
+
+The interview asks this question when your brief says that different answers need different questions, for example "if they say no, ask why".
+
+The question is: **Show some questions only after some answers?** The screen selects the recommended choice first. You can click a different choice.
+
+## The choices
+
+| Choice | What you see | What AutoSurvey changes |
+| --- | --- | --- |
+| **Yes, add the logic from my brief** (recommended) | AutoSurvey proposes change cards for the logic. | No setting changes. The answer goes to the AI at **Finish**. |
+| **No** | Every person sees every question. | Nothing. |
+
+This topic uses the AI at **Finish**. The AI gets your answer and its result text. It can reword, remove or add questions, change the answer options and change a question type. Each proposal is a change card that you keep or skip. If the AI proposes nothing, no change card shows.
+
+## Limits
+
+- The AI cannot add a show or hide rule. It can add a follow-up question, for example "Why not?", but that question shows to every person.
+- Add each rule yourself in the survey builder after Create. See [Conditional visibility](/concepts/conditional-visibility).
+
+## Related
+
+- [Conditional visibility](/concepts/conditional-visibility) — how show and hide rules work.
+- [Interview Mode](/interview-mode) — how the interview works.

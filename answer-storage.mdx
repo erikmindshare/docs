@@ -1,0 +1,41 @@
+---
+title: Where answers are stored
+description: The Where answers are stored topic of Interview Mode. How AutoSurvey names the object that holds the answers, and when you can change the name.
+---
+
+# Where answers are stored
+
+AutoSurvey stores answers in a Salesforce object. The default name comes from the survey title. You can choose a different name before you create the survey. After Create, the name cannot change.
+
+<Note>
+Interview Mode is in development. It is not available in installed AutoSurvey orgs yet. This page tells you what the interview does when it is available.
+</Note>
+
+## When the interview asks
+
+The topic is in the group **Survey basics**. The interview asks it only when the plan for your brief names it. It does not show in the list of all topics.
+
+The screen selects the recommended choice first. You can click a different choice.
+
+## The choices
+
+| Choice | What you see | What AutoSurvey changes |
+| --- | --- | --- |
+| **Use the name from the title** (recommended) | AutoSurvey names the object from the survey title. | Nothing. Create names the object. |
+| **Choose my own name** | AutoSurvey uses the name you give. It ends in __c. | No change from the click. The screen has no box for the name. The AI can propose a name at **Finish** from your brief or from your text in **Anything else to change?** |
+
+When the AI proposes a name, it shows as a change card. AutoSurvey adds __c to the end of the name. The name has 40 characters at most.
+
+## Change it later
+
+After Create, the name cannot change. The interview refuses a name change after Create. To get a different name, ask for it before Create, in your brief or in **Anything else to change?** The **Reporting object** field is in the **Data** section of the survey **Settings** tab. See [Survey settings](/admin/survey-settings).
+
+## Limits
+
+- The screen has no box to type the name. The name comes only from the AI.
+
+## Related
+
+- [Data and reporting](/concepts/data-and-reporting) — the reporting object.
+- [Survey settings](/admin/survey-settings) — the Data section.
+- [Interview Mode](/interview-mode) — how the interview works.

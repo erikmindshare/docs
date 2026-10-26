@@ -1,0 +1,47 @@
+---
+title: Google Sheets sync
+description: The Google Sheets sync topic of Interview Mode. What it will do, and why the interview does not ask it yet.
+---
+
+# Google Sheets sync
+
+Each new response adds a row to the sheet that you pick. The sheet stays in step with the survey.
+
+<Note>
+Interview Mode is in development. It is not available in installed AutoSurvey orgs yet. This page tells you what the interview does when it is available.
+</Note>
+
+<Warning>
+This feature is not available yet. The interview does not ask this question in any org today. The text above tells you what the topic is for. This page shows what the interview has ready for when the feature is released.
+</Warning>
+
+## Status
+
+- AutoSurvey does not register a **sheets-sync** feature in this release. The interview treats a topic with an unknown feature as not installed, and it never asks a topic that is not installed. The topic also does not show in the list of all topics.
+- This topic changes no survey setting. No choice makes a change card.
+- AutoSurvey has no feature that copies each answer to a Google Sheet. The Google Sheets link on a survey is for the questions sheet. See [Sheets to Flow](/workflows/sheets-to-flow).
+
+## The question and the choices
+
+When the feature is released, the interview asks: **Copy each answer to a Google Sheet?** The interview is to ask it when your brief names a spreadsheet or Google Sheets.
+
+| Choice | What you see |
+| --- | --- |
+| **Yes, set up Sheets sync** (recommended) | A Set up next card opens the Sheets setup. |
+| **No** | Answers stay in AutoSurvey. |
+
+## The Set up next card
+
+The interview has a card for this topic, **Connect a Google Sheet**. It shows only when you chose **Yes**. Because the interview never asks the question, the card does not show today.
+
+| Card part | Value |
+| --- | --- |
+| **What and why** | You chose to copy the answers to a Google Sheet. Connect the sheet for this survey. |
+| **Who** | You, or an admin |
+| **Link** | **Open the survey settings**. It opens the survey workspace with this survey. |
+| **Done** | When the survey has a Google Sheet ID. This is the ID of the questions sheet, not a sheet for answers. |
+
+## Related
+
+- [Sheets to Flow](/workflows/sheets-to-flow) — how a Google Sheet holds the questions of a survey.
+- [Interview Mode](/interview-mode) — how the interview works.

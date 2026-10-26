@@ -1,0 +1,51 @@
+---
+title: Screen flow and auto-advance
+description: The One question per screen and the Auto-advance topics of Interview Mode. The choices, the survey settings that they change, and how the two settings work together.
+---
+
+# Screen flow and auto-advance
+
+This setting decides how many questions show at one time. "Adapt to device" shows one question at a time on a phone and a page of questions on a laptop.
+
+<Note>
+Interview Mode is in development. It is not available in installed AutoSurvey orgs yet. This page tells you what the interview does when it is available.
+</Note>
+
+## One question per screen
+
+The interview asks this question when your brief says that people answer on a phone, by text message or on a kiosk, or when the survey is long.
+
+The question is: **Show one question on each screen, or a page of questions?** The screen selects the recommended choice first. You can click a different choice.
+
+| Choice | What you see | What AutoSurvey changes |
+| --- | --- | --- |
+| **Adapt to device** (recommended) | Phones show one question at a time. Desktops show pages. | **Screen Flow Mode** = **Adapt to device**. |
+| **One question per screen** | Every device shows one question at a time. | **Screen Flow Mode** = **One per screen**. |
+| **Pages** | Every device shows a page of questions. | **Screen Flow Mode** = **Grouped pages**. |
+
+## Auto-advance
+
+After a person picks a single answer, the next question shows with no click on Next. It works best for short surveys with single-choice questions.
+
+The interview asks this question when the survey shows one question at a time and most questions have one answer to pick. The question is: **Go to the next question after a click?** The screen selects the recommended choice first. You can click a different choice.
+
+| Choice | What you see | What AutoSurvey changes |
+| --- | --- | --- |
+| **Yes, move on after a click** (recommended) | The survey goes to the next question after the person picks one answer. | **Auto-advance** = on. |
+| **No, wait for Next** | The person presses Next each time. | **Auto-advance** = off. |
+
+At **Finish**, each change shows as a change card with a **Keep** box. **Apply** makes only the kept changes. If the survey already has the value, no card shows. Before Create, the value waits on the draft, and Create writes it to the survey. After Create, **Apply** writes it to the survey.
+
+## Change it later
+
+Open the survey **Settings** tab, card **How it runs**. It has **Screen flow** (Adapt to device, Grouped pages, One per screen) and **Auto-advance**. A change on the Settings tab applies at the next release. See [Survey settings](/admin/survey-settings).
+
+## Limits
+
+- With **Grouped pages**, the Settings tab locks Auto-advance off. The interview does not check this. It can set Auto-advance on together with **Pages**. The Settings tab then shows Auto-advance as off.
+- The interview drops the Auto-advance question when it plans no screen-flow question.
+
+## Related
+
+- [Survey settings](/admin/survey-settings) — the How it runs card.
+- [Interview Mode](/interview-mode) — how the interview works.

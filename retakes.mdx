@@ -1,0 +1,47 @@
+---
+title: Retakes
+description: The Retakes topic of Interview Mode. The two choices, the survey setting that each choice changes, and when that setting applies.
+---
+
+# Retakes
+
+With retakes on, the same person can send a new answer, for example after each visit. With retakes off, a second try shows "You already answered".
+
+<Note>
+Interview Mode is in development. It is not available in installed AutoSurvey orgs yet. This page tells you what the interview does when it is available.
+</Note>
+
+## When the interview asks
+
+The interview asks this question when your brief says that people answer after each visit, class or order, or that the survey runs on a shared device.
+
+The question is: **Can one person answer more than once?** The screen selects the recommended choice first. You can click a different choice.
+
+## The choices
+
+| Choice | What you see | What AutoSurvey changes |
+| --- | --- | --- |
+| **Yes, once for each visit** (recommended) | A person can answer again each time. Each answer is stored separately. | Sets the survey field **Allow Retakes** to on. |
+| **No, once only** | A person can answer one time. A second try shows a message. | Sets **Allow Retakes** to off. |
+
+At **Finish**, each change shows as a change card with a **Keep** box. **Apply** makes only the kept changes. If the survey already has the value, no card shows. Before Create, the value waits on the draft, and Create writes it to the survey. After Create, **Apply** writes it to the survey.
+
+## When the setting applies
+
+- AutoSurvey checks retakes only when a person submits from an invitation. An open link does not check it.
+- A campaign link and a form each have their own **Allow Retakes** box. AutoSurvey uses the first value that it finds, in this order: the campaign link, the form, the survey. These boxes are never empty, so the survey value applies only when the invitation has no campaign link and no form.
+- When retakes are off, a second submit shows: "This invitation has already been completed. Retakes are not enabled."
+
+## Change it later
+
+The survey settings tab has no control for the survey value. Change the **Allow Retakes** box on the campaign link or on the form.
+
+## Limits
+
+- The interview sets the survey value only. It does not change the campaign link or the form, and their values usually win.
+
+## Related
+
+- [Send a survey](/workflows/send-a-survey) — invitations and links.
+- [Campaign distribution](/admin/campaign-distribution) — campaign links.
+- [Interview Mode](/interview-mode) — how the interview works.
