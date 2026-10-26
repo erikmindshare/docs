@@ -1,0 +1,110 @@
+---
+title: Interview Mode
+description: Interview Mode asks a few questions about a survey draft, then shows the changes as cards. You keep the cards that you want and click Apply.
+---
+
+# Interview Mode
+
+Interview Mode asks you a few questions about a survey draft. It reads your brief and the draft, and it asks only about the topics that your survey needs. At **Finish**, it shows the changes as cards. You keep the cards that you want and click **Apply**.
+
+<Note>
+Interview Mode is in development. It is not available in installed AutoSurvey orgs yet. This page tells you what the interview does when it is available.
+</Note>
+
+## Who can use it
+
+The interview shows only for a user who has all of these:
+
+- Author access and edit access to surveys.
+- The **Change with AI** feature turned on in the org.
+- The **AutoSurvey_AI_Refine** permission set.
+
+You can use the interview only on a draft that you own.
+
+## Where the interview starts
+
+| Place | What you see |
+| --- | --- |
+| **Review** step of a new survey, before Create | A card: **Would you like help refining this survey?** It has **Answer a few questions** (Recommended), **Describe changes in my own words** and **No, it looks good**. |
+| The survey builder, after Create | A **Refine this survey** panel above the question list. |
+
+## The interview screens
+
+Each screen asks about one topic. A screen shows the question, the choices, **What it does**, **Why we ask** and, when a page exists, **Learn more**. The recommended choice has the **Recommended** badge. Some topics have no pre-selection, so you must click a choice.
+
+On each screen you can also:
+
+- Click **Skip** to go to the next topic.
+- Click **Don't ask me about this again**. The interview does not ask you about that topic again.
+- Click **Build it with what I told you**. AutoSurvey keeps the answer on this screen and goes to **We have enough**.
+
+The step list beside the screens shows the topics. You can click an answered topic to change the answer. **Not planned** lists the topics that the interview did not plan, and **Ask me about this** adds one. **Go to the end →** opens the last screen.
+
+If a topic needs a feature that is turned off in your org, the screen says so. If you can turn features on, a button opens AutoSurvey Setup in a new tab. If you cannot, **Copy a message to your admin** copies a message for your admin. **Continue without it for now** goes on.
+
+## We have enough
+
+The last screen is **We have enough**. It says: "AutoSurvey makes the changes from your answers. You choose which to keep."
+
+| Control | What it does |
+| --- | --- |
+| **Anything else to change? (optional)** | A text box. Type more changes in your own words. |
+| **Finish** | AutoSurvey makes the change cards from your answers and your text. |
+| **Explore all options** | Shows all the other topics, in six groups: Who answers, How it looks, How people get it, What happens to the answers, Quality and safety, and AI. It also lists the **Set up next** items and the **Not built** topics. **Back to We have enough** returns. |
+| **Rebuild the whole survey with everything I told you** | Makes a new survey from your description, every answer you gave and the text above. |
+
+The screen also lists the questions that you did not see yet, and the topics that you muted. **Ask me about this again** unmutes a topic.
+
+To leave the interview, click **Stop and go back to my survey**.
+
+## Change cards and Apply
+
+After **Finish**, the screen **The changes from your answers** shows one card for each change. Each card has a title, a reason and a **Keep** box. The screen also shows warnings, for example a change that AutoSurvey could not make.
+
+- Clear **Keep** on a card that you do not want.
+- Click **Apply 1 change** or **Apply N changes**. AutoSurvey makes only the kept changes. The button is off when no card is kept.
+- Click **← Back to We have enough** to go back without a change.
+
+A change that needs a feature that is off does not change the survey. It goes to the **Set up next** list.
+
+**Before Create**, **Apply** changes the draft. A survey setting waits on the draft, and Create writes it to the survey. After an Apply on the Review step, the card reads **Refine again?** and has one change box.
+
+**After Create**, **Apply** changes the survey.
+
+The interview screen has no **Undo** button after **Apply**.
+
+## Describe changes in your own words
+
+**Describe changes in my own words** opens **Describe the changes**. Type what to change, for example "Add a question about price." Click **Propose changes**. The screen **The changes from your words** shows the change cards. You keep the cards that you want and click **Apply**, as above.
+
+## Set up next
+
+Some choices need work that the interview cannot do. After Create, the survey builder shows a **Set up next** list. Each card has:
+
+- A title, and one sentence that says what to do and why.
+- Who does it: **You, or an admin** or **An admin**.
+- A link to the page where you do it. Some pages open with the survey. Other pages tell you which survey to pick.
+- The example flows of the package, when there are some.
+- A state: **Done**, **Needs setup** or **Feature is off**. AutoSurvey reads the real setting to find **Done**.
+- **Dismiss** and **Don't suggest this again**. **Don't suggest this again** applies to this survey only.
+
+## Survey basics
+
+The interview can also ask four basic questions about the survey.
+
+**Survey type.** The type picks the question style and the default report. If you type a type that AutoSurvey does not know, the AI uses the general survey guidance.
+
+**Who answers it.** The people who answer decide how the AI words the questions. For example, a question for staff can be more direct than a question for customers. The "what decision" question is now a goal question that the AI writes for your brief.
+
+**Length.** A shorter survey gets more answers. A longer survey gets more detail. The AI changes the questions to fit the length that you pick.
+
+**Tone.** The tone changes the wording of every question. Each choice shows a sample question, so you can see the difference.
+
+## Topic pages
+
+- [Rounds](/rounds)
+- [Audiences](/audiences)
+- [Lead capture](/lead-capture)
+- [Low-score alerts](/alerts/low-score)
+- [Bot check](/bot-check)
+- [Rewards](/rewards)

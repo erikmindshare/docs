@@ -1,0 +1,50 @@
+---
+title: Audiences
+description: The Audiences and Versions topics of Interview Mode. When groups share one survey, when they get their own questions, and what each choice changes.
+---
+
+# Audiences
+
+An audience is one group of people. Each audience can get its own questions. Or all groups can share one survey, and each person says which group they are in.
+
+<Note>
+Interview Mode is in development. It is not available in installed AutoSurvey orgs yet. This page tells you what the interview does when it is available.
+</Note>
+
+## When the interview asks about audiences
+
+The interview asks only when your brief names two or more groups and gives a reason that they need different questions. Two group names alone are not enough. In that case the interview does not ask, and the AI has the instruction to add one "Which best describes you?" question instead.
+
+The question is: **Do the groups get different questions?**
+
+The interview does not pre-select an answer for this topic. You must click a choice.
+
+## The choices
+
+| Choice | What you see | What AutoSurvey changes |
+| --- | --- | --- |
+| **One survey with a 'Which best describes you?' question** (recommended) | Everyone gets the same survey. AutoSurvey adds one question that asks which group the person is in. | Keeps the survey setting **Has Audiences** off. The AI adds the group question as a choice question. |
+| **Separate questions for each group** | AutoSurvey makes one version of the survey for each group. This makes more forms to manage. | Turns on **Has Audiences**. The change card is named **Separate audiences**. |
+
+If you pick the first choice and the AI does not add the group question as a choice question, the change list shows this warning: "You chose one survey with a question that asks which group. The AI did not add that question as a choice question. Add it on the sheet."
+
+At **Finish**, each change shows as a change card with a **Keep** box. **Apply** makes only the kept changes. Before Create, the setting waits on the draft, and Create writes it to the survey. After Create, **Apply** writes it to the survey.
+
+## Versions
+
+The interview can also ask a second question about groups: **Do you need a separate version for each group and each round?** It asks only when your brief names groups and rounds together, or says "A/B".
+
+A version is one mix of group and round, for example Partners in Q2. Each version can have its own questions. Four rounds and two groups make eight versions. You must keep all of them in step.
+
+| Choice | What you see |
+| --- | --- |
+| **No, one version** (recommended) | Every audience and round uses the same form. |
+| **Yes, separate versions** | AutoSurvey makes one form for each audience and round. |
+
+The interview keeps the Versions choice on the draft. To set the questions of each form, open the ⋯ menu of the survey and click **Manage audiences & waves**.
+
+## Related
+
+- [Audiences and Waves](/concepts/matrix-programs) — how audiences and waves work in one survey.
+- [Rounds](/rounds) — the interview topic for a survey that you send again.
+- [Interview Mode](/interview-mode) — how the interview works.

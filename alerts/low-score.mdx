@@ -1,0 +1,81 @@
+---
+title: Low-score alerts
+description: The Low-score alert topic of Interview Mode. When a response counts as low, who gets the follow-up Task, and what an admin must turn on first.
+---
+
+# Low-score alerts
+
+When a score is at or below the line that you set, AutoSurvey makes a task for the person that you pick. The task holds the answers, so the person can call back. AutoSurvey does not send the customer a message. A Flow can do that.
+
+<Note>
+Interview Mode is in development. It is not available in installed AutoSurvey orgs yet. This page tells you what the interview does when it is available.
+</Note>
+
+<Warning>
+The follow-up Task comes from the Flow **AutoSurvey: Negative Case Feedback Follow-Up (Template)**. It ships inactive. An admin must make a copy with **Save As** and activate the copy. The Flow makes a Task only for a response that is linked to a Case. See [Scoring and Alerts](/admin/scoring-and-alerts).
+</Warning>
+
+## When the interview asks
+
+The interview asks this question for a survey with a score, for example CSAT, NPS or a complaint survey. The question is: **Alert someone when a person gives a low score?** The topic has no pre-selection. You must click a choice.
+
+## The choices
+
+| Choice | What you see | What AutoSurvey changes |
+| --- | --- | --- |
+| **Me, the survey owner** (recommended) | AutoSurvey makes a Task for the survey owner. | **Negative Trigger Mode** = **Primary score band**. **Negative Follow-Up Assignee** = **Survey owner**. |
+| **A user I pick** | AutoSurvey makes a Task for that user. | Trigger mode **Primary score band**. Assignee **A user**. |
+| **A queue** | AutoSurvey makes a Task owned by the queue. The queue must support Tasks. | Trigger mode **Primary score band**. Assignee **A queue**. |
+| **The owner of the person's Contact or Lead** | AutoSurvey makes a Task for the record owner. | Trigger mode **Primary score band**. Assignee **Owner of the contact or lead**. |
+| **No alert** | AutoSurvey only marks the response as negative. | **Negative Trigger Mode** = **Do nothing**. |
+
+A public group is not a choice. A Task cannot belong to a group.
+
+At **Finish**, each change shows as a change card with a **Keep** box. **Apply** makes only the kept changes. A change to the trigger mode applies at the next publish of the survey.
+
+## What counts as a low score
+
+**Primary score band** means that the response is negative when its Primary metric question lands in its lowest band:
+
+| Type | Lowest band |
+| --- | --- |
+| **NPS** (0 to 10) | Detractor, 0 to 6 |
+| **CSAT** (1 to 5) | Dissatisfied, 1 to 2 |
+| **CES** (1 to 7) | High effort, 1 to 3 |
+
+The interview does not change the bands. To use an average threshold, change the **Scoring & alerts** card on the survey **Settings** tab. See [Scoring and Alerts](/admin/scoring-and-alerts).
+
+## Who gets the Task
+
+When the Flow runs, AutoSurvey reads the **Negative Follow-Up Assignee** setting of the survey. If the setting cannot be used, the survey owner gets the Task, and the Task description says why:
+
+| Problem | Result |
+| --- | --- |
+| No user is set, or the user is inactive, a guest user or no longer exists. | The survey owner gets the Task. |
+| No queue is set, or the queue no longer exists or does not accept Tasks. | The survey owner gets the Task. |
+| The response has no Contact or Lead. | The survey owner gets the Task. |
+| The Contact or Lead is owned by a queue, or its owner is inactive. | The survey owner gets the Task. |
+| The survey owner is not an active user. | No Task. AutoSurvey logs an error. The negative mark stays on the response. |
+
+<Note>
+The interview has no picker for the user or the queue yet. With **A user I pick** or **A queue** and no user or queue set, the survey owner gets the Task.
+</Note>
+
+## The Set up next card
+
+The card **Low-score alert** shows after Create when the survey has a score question or you answered this topic. It does not show when you chose **No alert**.
+
+| Card part | Value |
+| --- | --- |
+| **What and why** | A low score makes a follow-up task for a person. Then nobody misses an unhappy answer. |
+| **Who** | You, or an admin |
+| **Example flows** | AutoSurvey_Negative_Case_Followup, AutoSurvey_Negative_Recovery_Case |
+| **Link** | **Open the survey settings**. It opens the survey workspace with this survey. |
+| **Done** | When **Negative Trigger Mode** is not **Do nothing**. |
+
+AutoSurvey does not send the customer a message. To call the customer back, or to ask a happy customer for a review, use the example flows in Flow Builder.
+
+## Related
+
+- [Scoring and Alerts](/admin/scoring-and-alerts) — scores, bands, marks and the follow-up Flows.
+- [Interview Mode](/interview-mode) — how the interview works.

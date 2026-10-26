@@ -116,6 +116,18 @@
       ]
     },
     {
+      "group": "Interview topics (in development)",
+      "pages": [
+        "interview-mode",
+        "rounds",
+        "audiences",
+        "lead-capture",
+        "alerts/low-score",
+        "bot-check",
+        "rewards"
+      ]
+    },
+    {
       "group": "Support",
       "pages": [
         "support/troubleshooting",

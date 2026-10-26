@@ -1,0 +1,43 @@
+---
+title: Lead capture
+description: The Lead capture topic of Interview Mode. What it will do, and why the interview does not offer it yet.
+---
+
+# Lead capture
+
+The survey asks for a name, an email and permission to contact the person. If the person agrees, AutoSurvey makes a Lead and links the answers to it. No Lead is made without consent.
+
+<Warning>
+Lead capture from a survey is not available yet. The interview does not ask this question in any org today. The text above tells you what the topic is for. This page shows what the interview has ready for when the feature is released.
+</Warning>
+
+## Status
+
+- AutoSurvey does not register a **lead-capture** feature in this release. The interview treats a topic with an unknown feature as not installed, and it never asks a topic that is not installed.
+- If a Lead capture choice reaches the change list, it does not change the survey. It goes to the **Set up next** list as a card that says: "You chose this in the interview. This feature is not in AutoSurvey yet. The choice is kept for when it ships."
+
+## The question and the choices
+
+When the feature is released, the interview asks: **Ask for a name and email, and make a Lead?** The interview is to ask it for prospects, event sign-ups, webinars, marketing and public links. It is not for staff surveys or anonymous surveys. The topic has no pre-selection. You must click a choice.
+
+| Choice | What you see |
+| --- | --- |
+| **Yes, ask for name and email** (recommended) | A Set up next card opens Lead capture. The AI adds name and email questions at Finish. |
+| **No** | AutoSurvey does not ask for contact details. |
+
+## The Set up next card
+
+A **Yes** answer adds the card **Lead assignment rules**.
+
+| Card part | Value |
+| --- | --- |
+| **What and why** | You chose to make leads from answers. An active lead assignment rule sends each new lead to a person. |
+| **Who** | An admin |
+| **Link** | **Open Lead Assignment Rules**. It opens Salesforce Setup. This page sets up the whole org. It does not take a survey. |
+| **Done** | When the org has an active Lead assignment rule. |
+
+AutoSurvey does not assign the Lead. The Salesforce Lead assignment rule does. While the Lead capture feature is not on, the card shows the state **Feature is off**.
+
+## Related
+
+- [Interview Mode](/interview-mode) — how the interview works.

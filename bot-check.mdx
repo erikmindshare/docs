@@ -1,0 +1,57 @@
+---
+title: Bot check
+description: The Bot check topic of Interview Mode. The honeypot, the captcha, and what each choice changes in the survey.
+---
+
+# Bot check
+
+A honeypot is a trap for bots. It is not a reward. The survey has one extra field that people cannot see, so a person leaves it empty. A bot fills in every field that it finds. AutoSurvey rejects a response that has the hidden field filled in. People see nothing and do nothing. A captcha is a second check that people can see. People tick "I am human" before Submit (reCAPTCHA or Turnstile).
+
+<Note>
+Interview Mode is in development. It is not available in installed AutoSurvey orgs yet. This page tells you what the interview does when it is available.
+</Note>
+
+## Before you start: Fraud & Quality Shield
+
+The honeypot check runs in the **Fraud & Quality Shield** feature. Shield is off by default. While Shield is off in your org, the interview shows the Bot check topic as turned off:
+
+- If you can turn features on, click **Turn on Fraud & Quality Shield**. AutoSurvey Setup opens in a new tab at the feature card. Turn on its switch there, then come back. The screen checks again when you come back.
+- If you cannot, the screen says to ask your admin. **Copy a message to your admin** copies a message that you can send.
+- **Continue without it for now** goes on with the interview.
+
+## When the interview asks
+
+The interview asks this question for a survey with a public link, a survey that "anyone can answer", or a survey with a reward. The question is: **Protect the survey from bots?**
+
+## The choices
+
+| Choice | What you see | What AutoSurvey changes |
+| --- | --- | --- |
+| **Honeypot only** (recommended) | A hidden field catches bots. People see nothing. | **CAPTCHA Mode** = **Never**. The survey gets an enabled Shield policy binding. |
+| **Honeypot and captcha** | A visible captcha is added. Use it with a reward. | **CAPTCHA Mode** = **Always**. The survey gets an enabled Shield policy binding. |
+| **No bot check** | AutoSurvey adds no extra check. | **CAPTCHA Mode** = **Never**. No binding is made. |
+
+At **Finish**, each change shows as a change card with a **Keep** box. **Apply** makes only the kept changes.
+
+<Note>
+**Honeypot only** and **No bot check** set **CAPTCHA Mode** to **Never**. Then the survey does not show a captcha, also not on a burst of starts. The default mode **Auto** can show one. See [Security and Privacy](/admin/security-and-privacy).
+</Note>
+
+## The Shield policy binding
+
+Shield checks a survey only through an enabled policy binding. A CAPTCHA Mode value alone does not check the honeypot. So a honeypot choice does this:
+
+- If the survey already has a Shield binding, AutoSurvey keeps it. It does not replace a binding that an admin made.
+- If not, AutoSurvey binds the survey to a policy that it makes the first time. That policy blocks a filled honeypot and a failed challenge, and nothing else.
+- If you do not have Shield admin access, AutoSurvey cannot make the binding. The change list then says: "The honeypot is not on yet. Open Shield and bind a policy to this survey."
+
+## If Shield is off
+
+If a Bot check answer reaches **Finish** while Shield is off, AutoSurvey does not change the survey. The change goes to the **Set up next** list. The card says: "You chose this in the interview. The feature is turned off in this org. An admin can turn it on in Setup." Its link is **Open AutoSurvey Setup**.
+
+## Related
+
+- [Security and Privacy](/admin/security-and-privacy) — CAPTCHA modes and the guest limits.
+- [Setup](/admin/setup) — CAPTCHA keys.
+- [Rewards](/rewards) — a reward needs a bot check.
+- [Interview Mode](/interview-mode) — how the interview works.
