@@ -1,43 +1,68 @@
 ---
 title: Lead capture
-description: The Lead capture topic of Interview Mode. What it will do, and why the interview does not offer it yet.
+description: The Lead capture topic of Interview Mode. When the interview asks it, the choices, and what Create sets up.
 ---
 
 # Lead capture
 
-The survey asks for a name, an email and permission to contact the person. If the person agrees, AutoSurvey makes a Lead and links the answers to it. No Lead is made without consent.
-
-<Warning>
-Lead capture from a survey is not available yet. The interview does not ask this question in any org today. The text above tells you what the topic is for. This page shows what the interview has ready for when the feature is released.
-</Warning>
+The survey asks for a name, an email and permission to contact the person. If you choose to make a Lead, AutoSurvey makes a Lead from each response. No Lead is made without consent.
 
 ## Status
 
-- AutoSurvey does not register a **lead-capture** feature in this release. The interview treats a topic with an unknown feature as not installed, and it never asks a topic that is not installed.
-- If a Lead capture choice reaches the change list, it does not change the survey. It goes to the **Set up next** list as a card that says: "You chose this in the interview. This feature is not in AutoSurvey yet. The choice is kept for when it ships."
+- Lead capture is in this release. The topic needs no feature switch, so the interview can ask it in every org.
+- The interview asks it for prospects, event sign-ups, webinars, marketing and public links. It is not for staff surveys or anonymous surveys.
+- When your brief asks for a name with an email or a phone number, the interview puts this topic first in the plan. A brief that says anonymous or "no names" does not do this.
+- The topic has no pre-selection. You must click a choice. If you click **Next** with no choice, the interview skips the topic.
+- An answer to this topic makes the interview plan the next questions again.
 
 ## The question and the choices
 
-When the feature is released, the interview asks: **Ask for a name and email, and make a Lead?** The interview is to ask it for prospects, event sign-ups, webinars, marketing and public links. It is not for staff surveys or anonymous surveys. The topic has no pre-selection. You must click a choice.
+The interview shows the topic **Lead capture** with this text: "Lead capture asks the people who answer who they are: a name, an email and a consent box. A Lead is a Salesforce record for a person who can become a customer. Next you pick the fields and where they go."
+
+To change the choice later, open the **Settings** tab, then **Data**, then **Create a record from each response**.
 
 | Choice | What you see |
 | --- | --- |
-| **Yes, ask for name and email** (recommended) | A Set up next card opens Lead capture. The AI adds name and email questions at Finish. |
-| **No** | AutoSurvey does not ask for contact details. |
+| **Yes, ask who they are, and make a Lead** (recommended for prospects and events) | Next you pick the fields and where they go. Create then sets up a Lead from each response. |
+| **Yes, ask who they are, but do not make a Lead** | The name and email stay with the response only. Next you pick the fields and where they go. |
+| **No, keep answers anonymous** (recommended for staff and anonymous surveys) | AutoSurvey does not ask who answers. If you selected anonymous answers, a name or email would end that, so this stays off. |
+
+### The contact questions
+
+After a **Yes** choice, the next screen asks for the contact questions:
+
+- The fields: first name, last name, email, phone, company, title and a consent question. You set each one as required or not.
+- The place: at the start or at the end of the survey.
+- For **Yes, ask who they are, and make a Lead**, the last name and the consent question must be required. A Lead needs a last name, and no consent means no Lead.
+
+The change list then shows one group, **Contact questions**, that adds these questions. A question that the survey has already is not added again.
+
+### What Create sets up
+
+For **Yes, ask who they are, and make a Lead**, Create writes the Lead setup of the survey:
+
+- Each response makes a Lead record. You are the owner.
+- Each contact question goes to its Lead field. Consent has no Lead field.
+- A Lead needs a Company. If the survey asks for the company, that answer goes to Company. Else the survey name is the Company.
+
+Create does not change a survey that already makes another record from each response. If you cannot edit the survey's record settings, Create writes no setup. The change list then tells you to ask an admin to turn on **Create a record from each response** in the survey settings. If the **Intake to Record** feature is off, the change list says so. An admin turns it on in Setup Home, Features.
+
+For **Yes, ask who they are, but do not make a Lead**, Create adds the contact questions only.
 
 ## The Set up next card
 
-A **Yes** answer adds the card **Lead assignment rules**.
+A **Yes, ask who they are, and make a Lead** answer adds the card **Leads from answers**.
 
 | Card part | Value |
 | --- | --- |
-| **What and why** | You chose to make leads from answers. An active lead assignment rule sends each new lead to a person. |
-| **Who** | An admin |
-| **Link** | **Open Lead Assignment Rules**. It opens Salesforce Setup. This page sets up the whole org. It does not take a survey. |
-| **Done** | When the org has an active Lead assignment rule. |
+| **What and why** | The card lists the answers that go to Lead fields, the Company and the lead owner. |
+| **Who** | You, or an admin |
+| **Link** | **Open the survey settings** |
+| **Done** | When the survey uses the org's assignment rules, or when you click **Keep: leads go to me**. |
 
-AutoSurvey does not assign the Lead. The Salesforce Lead assignment rule does. While the Lead capture feature is not on, the card shows the state **Feature is off**.
+The card button **Use the org's assignment rules** shows only when the org has an active Lead assignment rule. AutoSurvey does not make the Lead assignment rules. Salesforce does. For the steps, see [Leads from answers](/set-up-next#leads-from-answers).
 
 ## Related
 
+- [Set up next](/set-up-next#leads-from-answers) — the Leads from answers card.
 - [Interview Mode](/interview-mode) — how the interview works.
