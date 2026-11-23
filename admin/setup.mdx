@@ -324,7 +324,7 @@ needs, the permission sets that it uses, and the place to set it up.
 | **Change with AI** | On the Review step of a new survey, mark questions and ask AI to propose changes. No respondent answer goes to the AI provider. | On |
 | **Allow AI image generation** | Let authors make answer-choice pictures and the header, background and favicon with AI. The author sees the candidates for each picture and keeps one. No respondent answer goes to the AI provider. It works only while **AI features** is on. | On |
 | **AI you control** | One switch stops every new AI request in this org. Each AI action starts only when you click it. | Off |
-| **AI reads answers** | Send the text of survey answers to your AI provider, to translate text answers. While it is off, no answer text goes to the AI provider. | Off |
+| **AI reads answers** | Send the text of survey answers to a Salesforce Einstein model in your org, to translate text answers and to write AI follow-up questions. While it is off, these two features send no answer text. The Fraud & Quality Shield AI review does not read this switch: it has its own setting in the Shield policy. | Off |
 | **AI follow-up questions** | Ask one short follow-up question after an open-text answer. Needs **AI reads answers**. See [AI follow-up questions](/ai-follow-ups). | Off |
 
 ### Data quality and support

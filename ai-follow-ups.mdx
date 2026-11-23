@@ -11,8 +11,10 @@ the survey asks one short question after an open-text answer, for example "What 
 Two switches in **Setup**, **Optional Capabilities** must be on. The two switches are off until an
 admin turns them on.
 
-1. **AI reads answers**. This switch lets AutoSurvey send the text of survey answers to your AI
-   provider. While it is off, no answer text goes to the AI provider.
+1. **AI reads answers**. This switch lets AutoSurvey send the text of survey answers to a
+   Salesforce Einstein model in your org. While it is off, translation and follow-ups send no answer
+   text. The Fraud & Quality Shield AI review does not read this switch: it has its own setting in
+   the Shield policy.
 2. **AI follow-up questions**. You cannot turn it on while **AI reads answers** is off.
 
 ## Turn on follow-ups for a question
