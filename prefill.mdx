@@ -1,35 +1,43 @@
 ---
-title: Fill in what you know
-description: The Fill in what you know topic of Interview Mode. What it will do, and why the interview does not ask it yet.
+title: "Fill in what you know"
+description: "Use a Flow action to fill in survey answers that you already have, such as a region or a name, before the person sees the survey."
 ---
 
-# Fill in what you know
+You already know the region or the name of the person. The person does not need to type it again. In a Screen
+Flow that shows the survey, the action **AutoSurvey: Prefill Answers** writes the values as draft
+answers. The person sees each value and can change it.
 
-AutoSurvey takes values that you have, such as a region or an account, from the contact record. The survey does not ask these questions.
+## Add the action to your Flow
 
-<Note>
-Interview Mode is in development. It is not available in installed AutoSurvey orgs yet. This page tells you what the interview does when it is available.
-</Note>
+1. Add the action **AutoSurvey: Start Survey**. It returns the run token and the resume secret.
+2. After it, and before the survey screen, add **AutoSurvey: Prefill Answers**.
+3. Fill in the inputs:
+
+   | Input | Value |
+   | --- | --- |
+   | **Run Token (Submission Key)** | The run token from **AutoSurvey: Start Survey**. |
+   | **Resume Secret** | The resume secret from **AutoSurvey: Start Survey**. |
+   | **Question API Names** | The API names of the questions. |
+   | **Values** | One value for each question, in the same order. |
+
+4. Read the outputs **Success**, **Prefilled Count**, **Skipped Existing Count** and **Error Message**.
+
+## Limits
+
+- The action fills text, number, true/false, single-choice and NPS questions. For a choice question, give
+  the option value.
+- It refuses matrix, ranking, file, signature, multi-select, date, time, star and slider questions.
+- One call fills 50 questions at most.
+- It does not change a question that has a saved answer.
+- If one value is not valid, the action writes nothing.
+- For a Flow on a public site, give the guest profile access to the action. **AutoSurvey Guest Access**
+  does not contain it.
 
 <Warning>
-This feature is not available yet. The interview does not ask this question in any org today. The text above tells you what the topic is for. This page shows what the interview has ready for when the feature is released.
+The respondent sees each value. In a Flow for guests, do not use data that the respondent must not see.
 </Warning>
-
-## Status
-
-- AutoSurvey does not register a **prefilled-fields** feature in this release. The interview treats a topic with an unknown feature as not installed, and it never asks a topic that is not installed. The topic also does not show in the list of all topics.
-- This topic changes no survey setting. No choice makes a change card.
-- Prefilled fields are not in AutoSurvey yet.
-
-## The question and the choices
-
-When the feature is released, the interview asks: **Fill in what you already know, and not ask it?** The interview is to ask it when your brief says that you know the people, for example "we already know their region".
-
-| Choice | What you see |
-| --- | --- |
-| **Yes, fill in what I know** (recommended) | AutoSurvey removes the questions and fills them from the record. |
-| **No** | AutoSurvey asks every question. |
 
 ## Related
 
-- [Interview Mode](/interview-mode) — how the interview works.
+- [Piping Answers into Questions](/concepts/piping)
+- [Interview Mode](/interview-mode)
