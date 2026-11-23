@@ -5,7 +5,7 @@ description: The Close date topic of Interview Mode. What the choices do, and wh
 
 # Close date
 
-After the close date, the link shows "This survey is closed". Nobody can answer after that date.
+After the close date, the link shows "This survey is closed", and nobody can start the survey. A person who started before the close can still save and submit for 60 minutes after the close. After that, save and submit fail.
 
 <Note>
 You can set the close date with no interview. Click **Stop accepting responses…**, select **Schedule close** and enter **Close at**. **Stop accepting responses…** is in the release-state menu and the **⋯** menu. See [Release & Share](/workflows/deploy-and-verify).
@@ -21,10 +21,10 @@ The question is: **Close the survey on a date?** The screen selects the recommen
 
 | Choice | What you see | What AutoSurvey changes |
 | --- | --- | --- |
-| **Close on a date** (recommended) | The survey stops taking answers after the date you pick. | No date is set. After Create, the card **Set the close date** shows. |
+| **Close on a date** (recommended) | The survey stops taking answers after the date you pick. | Create sets the close date to the date that you pick. A date with no time means 23:59 of that day. |
 | **Do not close** | The survey stays open until you close it. | Nothing. |
 
-At **Finish**, the AI can read a date in your brief and propose it as a change card. The date must be today or later. The interview keeps that date on the draft only. It does not set the close date of the survey.
+At **Finish**, the AI can read a date in your brief and propose it as a change card. The date must be today or later. Create sets that date as the close date of the survey.
 
 ## The Set up next card
 
@@ -41,7 +41,7 @@ Click **Stop accepting responses…**, select **Schedule close** and change **Cl
 
 ## Limits
 
-- The interview does not set a close date. The survey stays open until you set the date or close the survey.
+- Create sets the close date only when your account can close surveys and the date is later than now. Otherwise the card **Set the close date** shows, and you set the date yourself.
 - The interview does not compute a date 7 days after an event.
 
 ## Related

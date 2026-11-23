@@ -21,11 +21,16 @@ The question is: **Remind the people who did not answer?** The screen selects th
 
 | Choice | What you see | What AutoSurvey changes |
 | --- | --- | --- |
-| **One reminder, day 3** (recommended) | People who did not answer get one reminder on day 3. | Keeps the value 1 on the draft. After Create, the card **Set the reminders** shows. |
-| **Two reminders, day 3 and day 7** | People who did not answer get a reminder on day 3 and on day 7. | Keeps the value 2 on the draft. After Create, the card **Set the reminders** shows. |
+| **One reminder, day 3** (recommended) | People who did not answer get one reminder on day 3. | Create makes a reminder schedule: one reminder, on day 3. |
+| **Two reminders, day 3 and day 7** | People who did not answer get a reminder on day 3 and on day 7. | Create makes a reminder schedule: two reminders, on day 3 and on day 7. |
 | **No reminders** | People get the survey once. | Nothing. |
 
-The interview does not make a reminder schedule. The days 3 and 7 are a suggestion. You set the schedule yourself.
+Create makes the reminder schedule when your account can create and change reminder schedules. Create does not make a schedule in these cases, and the card **Set the reminders** shows. You then check the schedule yourself:
+
+- Your account cannot change reminder schedules.
+- The survey has a reminder schedule that is on with other values.
+- The survey has more than one reminder schedule.
+- The reminder schedule of the survey sends text messages.
 
 ## The Set up next card
 
@@ -42,7 +47,7 @@ Open the **Send** tab of the survey. Use the follow-up reminders line. See [Send
 
 ## Limits
 
-- No reminder goes out until you set the schedule on the Send tab.
+- A reminder schedule is not enough to send email. An admin must also turn on **Send reminder email for real** in AutoSurvey Settings, and the user that runs the scheduled job needs the Reminders Live permission. Until then, AutoSurvey logs each reminder as a dry run and sends no email. The card tells you when the schedule cannot send yet.
 
 ## Related
 

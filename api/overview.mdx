@@ -66,9 +66,11 @@ responses are queryable there with it alone.
 </Note>
 
 **AutoSurvey Raw Response Access**
-grants no object access of its own; it unlocks the restricted raw-response report folder and raw
-CSV/ZIP exports inside Salesforce, so an API integration user typically does not need it. See
-[Installation & Permissions](/admin/installation-and-permissions).
+unlocks the restricted raw-response report folder and raw CSV/ZIP exports inside Salesforce. It
+also grants Read on Survey Submission (no View All) and on six of its fields: Responder Email,
+Responder Contact, Responder Lead, Responder User, Data Quality and Shield Review Status. So a user
+with this set can read who answered. Assign it only to a person or an integration user that must
+see who answered. See [Installation & Permissions](/admin/installation-and-permissions).
 
 ## Related
 

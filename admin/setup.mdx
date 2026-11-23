@@ -22,6 +22,7 @@ On a new install, the **Finish Initial Setup** card shows a **Complete Setup** b
 - Creates or repairs the internal connection and the Guest Response Queue.
 - Assigns you the **Self Org Access** and **Self Org JWT Access** permission sets.
 - Adds the sample surveys.
+- Assigns the **AutoSurvey Guest Access** permission set to the guest user of each active Experience site in your org, so that people can answer a survey on the site.
 - Tests the connection to the AutoSurvey server, and connects the org to the server if it is not connected yet. When the server asks for proof, Salesforce first asks you to verify the org.
 
 ### If Setup Home cannot load for you
@@ -302,12 +303,18 @@ needs, the permission sets that it uses, and the place to set it up.
 
 | Card | What it does | Before an admin changes it |
 | --- | --- | --- |
-| **Show survey suites** | A suite holds several forms of one survey. Turn this on when you need variations by audience or wave. See [Audiences and waves](/concepts/matrix-programs). | Off |
+| **Audiences and rounds** | A survey can have one form for each audience and each round. Turn this on when you need variations by audience or wave. See [Audiences and waves](/concepts/matrix-programs). | Off |
+| **One question editor** | Edit questions in one view: outline, preview and settings together. | Off |
 | **Multi-language surveys** | Translate a survey and its emails into other languages, and translate text answers back. See [Languages](/languages). | Off |
 | **Calculated values** | Add a row that adds up points from the answers, such as a score or a total. The respondent does not see or fill it. | On |
 | **Standard questions** | Keep a library of locked standard questions and insert them into any survey. See [Standard questions](/question-bank). | On |
 | **Intake to Record** | A submitted survey creates one record, such as a Lead or a Case, from the answers. Each survey picks the object and the field map in its Settings tab. | On |
 | **Workspace environments** | Mark each workspace as Draft, Demo, Test or Production, and filter the workspace switcher by environment. | Off |
+| **Logic tools** | Edit a Show If rule with AND, OR and groups, see the survey logic as a map, and test the route of each set of answers. The release check of the logic runs also when this is off. | Off |
+| **Brand tools** | Use one brand look on your surveys. While this is off, surveys, emails and PDFs keep the colours that they have now. | Off |
+| **Accessibility checks** | Check the colour contrast of two text and background pairs, and show the result on the Design page. Two settings: **Stop a release that fails the accessibility check**, and **Images need alt text**. AutoSurvey checks the alt text of images only when **Images need alt text** is on. | Off |
+| **Capacity rules** | Stop new responses after a number of counted responses, set the times when a survey is open, allow one response from each person, and limit how many people can choose an option. | Off |
+| **Anonymous surveys** | In development. No survey can be marked Anonymous yet. | Off |
 
 ### AI
 
@@ -315,7 +322,7 @@ needs, the permission sets that it uses, and the place to set it up.
 | --- | --- | --- |
 | **AI features** | Draft survey questions and artwork with an AI model. Turn this off to stop every new request to an AI provider. | On |
 | **Change with AI** | On the Review step of a new survey, mark questions and ask AI to propose changes. No respondent answer goes to the AI provider. | On |
-| **AI images** | Make answer-choice pictures and a page background with AI. The author sees 3 candidates for each image and keeps one. | On |
+| **Allow AI image generation** | Let authors make answer-choice pictures and the header, background and favicon with AI. The author sees the candidates for each picture and keeps one. No respondent answer goes to the AI provider. It works only while **AI features** is on. | On |
 | **AI you control** | One switch stops every new AI request in this org. Each AI action starts only when you click it. | Off |
 | **AI reads answers** | Send the text of survey answers to your AI provider, to translate text answers. While it is off, no answer text goes to the AI provider. | Off |
 | **AI follow-up questions** | Ask one short follow-up question after an open-text answer. Needs **AI reads answers**. See [AI follow-up questions](/ai-follow-ups). | Off |

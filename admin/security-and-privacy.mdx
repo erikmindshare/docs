@@ -177,6 +177,14 @@ uses our managed key and meters token usage through the AutoSurvey server.
 Salesforce, Inc. (control-plane hosting), Google LLC (Sheets/Drive hosting), OpenAI, L.L.C. and
 Anthropic, PBC (AI authoring). See the DPA for the maintained list.
 
+Two optional features also send respondent data from your org to an outside service. Each is off
+until you set it up:
+
+| Feature | Service | Data that your org sends |
+| --- | --- | --- |
+| Text messages and WhatsApp | Twilio | The phone number of the person, the sender, and the message text or the template and its values. The text can hold the first name of the person and the survey link. |
+| Rewards | Tremendous | The email address of the respondent and the reward amount. |
+
 ### On uninstall
 
 Uninstalling the managed package removes AutoSurvey's managed response objects and their data per
