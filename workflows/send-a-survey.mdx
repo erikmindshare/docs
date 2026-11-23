@@ -16,7 +16,7 @@ The block at the top of the tab says who can answer the survey now.
 * Before the first release, it says: *Nobody yet. The survey has no released version.*
 * After a release, it shows the version (for example *Version 2 is released · Accepting
   responses*) and one sentence about reach now. For example: *Now: anyone with the public link can
-  respond.* If the public link is paused or not ready, the sentence says that only people you send
+  respond.* If the public link is paused or not set up, the sentence says that only people you send
   the survey to can respond.
 * When collection is closed, it says that links show a closed message, and that a response in
   progress can finish. A link sends you to Results to reopen collection.
@@ -31,7 +31,7 @@ the first release it says *Release version 1 first. Then you can send.* On a clo
 ## Help me choose, or All channels
 
 After the first release, two tabs show. **Help me choose** asks *How should I send this?* and
-recommends a channel. If that channel is not ready, it tells you to fix it first. **All channels**
+recommends a channel. If that channel is not set up, it tells you to fix it first. **All channels**
 shows the channel rows. The Send tab remembers your choice.
 
 ## The channel rows
@@ -54,7 +54,7 @@ Each row has a status chip:
 
 The **Public link** row is for people with no Salesforce login. Anyone with the link can respond
 without signing in. The link runs on an Experience site in your org, so the org needs a guest site
-first. If the link is not ready, the row shows **Set up…** and, when you open it, **What’s missing**
+first. If the link is not set up, the row shows **Set up…** and, when you open it, **What’s missing**
 with each check that is not done. See [Setup Home Guide](/admin/setup).
 
 When the link is ready, the row gives you:
@@ -70,12 +70,27 @@ Open the row (the **▾** chevron) to see more:
   **Previous** there. Required questions before it are still asked before the survey can be
   submitted.
 * The full link, and an **Embed** snippet with **Copy snippet**. The QR code and the snippet use
-  the same link as **Copy link**, so they follow **Start at** too.
+  the same link as **Copy link**, so they follow **Start at** too. If your org was upgraded to 2.2, see
+  [Embedded surveys in an upgraded org](#embedded-surveys-in-an-upgraded-org).
 * **Pause public link…** — a new visitor sees a paused message and cannot start. Anyone already
   answering can finish. The link and QR code stay valid. **Resume public link…** turns it on again.
 
 The release dialog has a **Public link** view too: it says what the link is, whether it works now,
 and what to do next.
+
+#### Embedded surveys in an upgraded org
+
+In an org that was upgraded to 2.2, a survey that is embedded in a web page can show the first question
+and then a message that says "Please refresh the page and try again." No response is made. The cause is
+that the upgrade did not add the value Embed to the **Source** field of Survey Submission. Links and QR
+codes operate. A new install of 2.2 has the value.
+
+A Salesforce admin adds the value one time:
+
+1. In Setup, open **Object Manager**, then **Survey Submission**, then **Fields & Relationships**, then
+   **Source**.
+2. Under **Values**, click **New**.
+3. Enter `Embed` and click **Save**. The value must be exactly `Embed`.
 
 ### In-app
 
