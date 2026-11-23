@@ -14,30 +14,30 @@ This page lists the limits and the open items of Document Request.
 
 ## Not built or not active
 
-- **Live reminder email** needs the `Reminders_Live` custom permission and the org setting. Without the two, a reminder pass writes a log and sends no email.
+- **Live email** needs the `Reminders_Live` custom permission and the org setting. This includes the link email, the code email and the reminder email. Without the two, the system writes a log and sends no email.
 - AutoSurvey does not send text messages for Document Request. See [Text message flow](/document-request/admin-setup#text-message-flow).
 - **No malware scan** of files. No AI review of files.
 - **No chain checkpoint** object. The chain check only reads the chain.
 - **No Attempt record page.**
-- **No screen to erase** a person. Erasure is code only.
+- **No way for a customer to erase** a person by email. The erasure code has no screen, no Flow action and no Apex method that the customer org can call.
 - **No way in the screens to create a Draft request.**
-- No template tab ships with the package.
-- The Document Request panel shows in other apps (Sales, Service and your own apps) only after an administrator sets the AutoSurvey Contact Record Page as the org default for Contact. The package cannot do this at install. Until then, a user who has the Document Request permission sets but not `AutoSurvey_App_Access` sees no panel. See [Admin Setup: The Contact page](/document-request/admin-setup#the-contact-page).
-- On the AutoSurvey Contact Record Page, the panel is below the **Survey History** list. A user who has only **Participant Requests User** has no access to the survey history Apex class, so the Survey History card can show an access message above the panel. This was not checked in the UI.
+- The Participant Request Center panel shows in other apps (Sales, Service and your own apps) only after an administrator sets the AutoSurvey Contact Record Page as the org default for Contact. The package cannot do this at install. Until then, a user who has `Participant_Request_Center_User` but not `AutoSurvey_App_Access` sees no panel. See [Admin Setup: The Contact page](/document-request/admin-setup#the-contact-page).
+- On the AutoSurvey Contact Record Page, the panel is below the **Survey History** list. A user who has only `Participant_Request_Center_User` has no access to the survey history Apex class, so the Survey History card can show an access message above the panel. This was not checked in the UI.
 
 ## Open questions
 
 - Waiving a required item needs `Waive_Required_Items` but not the Review permission. A user with only the waive permission can waive a required item. This is not decided.
-- `Waive_Required_Items` is in no shipped permission set.
+- `Waive_Required_Items` and `Participant_Access_Recover` are in no shipped permission set.
 
 ## Limits you can meet
 
 - A one-page form can lose answers if the client reloads before Next or Submit.
 - The file limit is never above 3.5 MB. The template field Max File MB can set a lower limit for an item. It cannot set a higher one.
-- The picture checks on the client device are advice only.
+- The picture checks run on the client device. The server does not verify the result.
 - Large chain checks read again only 25 files.
-- The panel on the Contact shows 10 requests.
-- The client page header shows the Salesforce org's own organization name (Company Information). No AutoSurvey setting changes it.
+- One client link shows at most 10 requests.
+- The access log on the panel shows the last 20 events.
+- The client must have the email account of the access email to get the code. This is also true on a staff device.
 
 ## See also
 
