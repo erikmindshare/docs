@@ -5,7 +5,7 @@ description: "How staff create, send, review, resend, reassign and cancel docume
 
 Read the [overview](/document-request/overview) for the flow.
 
-You need the `Document_Request_User` permission set. Your administrator gives it to you. See [Admin Setup](/document-request/admin-setup).
+You need the **Participant Requests User** permission set. Your administrator gives it to you. See [Admin Setup](/document-request/admin-setup).
 
 ## Create and send a request
 
@@ -76,9 +76,7 @@ The panel says "Link resent. The old link no longer works. A new link is ready."
 
 The system can remind the client by email. Live reminder email is off in the default setup. The review screen says if it is off. While it is off, a reminder pass writes a dry-run log and sends no email.
 
-<Warning>
-The button **Run reminder pass (demo)** runs the pass for **every** request in the org. Do not use it in a shared org unless you intend to. See [Known Gaps](/document-request/known-gaps).
-</Warning>
+The reminder pass runs each hour. No button runs it.
 
 ## Review an item
 

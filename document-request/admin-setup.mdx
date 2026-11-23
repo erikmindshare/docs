@@ -9,27 +9,27 @@ This page tells an administrator how to set up Document Request in an org that h
 
 | Permission set | What it gives |
 | --- | --- |
-| `Document_Request_User` | Read access to the six Document Request objects. The Review and Send custom permissions. Access to the Apex classes for the panel, the review screen, the text invitation action, the signing screen and the verify card. The Document Request tab and the Document Review Queue tab, both visible. |
+| **Participant Requests User** (`Participant_Request_Center_User`) | Read access to the Document Request objects and the Participant Request Center objects. The custom permissions to review, to send, to manage the client link, to share a receipt and to decide a change that the client asked for. Access to the Apex classes for the panel, the review screen, the text invitation action, the signing screen and the verify card. The Document Requests, Document Request Templates and Document Review Queue tabs. |
 | `AutoSurvey_Admin` | Read-only access to the Document Request objects and fields, and access to the verify card (Check now). **No** access to the panel or the review screen. **No** Review, Send or Waive permission. |
 | `Super_User` | Same as `AutoSurvey_Admin`. |
 
 Rules to remember:
 
-- `Document_Request_User` gives no create, edit or delete on the objects. Staff change data only through the screens. The screens do the work in Apex.
+- **Participant Requests User** gives no create, edit or delete on the objects. Staff change data only through the screens. The screens do the work in Apex.
 - `AutoSurvey_Admin` and `Super_User` do not give the Document Request screens. A user with only these permission sets sees this message on the panel and the review screen: "You need the Document Request permission sets to use Document Requests. Ask your admin to assign them."
-- An administrator who must work requests assigns `Document_Request_User` to themself, in **Setup → Users →** their user **→ Permission Set Assignments**.
+- An administrator who must work requests assigns **Participant Requests User** to themself, in **Setup → Users →** their user **→ Permission Set Assignments**.
 - Staff do not need `AutoSurvey_App_Access` for the Document Request panel when the AutoSurvey Contact Record Page is the org default for Contact. Do this step one time. See [The Contact page](#the-contact-page). If you do not set the org default, the panel shows only in the AutoSurvey app, and staff then also need `AutoSurvey_App_Access`.
 - The six objects are: Document Request, Document Request Item, Document Request Attempt, Document Request Event, Document Request Template and Document Request Template Item.
 
 <Warning>
-Any user who has Read on the objects can see **every** request, not only their own. Assign `Document_Request_User` only to users who may see all requests. See [Known Gaps](/document-request/known-gaps).
+A request is Private. The holder of **Participant Requests User** sees the requests that the holder owns. The reviewer of a request can read it. A user with `AutoSurvey_Admin` or `Super_User` sees **every** request. The sharing rules of your org can give more access.
 </Warning>
 
 ## Custom permissions
 
 | Custom permission | What it allows |
 | --- | --- |
-| `Review_Document_Requests` | Accept, Reject, Resend, Cancel, Reassign reviewer, the reminder pass. Also Waive for an **optional** item. |
+| `Review_Document_Requests` | Accept, Reject, Resend, Cancel, Reassign reviewer. Also Waive for an **optional** item. |
 | `Send_Document_Requests` | Create a request from a template. Hand a request to the client on the same device. End a hand-off. To list templates, the user also needs Read on the template object. |
 | `Waive_Required_Items` | Waive a **required** item. A reason is required. |
 | `Reminders_Live` | A break-glass gate for real reminder email. It ships in `AutoSurvey_Admin` and `Deploy_Admin`. |
@@ -112,13 +112,11 @@ The guest user of the site has no object access to the Document Request objects.
 - A reminder stops for these reasons: Complete, Cancelled, Link Expired, Opted Out, Cap Reached, Awaiting Review, No Email Address, Send Failed, Link Unavailable.
 - Resend restarts reminders that stopped for Link Expired or Link Unavailable.
 
-<Warning>
-The reminder pass and the renewal job are **not scheduled**. The review screen has a **Run reminder pass (demo)** button. It runs the pass for **every** request in the org, not only the request on the screen.
-</Warning>
+The essential scheduled jobs run the reminder pass each hour and the renewal pass one time each night. The passes run only while **Participant Request Center** is on. See [Scheduled Jobs](/admin/setup#scheduled-jobs). No button runs the reminder pass.
 
 ## The review queue tab
 
-The tab **Document Review Queue** shows the queue. It is visible through `Document_Request_User`. Other users do not see it unless you add it to their permission set.
+The tab **Document Review Queue** shows the queue. It is visible through **Participant Requests User**. Other users do not see it unless you add it to their permission set.
 
 ## List views
 
@@ -133,18 +131,18 @@ The request record page shows the review screen. The signed-document verify card
 
 ### The Contact page
 
-The Document Request panel is on the **AutoSurvey Contact Record Page**. The package ships this page. The AutoSurvey app uses it for Contact. Other apps (Sales, Service and your own apps) use the org default Contact page. A package cannot set the org default page when it is installed. An administrator must do it one time.
+The **Participant Request Center** panel is on the **AutoSurvey Contact Record Page**. The package ships this page. The AutoSurvey app uses it for Contact. Other apps (Sales, Service and your own apps) use the org default Contact page. A package cannot set the org default page when it is installed. An administrator must do it one time.
 
 Do one of these two procedures:
 
 1. **AutoSurvey Setup.** Open the AutoSurvey app. Open the **Setup** tab. Find the **Contact Record Page** card under **Recommended Checks**. Click **Activate**. AutoSurvey sets the AutoSurvey Contact Record Page as the org default for Contact on desktop and phone. This needs the AutoSurvey server connection. If Activate fails, use procedure 2.
 2. **Lightning App Builder.** In Setup, open **Object Manager**, then **Contact**, then **Lightning Record Pages**. Open **AutoSurvey Contact Record Page** and click **View**. Click **Activation**. On the **Org Default** tab, click **Assign as Org Default**. Select **Desktop and phone**. Click **Next**, then **Save**.
 
-After this step, a user with `Document_Request_User` sees the panel on a Contact in every app. The user does not need `AutoSurvey_App_Access`.
+After this step, a user with **Participant Requests User** sees the panel on a Contact in every app. The user does not need `AutoSurvey_App_Access`.
 
 <Note>
 - The panel is on the first tab of the page, **Survey History**, below the survey history list.
-- If your org already has its own Contact page as the org default, the procedure above replaces it. To keep your page, add the **Document Requests** component to it in Lightning App Builder instead. The component is available for Contact record pages.
+- If your org already has its own Contact page as the org default, the procedure above replaces it. To keep your page, add the **Participant Request Center** component to it in Lightning App Builder instead. The component is available for Contact record pages.
 - An app that assigns its own Contact page (an app default) uses that page, not the org default.
 </Note>
 
