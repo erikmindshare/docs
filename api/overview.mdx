@@ -53,12 +53,12 @@ a single copy can fail. If your integration must see every response, read Survey
 ## Permissions for an integration user
 
 Give the integration user read access through the reporting permission sets rather than opening the
-objects directly. **Global Reporting** grants read-only access, with View All Records, across the
+objects directly. **AutoSurvey Reporting Permissions** grants read-only access, with View All Records, across the
 packaged reporting objects — Survey Submission and Survey Answer — so individual, unaggregated
 responses are queryable there with it alone.
 
 <Note>
-  **Global Reporting does not cover your generated Response Objects.** It is part of the managed
+  **AutoSurvey Reporting Permissions does not cover your generated Response Objects.** It is part of the managed
   package, so Salesforce does not allow it to be changed in your org, and it can never be given
   access to the per-suite Response Objects that AutoSurvey creates there. Grant those through the
   per-suite permission set AutoSurvey creates alongside each Response Object, which is not part of

@@ -12,7 +12,7 @@ The whole experience lives on a panel on the Campaign record page inside the **A
 | Requirement | Why |
 | --- | --- |
 | **AutoSurvey Setup Home is healthy** | The panel depends on a working org. Open the **Setup** tab and confirm required checks pass first. See the [Setup Home Guide](/admin/setup). |
-| **Admin permissions** | You need the **Deploy Admin** permission set (or the **AutoSurvey Full Admin** permission set group). Guest users cannot use the panel. |
+| **Admin permissions** | You need the **AutoSurvey Operator** or the **AutoSurvey Full Admin** permission set group. Guest users cannot use the panel. |
 | **A released survey form** | The Campaign is linked to a **Form**, which belongs to a survey. Create and release a survey first. |
 | **(Public surveys) An Experience Cloud site** | To collect responses from unauthenticated respondents, publish the survey flow on an Experience page and assign `AutoSurvey_Guest_Access` to the site guest user. See [Setup Home → Public Survey Access](/admin/setup). |
 
@@ -264,5 +264,5 @@ For the full data-handling model, see [Security and Privacy](/admin/security-and
 | **Many members suppressed** | Members already have an active invitation for the same form from another campaign, or have opted out of email. Review the generation summary. |
 | **No Experience sites listed / all "Not configured"** | The site must be **Active** (publish and activate it in Experience setup — use the **Open Experience setup** link by the Experience Site Domain field), and the guest user must have `AutoSurvey_Guest_Access` assigned. Newly created sites are inactive until you activate them. See [Setup Home → Public Survey Access](/admin/setup). |
 | **"Link configuration needs attention"** | Check the listed issues: confirm a form is selected, that it (or its survey) has both a survey code and form code, and that the survey base URL is configured in Setup. Click **Re-check** after fixing an issue. |
-| **Panel not visible on the Campaign** | Confirm you are in the **AutoSurvey** app, open the **Survey Distribution** tab, and check that you have the **Deploy Admin** permission set. |
+| **Panel not visible on the Campaign** | Confirm you are in the **AutoSurvey** app, open the **Survey Distribution** tab, and check that you have the **AutoSurvey Operator** or the **AutoSurvey Full Admin** permission set group. |
 | **Counts look stale** | Cached rollups refresh within moments of each completion; check **Last Sync** on the Campaign. If a refresh was missed, the nightly sync catches it up — allow one nightly cycle to elapse. |

@@ -46,10 +46,10 @@ Shown on Setup Home as **Setup Admin Access**.
 
 | Item | Details |
 | --- | --- |
-| **What it checks** | Whether your user holds one of these: the **AutoSurvey Full Admin** permission set group, the **Setup Bootstrap** permission set, all three of **AutoSurvey Admin**, **Deploy Admin** and **AutoSurvey Survey Admin**, or the **Deploy Surveys** custom permission. |
+| **What it checks** | Whether your user holds the **AutoSurvey Full Admin** permission set group, or all four sets in it: **AutoSurvey Admin**, **AutoSurvey App Access**, **PBO Service Access** and **Self Org Access**. With only **Setup Bootstrap** or the **Deploy Surveys** custom permission, the check asks you to assign the group. |
 | **Why it matters** | Without admin permissions, you cannot configure surveys, release them, or manage settings. |
 | **How to fix** | A System Administrator assigns **AutoSurvey Full Admin** (recommended) or **Setup Bootstrap** (minimal) in Setup. **Verify Setup Admin Access** checks again. It does not assign anything. |
-| **Note** | Only the Full Admin group carries **PBO Service Access**, which the AutoSurvey Server Connection check needs. The three individual admin sets do not. |
+| **Note** | The AutoSurvey Server Connection check needs **PBO Service Access**. The Full Admin, Author, Operator and Support groups and **Setup Bootstrap** contain it. The **AutoSurvey Admin** set alone does not. |
 
 ### Internal Connection
 
@@ -164,19 +164,22 @@ This check appears only when the hourly guest start cap refused respondents in t
 
 ## Permission Sets
 
-This section lists every permission set AutoSurvey ships, with what it grants and who should hold it. Each row shows badges: **Installed** or **Missing**, the number assigned, **Required** or **Optional**, and **You Have It** or **You Don't Have It**. Click **Manage Assignments** to open the assignment page in Salesforce Setup.
+Open the tab **Roles & Permissions**. It has two parts.
 
-Five sets are badged **Required**:
+**Roles** lists the six role groups: **AutoSurvey Full Admin**, **AutoSurvey Author**, **AutoSurvey Operator**, **AutoSurvey Support**, **AutoSurvey Reporting** and **AutoSurvey Respondent**. Each role shows who it is for, what the person can and cannot do, the sets in the group and how many people hold it. Click **Manage Assignments** to open the group in Salesforce Setup. The page does not assign a role. At least one person must hold **AutoSurvey Full Admin**.
+
+**Individual permission sets (advanced)** lists the sets. Most people need only a role. Use a set for one extra right, for a feature team or for a site user. A set that an **Optional Capabilities** switch owns is not in the list.
+
+The four sets in **AutoSurvey Full Admin** are required. A set shows **Required** when no user holds it:
 
 | Permission Set | Purpose |
 | --- | --- |
-| **AutoSurvey Admin** | Core admin setup and configuration access. |
-| **Deploy Admin** | Reporting-field setup and setup operations, for admins who release surveys. |
-| **AutoSurvey Survey Admin** | Survey administration access. |
-| **PBO Service Access** | Calls to the AutoSurvey server. Complete Setup and the server checks refuse without it. The Full Admin group and Setup Bootstrap carry it. |
-| **Self Org JWT Access** | Marks the users who release surveys and add reporting fields. Complete Setup assigns it to the admin who clicks. Each of these users also clicks **Authorize AutoSurvey** once on the [AutoSurvey Sign-In](#self-org-sign-in) row. |
+| **AutoSurvey Admin** | Setup, org settings, authoring, release, send, results and export. |
+| **AutoSurvey App Access** | The AutoSurvey app in the App Launcher. |
+| **PBO Service Access** | Calls to the AutoSurvey server. Complete Setup and the server checks refuse without it. |
+| **Self Org Access** | Calls from AutoSurvey to your own org. Setup checks and releases need it. |
 
-The other rows (for example **Super User**, **Setup Bootstrap**, **Self Org Access**, **AutoSurvey Guest Access**, and the BYOK sets) are optional and depend on how you use AutoSurvey. See [Installation & Permissions](/admin/installation-and-permissions).
+For each role and each feature set, see [Installation & Permissions](/admin/installation-and-permissions).
 
 > Tip: For most admins, assign the **AutoSurvey Full Admin** permission set group instead of individual sets.
 
@@ -270,16 +273,76 @@ lands **hidden** until an admin shares it once.
 | **How to fix** | Click **Share with all internal users**. The button disappears once the folder is shared. |
 | **Status values** | **PASS** = folder shared with internal users. **NOT TESTED** / **FAIL** = still hidden. Click the share button. |
 
+## Optional Capabilities" of admin/setup.mdx (lines 273-282 on origin/main b63fdb3).
+    Keep the heading text: the Setup rail label is "Optional Capabilities". Source: origin/release/2.2
+    src/classes/AsaCapabilityRegistry.cls:179-432. */}
+
 ## Optional Capabilities
 
-AutoSurvey works without any of these. Each capability unlocks an extra way to collect responses, and lists what it needs and where to set it up. The section is collapsed by default. Click **Show section** to open it.
+AutoSurvey operates without these features. Each card is one feature. A card shows what the feature
+needs, the permission sets that it uses, and the place to set it up.
 
-- **Show survey suites**: an org-wide switch. A suite holds several forms of one survey. Turn it on when you need variations by audience or wave. Until it is on, AutoSurvey says "survey" everywhere. **Learn more** opens the audiences-and-waves guide.
-- **Email invitations**: needs a verified send-from address, the survey base URL, email deliverability, and domain authentication (DKIM). Click **Set up email** to open the email setup steps on this page.
-- **Public and member surveys**: needs Digital Experiences turned on.
-- **AI survey generation**: needs AI models in the AutoSurvey model catalog.
+- A card with a switch shows **On** or **Off**. A card with no switch shows **Available**. A card that
+  needs a step shows **Needs setup** or the number of steps, for example **2 to set up**.
+- Each need shows **Ready**, **Setup needed** or **Couldn't verify**. **Open Setup** opens the page in
+  Salesforce Setup where you make the change.
+- For most features, the switch also gives the permission set of the feature to the AutoSurvey admins.
+  These are the users who hold the **Deploy Surveys** custom permission. If you turn the feature off,
+  AutoSurvey removes that set from every user. You need the Salesforce permission Assign Permission
+  Sets to use such a switch.
+- Some cards need a different card to be on first.
 
-Each item shows **Ready**, **Setup needed**, or **Couldn't verify**, with an **Open Setup** link where the fix is in Salesforce Setup.
+### Ways to collect responses
+
+| Card | What it does | Before an admin changes it |
+| --- | --- | --- |
+| **Email invitations** | Send survey invitations by email, to a list or a campaign. Needs a verified send-from address, the survey base URL, email deliverability and domain authentication (DKIM). Click **Set up email** to open the steps. | Shows its readiness |
+| **Public and member surveys** | Collect responses from people outside Salesforce on an Experience site. Needs Digital Experiences. | Shows its readiness |
+| **Text messages** | Send survey invitations and reminders by text message, through Twilio. See [Text messages](/text-messages). | Off. On in an org that activated text sending before the switch existed. |
+| **Program Slot Booking** | Let people book a time for a program session or a cohort, from a link that you send. See [Program Slot Booking](/time-slots). | Off |
+| **Participant Request Center** | Send participants one secure link to their document requests, receipts and details, and review what they return. | Off |
+
+### Survey building
+
+| Card | What it does | Before an admin changes it |
+| --- | --- | --- |
+| **Show survey suites** | A suite holds several forms of one survey. Turn this on when you need variations by audience or wave. See [Audiences and waves](/concepts/matrix-programs). | Off |
+| **Multi-language surveys** | Translate a survey and its emails into other languages, and translate text answers back. See [Languages](/languages). | Off |
+| **Calculated values** | Add a row that adds up points from the answers, such as a score or a total. The respondent does not see or fill it. | On |
+| **Standard questions** | Keep a library of locked standard questions and insert them into any survey. See [Standard questions](/question-bank). | On |
+| **Intake to Record** | A submitted survey creates one record, such as a Lead or a Case, from the answers. Each survey picks the object and the field map in its Settings tab. | On |
+| **Workspace environments** | Mark each workspace as Draft, Demo, Test or Production, and filter the workspace switcher by environment. | Off |
+
+### AI
+
+| Card | What it does | Before an admin changes it |
+| --- | --- | --- |
+| **AI features** | Draft survey questions and artwork with an AI model. Turn this off to stop every new request to an AI provider. | On |
+| **Change with AI** | On the Review step of a new survey, mark questions and ask AI to propose changes. No respondent answer goes to the AI provider. | On |
+| **AI images** | Make answer-choice pictures and a page background with AI. The author sees 3 candidates for each image and keeps one. | On |
+| **AI you control** | One switch stops every new AI request in this org. Each AI action starts only when you click it. | Off |
+| **AI reads answers** | Send the text of survey answers to your AI provider, to translate text answers. While it is off, no answer text goes to the AI provider. | Off |
+| **AI follow-up questions** | Ask one short follow-up question after an open-text answer. Needs **AI reads answers**. See [AI follow-up questions](/ai-follow-ups). | Off |
+
+### Data quality and support
+
+| Card | What it does | Before an admin changes it |
+| --- | --- | --- |
+| **Fraud & Quality Shield** | Score each response for fraud and low quality, and hold or flag the risky ones for review. See [Bot check and Shield](/bot-check). | Off |
+| **Shield Rewards** | Pay respondents a reward after the Shield accepts their response. Needs **Fraud & Quality Shield**. See [Shield Rewards](/rewards). | Off |
+| **Record writes** | See which survey answers did not reach their Salesforce record, and try the update again. | Off |
+| **Secure Telemetry** | Send error codes to AutoSurvey support. No answers, record values or secrets leave your org. | Off |
+
+### Email suppression list
+
+The list is below the cards. AutoSurvey does not send survey emails to an address on the list. Each
+send and each reminder skips it. A person who clicks the unsubscribe link goes on the list. To add a
+person, enter the **Email address** and the **Reason**, and click **Add to suppression list**.
+
+## Question Library
+
+The tab shows only while the card **Standard questions** is on. See
+[Standard questions](/question-bank).
 
 <a id="ai-models"></a>
 
@@ -292,9 +355,9 @@ Each item shows **Ready**, **Setup needed**, or **Couldn't verify**, with an **O
 
 ## Reporting Drift Repair
 
-The **Check every live survey for reporting drift** card scans all live surveys for reporting setup that did not finish: missing reporting fields or missing field access. Responses are always captured safely even when reporting drifts; drift only affects reports and exports. This is the remedy [Publishing Health](#publishing-health) points at when reporting-setup steps fail.
+The card **Check that each live survey matches its report object** finds live surveys whose report object does not match the survey. The usual causes are a question with no field on the object, or no access to a field. The answers stay safe in AutoSurvey, and the **Results** tab shows them. Only Salesforce reports on that object do not show them. This is the remedy [Publishing Health](#publishing-health) points at when reporting-setup steps fail.
 
-Click **Scan for drift** to list any drifted surveys, each with a one-line summary. **Review & repair** shows you exactly which fields and permissions will change before the repair runs reporting setup again for that survey.
+Click **Check surveys** to list the surveys that do not match. After the first check, the button says **Check again**. **Review & repair** shows you exactly which fields and permissions will change before the repair runs reporting setup again for that survey.
 
 ## Scheduled Jobs
 
@@ -345,11 +408,10 @@ AutoSurvey uses **Google reCAPTCHA v2** ("I'm not a robot") for bot protection o
 
 | Status | Meaning |
 | --- | --- |
-| **Keys not configured** | No keys saved; no CAPTCHA protection active. |
-| **Configuration incomplete** | Only one of the two keys is saved. Both are required. |
-| **Keys configured, hostname not set** (PARTIAL) | CAPTCHA works, but hostname verification is not enforced. |
-| **Secret key verification failed** | The keys are saved, but Google did not accept the secret key. Review the key and save again. |
-| **Keys configured and hostname set** | Full configuration with hostname verification. |
+| **NOT SET** | No keys are saved, and no active public survey link needs them. |
+| **FAIL** | The text says why: no keys are saved and an active public link needs them, only one of the two keys is saved, or Google did not accept the secret key. |
+| **PARTIAL** | The two keys are saved. The expected hostname is not set, so AutoSurvey does not check it. |
+| **PASS** | The two keys are saved and the expected hostname is set. |
 
 #### Secret key verification
 
@@ -372,6 +434,11 @@ Choose an image from **Your computer**, **A web address**, or **Built-in artwork
 ### Bring your own AI keys (OpenAI and Anthropic)
 
 Optional, for orgs that want to use their own AI accounts. The AI tiers use models from both vendors, so a BYOK org needs a key for **each** provider its tiers use. Enter the keys in the **AI provider** chooser under [AI Models & Tiers](#ai-models).
+
+## Text Messaging
+
+Set up the sender, the sending user and the text rules, and send a test text. See
+[Text messages](/text-messages).
 
 ## Respondent Confidentiality Note
 
