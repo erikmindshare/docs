@@ -405,8 +405,8 @@ AutoSurvey uses **Google reCAPTCHA v2** ("I'm not a robot") for bot protection o
 | Status | Meaning |
 | --- | --- |
 | **NOT SET** | No keys are saved, and no active public survey link needs them. |
-| **FAIL** | The text says why: no keys are saved and an active public link needs them, only one of the two keys is saved, or Google did not accept the secret key. |
-| **PARTIAL** | The two keys are saved. The expected hostname is not set, so AutoSurvey does not check it. |
+| **FAIL** | The text says why: no keys are saved and an active public link needs them, only one of the two keys is saved, or the hostname is set and Google did not accept the secret key. |
+| **PARTIAL** | The two keys are saved. The expected hostname is not set, so AutoSurvey does not check it. With no hostname, the card shows PARTIAL also when Google did not accept the secret key. Read the result under the form. |
 | **PASS** | The two keys are saved and the expected hostname is set. |
 
 #### Secret key verification
