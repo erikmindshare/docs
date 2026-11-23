@@ -50,7 +50,7 @@ A template is a reusable list of items. Create templates on the **Document Reque
 | Default Due Days | Days from today to the default due date. The staff panel uses 14 if this is empty. |
 | Expiry Days | Days the client link works. The default is 30. |
 | Reminder First Delay, Repeat, Max | When reminders start, how often they repeat, and the most reminders. The service defaults are every 3 days and at most 5. |
-| Channel Email, Channel SMS | The channels. Email is the active channel. SMS is not active. |
+| Channel Email, Channel SMS | The channels. AutoSurvey sends email. It does not send text messages for Document Request. |
 | Allow Staff Device | Lets staff hand the request to a client on the same device. Off by default. |
 | Parent Object API Names | The objects the template can attach to. The seed uses `Contact`. |
 | Suite | The linked suite, if any. |
@@ -150,4 +150,11 @@ After this step, a user with `Document_Request_User` sees the panel on a Contact
 
 ## Text message flow
 
-A text invitation flow exists (`AutoSurvey_Document_Request_Text`). It is Draft and inactive. Do not rely on it.
+AutoSurvey does not send text messages for Document Request. Your own SMS tool can send the link.
+
+1. In Salesforce Setup, open the template Flow **AutoSurvey: Text a Document Request Link (Template)**.
+2. Click **Save As** and save your copy. A template cannot run.
+3. In the copy, replace the placeholder element with the send action of your SMS tool. Activate the copy.
+4. Call the copy as a subflow, for example when a request becomes Open.
+
+The Flow gets the link, the mobile number and the message text from AutoSurvey. It gets no link when the request is not Open, when the link expired, when the recipient opted out or when there is no phone number. Your SMS tool is responsible for the delivery and the opt-out list.

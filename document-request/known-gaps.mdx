@@ -14,7 +14,8 @@ This page lists the limits and the open items of Document Request.
 
 ## Not built or not active
 
-- **Live reminder email** is off. The text-message (SMS) flow is Draft and inactive.
+- **Live reminder email** needs the `Reminders_Live` custom permission and the org setting. Without the two, a reminder pass writes a log and sends no email.
+- AutoSurvey does not send text messages for Document Request. See [Text message flow](/document-request/admin-setup#text-message-flow).
 - The **reminder pass** and the **renewal job** are not scheduled.
 - **No malware scan** of files. No AI review of files.
 - **No chain checkpoint** object. The chain check only reads the chain.
