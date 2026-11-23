@@ -1,46 +1,93 @@
 ---
-title: Rewards
-description: The Rewards topic of Interview Mode. What a reward is, the two choices, and the Set up next card that opens Shield Rewards.
+title: "Shield Rewards"
+description: "Pay a respondent a reward after the Fraud & Quality Shield accepts the response. Set up the Tremendous connection, a budget and a reward rule."
 ---
 
-# Rewards
+A reward brings more answers, but it also brings people who answer many times to get paid. **Shield
+Rewards** pays a reward only after the **Fraud & Quality Shield** accepts the response. AutoSurvey
+sends each approved reward to Tremendous, and Tremendous delivers it.
 
-People who finish get a reward, for example a gift card code. A reward needs a bot check, so people cannot claim it many times.
+## Before you start
 
-<Note>
-Interview Mode is in development. It is not available in installed AutoSurvey orgs yet. This page tells you what the interview does when it is available.
-</Note>
+- **Fraud & Quality Shield** is on. Shield Rewards cannot be on without it. See [Bot check and
+  Shield](/bot-check).
+- An admin turns on the card **Shield Rewards** in **Setup**, **Optional Capabilities**. The feature
+  is off until an admin turns it on.
+- You have a Tremendous account.
+- The reward roles are permission sets: **AutoSurvey Rewards Manager**, **AutoSurvey Rewards
+  Approver**, **AutoSurvey Rewards Corrector** and **AutoSurvey Rewards Worker**. The switch gives
+  **AutoSurvey Rewards Manager** to the AutoSurvey admins. An admin assigns the other sets.
 
-## Before you start: Shield Rewards
+## 1. Set up rewards
 
-The reward feature is **Shield Rewards**. It is off by default, and it needs the **Fraud & Quality Shield** feature to be on too. While Shield Rewards is off in your org, the interview shows the Rewards topic as turned off. You can turn the feature on in AutoSurvey Setup, ask your admin, or click **Continue without it for now**.
+Open the tab **Shield Settings** and go to **Rewards**. **Set up rewards** takes you through the steps.
+Payments stay stopped until you resume them. Nothing pays while you set up.
 
-## When the interview asks
+1. Ask your Salesforce admin to put your Tremendous API key in the Tremendous external credential. Do
+   not paste the key in a survey, an email or a chat. Then click **Test the connection**.
+2. Choose **How Tremendous identifies a recipient**.
+3. In Tremendous, turn on W-9 collection. Then confirm it here. Tremendous collects the form.
+   AutoSurvey does not store tax data.
+4. Choose the **Org default for new reward rules**:
+   - **Require approval for every payment**
+   - **Pay automatically up to an amount**
+   - **Pay automatically after response approval**
 
-The interview asks this question when the survey goes to strangers or a panel, when your brief names an incentive, or when the survey takes more than 10 minutes. The question is: **Offer a reward for answering?** The topic has no pre-selection. You must click a choice.
+   You need the permission Rewards Approve Spend to change this mode.
+5. Add a budget.
 
-## The choices
+## 2. Add a budget
 
-| Choice | What you see | What AutoSurvey changes |
-| --- | --- | --- |
-| **No** (recommended) | People answer with no reward. | Nothing. |
-| **Yes, offer a reward** | A Set up next card opens Shield Rewards with this survey picked. | No survey setting. After Create, the **Reward for answers** card shows. |
+A budget is a spending allowance. It is not your Tremendous balance. If you raise a cap, no money
+goes to Tremendous.
 
-The interview does not set up the reward. You set it up in Shield Rewards.
+1. In **Budgets**, on the tab **Shield Settings**, click **New budget**.
+2. Enter the **Name**, the **Cap**, the **Start** date and the **End** date.
+3. Enter **Alert at %**.
+4. Click **Review changes**, then save.
 
-## The Set up next card
+Add a budget before you turn on a reward rule.
 
-| Card part | Value |
+## 3. Make a reward rule
+
+A rule belongs to a form or a survey that Shield protects. In **Reward rules**, click **Edit** on the
+row of the form or survey.
+
+| Field | Meaning |
 | --- | --- |
-| **Title** | Reward for answers |
-| **What and why** | You chose to offer a reward. Shield Rewards pays people for a complete answer after an approval. |
-| **Who** | An admin |
-| **Link** | **Open Shield Rewards**. This page does not open a survey. On that page, pick your survey. |
-| **Done** | When the survey has an enabled Shield policy binding with the reward turned on. |
+| **Reward amount (USD)** | The amount for one accepted response. |
+| **Tremendous campaign id** | The Tremendous campaign that delivers the reward. Click **Check campaign**. |
+| **Budget** | The budget that pays for this rule. |
+| **US residence question** | The survey question that says if the respondent lives in the US. |
+| **Approval** | How a payment gets approved. |
+| **Approve automatically up to (USD)** | AutoSurvey approves a payment up to this amount with no person. |
+| **Message to the respondent** | The text that goes with the reward. 200 characters at most. |
+| **Notice text before the survey (optional)** | The text that the respondent reads before the survey. |
 
-While Shield Rewards is off, the card shows the state **Feature is off**. When the binding exists, the card shows **Done**. **Dismiss** and **Don't suggest this again** take the card off the list for this survey.
+Under **Cost**, enter the **Expected eligible responses**. The default is the count of responses in
+the last 30 days. Read the list **Before you activate**. Click **Save draft** to keep your changes. Click **Activate
+offer**, with the version number, to start the rule.
+
+To stop a rule, click **Turn off rewards**.
+
+## Stop all payments
+
+On the tab **Shield Settings**, in **Emergency stop**, click **Stop payments**. You can give a reason. AutoSurvey sends no reward
+while payments are stopped.
+
+To start again, select "I checked why payments stopped. Approved rewards will go to Tremendous." and
+click **Resume payments**.
+
+## The rewards list
+
+The tab **Shield Rewards** lists each reward. Click **Open** to see one reward. You can select more than one
+reward. Some actions on the selected rewards ask for a **Written reason** before you click **Confirm**.
+
+The dashboard shows **Now · needs attention**, **Now · money** and **Shield and rewards for a
+period**.
 
 ## Related
 
-- [Bot check](/bot-check) — protect a survey with a reward from bots.
-- [Interview Mode](/interview-mode) — how the interview works.
+- [Bot check and Shield](/bot-check)
+- [Setup Home](/admin/setup)
+- [Installation and permissions](/admin/installation-and-permissions)

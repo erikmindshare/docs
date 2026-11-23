@@ -1,36 +1,43 @@
 ---
-title: AI follow-up questions
-description: The AI follow-up questions topic of Interview Mode. What it will do, and why the interview does not ask it yet.
+title: "AI follow-up questions"
+description: "Ask one short follow-up question after an open-text answer. Turn on the feature, then turn on follow-ups for each question that needs them."
 ---
 
-# AI follow-up questions
+A respondent writes "It was hard." You do not know what was hard. With **AI follow-up questions**,
+the survey asks one short question after an open-text answer, for example "What made it hard?".
 
-After a short open answer, AutoSurvey asks a follow-up question, for example "What made it hard?". Each question can have up to 3 follow-ups. A monthly budget limits the AI calls. With 3, you pick which questions get follow-ups: only the open-text questions, or every question.
+## Before you start
 
-<Note>
-Interview Mode is in development. It is not available in installed AutoSurvey orgs yet. This page tells you what the interview does when it is available.
-</Note>
+Two switches in **Setup**, **Optional Capabilities** must be on. The two switches are off until an
+admin turns them on.
 
-<Warning>
-This feature is not available yet. The interview does not ask this question in any org today. The text above tells you what the topic is for. This page shows what the interview has ready for when the feature is released.
-</Warning>
+1. **AI reads answers**. This switch lets AutoSurvey send the text of survey answers to your AI
+   provider. While it is off, no answer text goes to the AI provider.
+2. **AI follow-up questions**. You cannot turn it on while **AI reads answers** is off.
 
-## Status
+## Turn on follow-ups for a question
 
-- AutoSurvey does not register a **ai-follow-ups** feature in this release. The interview treats a topic with an unknown feature as not installed, and it never asks a topic that is not installed. The topic also does not show in the list of all topics.
-- If a choice for this topic reaches the change list, it does not change the survey. It goes to the **Set up next** list as a card that says: "You chose this in the interview. This feature is not in AutoSurvey yet. The choice is kept for when it ships."
-- AI follow-up questions are not in AutoSurvey yet.
+Follow-ups are a setting of each text or long-text question. Open the survey, open the question, and find the group
+**Follow-up questions** in the display properties.
 
-## The question and the choices
+| Property | Meaning | Default |
+| --- | --- | --- |
+| **Ask follow-ups** | After an open-text answer, the survey asks one short follow-up question. | no follow-up question |
+| **Most follow-ups on this question** | How many follow-up questions one answer can get: **1** or **2**. | 1 |
+| **Goal of the follow-ups** | What you want to learn from the follow-ups. The AI reads it when it writes a question. 120 characters at most. | no goal is set |
+| **Follow-up questions from your list** | One question of your own for each kind of answer. Leave a box blank to keep the standard question. Each question has 200 characters at most. | the standard questions |
+| **Never ask about** | Words or topics, separated by `\|`. A follow-up question that names one of them is not asked. | no topic is blocked |
+| **Also ask after a low score on** | An NPS question. When its score is 0 to 6, the follow-up shows also after a long answer. | only the answer decides |
 
-When the feature is released, the interview asks: **Ask more when an answer is short or unclear?** The interview is to ask it when your survey has open-text questions, or when your brief says that you want to understand why.
+The other five properties apply only when **Ask follow-ups** is on.
 
-| Choice | What you see |
-| --- | --- |
-| **Off** (recommended) | No follow-up questions. |
-| **Up to 1 follow-up for each open answer** | The survey asks at most one follow-up. |
-| **Up to 3 follow-ups** | The survey asks at most three. You pick which questions get them. |
+## Limits
+
+- A follow-up question that you write has no `;` in it. Use a comma.
+- **Ask follow-ups** works only while **AI follow-up questions** is on in Setup.
 
 ## Related
 
-- [Interview Mode](/interview-mode) — how the interview works.
+- [Display properties](/concepts/display-properties)
+- [Security and privacy](/admin/security-and-privacy)
+- [Setup Home](/admin/setup)

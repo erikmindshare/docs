@@ -1,47 +1,39 @@
 ---
-title: Retakes
-description: The Retakes topic of Interview Mode. The two choices, the survey setting that each choice changes, and when that setting applies.
+title: "Retakes"
+description: "Let one person answer the same invitation again, for example after each visit. Retakes are off until you turn them on."
 ---
 
-# Retakes
+Some surveys are for one answer from each person. Other surveys are for an answer after each visit,
+class or order. **Allow Retakes** controls this for an invitation link.
 
-With retakes on, the same person can send a new answer, for example after each visit. With retakes off, a second try shows "You already answered".
+| Retakes | What the person sees after a first answer |
+| --- | --- |
+| On | The person opens the same invitation link and answers again. |
+| Off | The link shows the survey as done. A second submit gets the message "This invitation has already been completed. Retakes are not enabled for this campaign." |
 
-<Note>
-Interview Mode is in development. It is not available in installed AutoSurvey orgs yet. This page tells you what the interview does when it is available.
-</Note>
+Retakes are off by default.
 
-## When the interview asks
+## Turn on retakes for a campaign
 
-The interview asks this question when your brief says that people answer after each visit, class or order, or that the survey runs on a shared device.
+1. Open the Campaign record.
+2. In the panel **Campaign Distribution**, find the row **Allow retakes**.
+3. Turn on **Allow invitation retakes**.
 
-The question is: **Can one person answer more than once?** The screen selects the recommended choice first. You can click a different choice.
+The row then says **Retakes allowed**. When the switch is off, the row says **One answer per
+invitation**.
 
-## The choices
+## Which setting applies
 
-| Choice | What you see | What AutoSurvey changes |
-| --- | --- | --- |
-| **Yes, once for each visit** (recommended) | A person can answer again each time. Each answer is stored separately. | Sets the survey field **Allow Retakes** to on. |
-| **No, once only** | A person can answer one time. A second try shows a message. | Sets **Allow Retakes** to off. |
+The checkbox **Allow Retakes** is on three objects: the Campaign, the form and the survey. AutoSurvey
+reads one of them for each invitation:
 
-At **Finish**, each change shows as a change card with a **Keep** box. **Apply** makes only the kept changes. If the survey already has the value, no card shows. Before Create, the value waits on the draft, and Create writes it to the survey. After Create, **Apply** writes it to the survey.
+1. An invitation from a campaign uses the campaign.
+2. An invitation with no campaign uses the form.
+3. An invitation with no campaign and no form uses the survey.
 
-## When the setting applies
-
-- AutoSurvey checks retakes only when a person submits from an invitation. An open link does not check it.
-- A campaign link and a form each have their own **Allow Retakes** box. AutoSurvey uses the first value that it finds, in this order: the campaign link, the form, the survey. These boxes are never empty, so the survey value applies only when the invitation has no campaign link and no form.
-- When retakes are off, a second submit shows: "This invitation has already been completed. Retakes are not enabled."
-
-## Change it later
-
-The survey settings tab has no control for the survey value. Change the **Allow Retakes** box on the campaign link or on the form.
-
-## Limits
-
-- The interview sets the survey value only. It does not change the campaign link or the form, and their values usually win.
+Retakes apply to invitations only. The public link does not read this setting.
 
 ## Related
 
-- [Send a survey](/workflows/send-a-survey) — invitations and links.
-- [Campaign distribution](/admin/campaign-distribution) — campaign links.
-- [Interview Mode](/interview-mode) — how the interview works.
+- [Campaign distribution](/admin/campaign-distribution)
+- [Send a survey](/workflows/send-a-survey)

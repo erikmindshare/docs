@@ -1,57 +1,85 @@
 ---
-title: Bot check
-description: The Bot check topic of Interview Mode. The honeypot, the captcha, and what each choice changes in the survey.
+title: "Bot check and Shield"
+description: "Protect a public survey from bots and low-quality answers. Use start caps and CAPTCHA for every public link, and the Fraud & Quality Shield to score, flag, hold or block responses."
 ---
 
-# Bot check
+A public link lets all people answer, and it lets bots answer too. AutoSurvey has two layers of
+protection:
 
-A honeypot is a trap for bots. It is not a reward. The survey has one extra field that people cannot see, so a person leaves it empty. A bot fills in every field that it finds. AutoSurvey rejects a response that has the hidden field filled in. People see nothing and do nothing. A captcha is a second check that people can see. People tick "I am human" before Submit (reCAPTCHA or Turnstile).
+1. **Start caps and CAPTCHA.** These limit how many surveys can start in a period, and they can
+   challenge a respondent. They apply to public links.
+2. **Fraud & Quality Shield.** Shield scores each response for fraud and low quality. It flags,
+   holds or blocks a risky response, and a person reviews it.
 
-<Note>
-Interview Mode is in development. It is not available in installed AutoSurvey orgs yet. This page tells you what the interview does when it is available.
-</Note>
+## Start caps and CAPTCHA
 
-## Before you start: Fraud & Quality Shield
+- The start cap is on with no setup. See [Security and privacy](/admin/security-and-privacy).
+- A CAPTCHA challenge needs reCAPTCHA keys. See [CAPTCHA Keys](/admin/setup#captcha-keys).
+- Each survey has the field **CAPTCHA Mode** with the values **Auto**, **Always** and **Never**.
 
-The honeypot check runs in the **Fraud & Quality Shield** feature. Shield is off by default. While Shield is off in your org, the interview shows the Bot check topic as turned off:
+## Fraud & Quality Shield
 
-- If you can turn features on, click **Turn on Fraud & Quality Shield**. AutoSurvey Setup opens in a new tab at the feature card. Turn on its switch there, then come back. The screen checks again when you come back.
-- If you cannot, the screen says to ask your admin. **Copy a message to your admin** copies a message that you can send.
-- **Continue without it for now** goes on with the interview.
+### Turn it on
 
-## When the interview asks
+An admin opens the **Setup** tab, opens **Optional Capabilities** and turns on the card **Fraud &
+Quality Shield**. The feature is off until an admin turns it on. The switch gives the permission set
+**AutoSurvey Shield Admin** to the AutoSurvey admins. Give **AutoSurvey Shield Reviewer** to each
+person who reviews responses.
 
-The interview asks this question for a survey with a public link, a survey that "anyone can answer", or a survey with a reward. The question is: **Protect the survey from bots?**
+Use the tabs **Shield**, **Shield Review** and **Shield Settings**.
 
-## The choices
+### Make a policy
 
-| Choice | What you see | What AutoSurvey changes |
-| --- | --- | --- |
-| **Honeypot only** (recommended) | A hidden field catches bots. People see nothing. | **CAPTCHA Mode** = **Never**. The survey gets an enabled Shield policy binding. |
-| **Honeypot and captcha** | A visible captcha is added. Use it with a reward. | **CAPTCHA Mode** = **Always**. The survey gets an enabled Shield policy binding. |
-| **No bot check** | AutoSurvey adds no extra check. | **CAPTCHA Mode** = **Never**. No binding is made. |
+A policy holds the rules and the limits. Open **Shield Settings**.
 
-At **Finish**, each change shows as a change card with a **Keep** box. **Apply** makes only the kept changes.
+1. In **Policies**, enter a **New policy name** and click **Create policy**.
+2. Set the limits:
 
-<Note>
-**Honeypot only** and **No bot check** set **CAPTCHA Mode** to **Never**. Then the survey does not show a captcha, also not on a burst of starts. The default mode **Auto** can show one. See [Security and Privacy](/admin/security-and-privacy).
-</Note>
+   | Field | Meaning |
+   | --- | --- |
+   | **Monitor only** | On: Shield records each decision and blocks nothing. Off: Shield applies the decisions. |
+   | **Flag at** | The score at which Shield flags a response. |
+   | **Hold at** | The score at which Shield holds a response for review. It must be more than **Flag at**. |
+   | **Block at** | The score at which Shield blocks a response. It must be more than **Hold at**. |
+   | **Challenge provider** | reCAPTCHA v2, reCAPTCHA v3 or Cloudflare Turnstile. |
+   | **Challenge when** | **Never**, **Always** or **When the risk goes up**. |
+   | **Most runs per email per form** | The most responses from one email address for one form. |
+   | **Most runs per email per day** | The most responses from one email address in one day. |
+   | **Most runs per device per form** | The most responses from one device for one form. |
+   | **AI review** | **On**: Einstein reads the open-text answers and adds a risk score and a quality score. It does not run until **Test Einstein** passes. |
+   | **Einstein may raise the decision to** | **Do not raise**, **Flag** or **Hold**. It needs **AI review** on. |
 
-## The Shield policy binding
+3. In **Rules**, set **On**, **Weight** and **Hard** for each rule. The column **What it measures**
+   explains each rule. The rule HONEYPOT_FILLED is always on. It finds a bot that fills in a field
+   that people cannot see.
+4. Click **Save policy**.
 
-Shield checks a survey only through an enabled policy binding. A CAPTCHA Mode value alone does not check the honeypot. So a honeypot choice does this:
+To see what a change does before you rely on it, enter the **Replay days** and click **Replay these
+settings**. Shield shows the past decisions beside the decisions "With these settings".
 
-- If the survey already has a Shield binding, AutoSurvey keeps it. It does not replace a binding that an admin made.
-- If not, AutoSurvey binds the survey to a policy that it makes the first time. That policy blocks a filled honeypot and a failed challenge, and nothing else.
-- If you do not have Shield admin access, AutoSurvey cannot make the binding. The change list then says: "The honeypot is not on yet. Open Shield and bind a policy to this survey."
+### Protect a survey
 
-## If Shield is off
+A policy does nothing until it protects a form or a survey. Below the policy, find the section that
+starts with **Protected forms**. Click the **Protect** button, find the form or the survey, select
+**On** and click **Save binding**.
 
-If a Bot check answer reaches **Finish** while Shield is off, AutoSurvey does not change the survey. The change goes to the **Set up next** list. The card says: "You chose this in the interview. The feature is turned off in this org. An admin can turn it on in Setup." Its link is **Open AutoSurvey Setup**.
+### Add the challenge keys
+
+In **Challenge provider keys**, enter the **Secret key** and click **Save key**, then **Test key**.
+Enter the **Site key** and click **Save site key**. A provider needs the two keys.
+
+### Let Einstein review the answers
+
+In **Einstein AI review**, enter the API name of a Prompt Builder template that has one input named
+Answers. Click **Test Einstein**. Tell your respondents if AI reviews their answers.
+
+### Review responses
+
+Reviewers open the tab **Shield Review** and click **Approve**, **Reject** or **Duplicate** for each
+response. The tab **Shield** shows the totals for a period.
 
 ## Related
 
-- [Security and Privacy](/admin/security-and-privacy) — CAPTCHA modes and the guest limits.
-- [Setup](/admin/setup) — CAPTCHA keys.
-- [Rewards](/rewards) — a reward needs a bot check.
-- [Interview Mode](/interview-mode) — how the interview works.
+- [Shield Rewards](/rewards)
+- [Security and privacy](/admin/security-and-privacy)
+- [Setup Home](/admin/setup)

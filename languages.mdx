@@ -1,54 +1,75 @@
 ---
-title: Languages
-description: The Languages topic of Interview Mode. What the choices do, and how you add the languages after Create.
+title: "Languages"
+description: "Offer one survey in more than one language. Add a language, review the AI translation, and choose how AutoSurvey translates text answers."
 ---
 
-# Languages
-
-AutoSurvey translates the questions into the languages that you pick. You check each translation before you publish. People then choose their language.
-
-<Note>
-Interview Mode is in development. It is not available in installed AutoSurvey orgs yet. This page tells you what the interview does when it is available.
-</Note>
+Your respondents do not all read the same language. With **Multi-language surveys**, you write the
+survey one time. AutoSurvey translates the survey with your AI provider, and a person reviews each
+translation.
 
 ## Before you start
 
-This topic belongs to the feature **Multi-language**. It is off by default. An admin turns it on in AutoSurvey Setup. When the feature is off, the interview shows the topic as turned off, and the Set up next card shows the state **Feature is off**.
+- An admin turns on the feature. Open the **Setup** tab, open **Optional Capabilities**, and turn on
+  the card **Multi-language surveys**. The feature is off until an admin turns it on.
+- The switch gives the permission set **AutoSurvey Multi-language** to the AutoSurvey admins.
+- AI is set up for the org. See [Setup Home](/admin/setup#ai-models).
 
-## When the interview asks
+## Add a language
 
-The interview asks this question when your brief names countries, says "international", or is not in English.
+1. Open the survey.
+2. Open the **Settings** tab and find the card **Languages**.
+3. Check **Written in**. This is the language of your questions. Reports use it. You cannot change
+   it after the first release.
+4. Select a language in the list and click **Add language**. AutoSurvey translates the survey.
+   While it works, the card shows "A translation runs…".
 
-The question is: **Offer the survey in more languages?** The screen selects the recommended choice first. You can click a different choice.
+Each language shows as a row with its status and its counts. **Remove** takes a language off the
+survey. **Add again** puts it back.
 
-## The choices
+After you change questions, click **Translate changed text**. AutoSurvey translates only the text
+that changed.
 
-| Choice | What you see | What AutoSurvey changes |
-| --- | --- | --- |
-| **Yes, add the languages I name** (recommended) | AutoSurvey adds the languages. People pick their language at the start. | No setting changes. After Create, the card **Add the languages** shows. |
-| **No, one language** | The survey stays in one language. | Nothing. |
+## Review the translations
 
-The AI can also read the languages in your brief at **Finish** and propose them as a change card. The interview keeps this value on the draft only. It does not change a survey setting. After Create, the value shows the Set up next card below. You do the setup there.
+<Warning>
+A person must review an AI translation before you rely on it.
+</Warning>
 
-## The Set up next card
+1. Open the **Questions** tab, select **Preview**, and choose the language in **Language**.
+2. Open the translations and select **Show only the text to review**.
+3. Read each text. To correct one, edit it and click **Save**.
+4. Click **Mark as reviewed** on each text. **Mark all as reviewed** marks all texts except legal
+   text. Mark each legal text itself.
 
-| Card part | Value |
+## Other settings on the card
+
+| Setting | What it does |
 | --- | --- |
-| **What and why** | You chose more languages. Add each language to this survey, then check the translations. |
-| **Who** | You, or an admin |
-| **Link** | **Open the survey settings**. It opens the survey workspace with this survey. |
-| **Done** | When the survey has at least one added language. |
+| **Default language** | The language that a respondent gets when no other rule gives one. |
+| **Languages that the team reads** | A text answer in one of these languages gets no translation. |
+| **Words to keep** | Words that a translation keeps as they are, for example brand names. Put one on each line, or put commas between them. Click **Save words**. |
 
-## Change it later
+## Edit translations in a sheet or a file
 
-Open the survey **Settings** tab, card **Languages**, and click **Add language**. See [Survey settings](/admin/survey-settings).
+- A survey with a Google Sheet shows **Sync now**. The **Translations** tab of the sheet has each text
+  of the survey. Change a translation there. **Sync now** imports your changes and writes new text to
+  the tab.
+- A survey with no Google Sheet shows **Export CSV** and **Import CSV**. Export the texts, change a
+  translation in the file, then import the file. AutoSurvey does not import a row that has a problem.
 
-## Limits
+## Translate text answers
 
-- The interview does not add a language and does not translate. You add each language on the Languages card.
+**Translate text answers** is off by default. When it is on, AutoSurvey sends free-text answers to
+your AI provider for translation.
+
+- AutoSurvey translates new answers one time each hour. An answer can wait up to 60 minutes.
+- Only an AutoSurvey admin or a support user can change this setting.
+- **Put translations in the reporting record** writes each translation to the reporting record of
+  the survey, in place of the original text.
+- **Translate the earlier answers** sends the answers that came in before you turned the setting on.
 
 ## Related
 
-- [Survey settings](/admin/survey-settings) — the Languages card.
-- [AutoSurvey Setup](/admin/setup) — the feature switches.
-- [Interview Mode](/interview-mode) — how the interview works.
+- [Survey settings: Languages](/admin/survey-settings#languages)
+- [Setup Home](/admin/setup)
+- [Security and privacy](/admin/security-and-privacy)

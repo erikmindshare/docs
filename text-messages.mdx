@@ -1,47 +1,121 @@
 ---
-title: Text messages
-description: The Text messages topic of Interview Mode. What the choices do, and what an admin must set up before invitations go out by text.
+title: "Text messages"
+description: "Send survey invitations and reminders by text message. Set up the sender, the consent field and the sending window, then choose text when you send."
 ---
 
-# Text messages
+Some people do not read email. A text message with the survey link reaches them on the phone.
+AutoSurvey sends the text through your Twilio account, or through a Flow that calls your own SMS
+vendor. In a send, AutoSurvey texts only a person whose record shows consent.
 
-People with a mobile number get the link by text message. They answer on the phone.
+## Before you start
+
+- You are an AutoSurvey admin.
+- Public survey access is set up. The link in the text opens the survey on your site. See
+  [Setup Home](/admin/setup#public-survey-access).
+- You have a Twilio account with a number that can send SMS, or an SMS vendor that a Flow can call.
+- Contact or Lead has a checkbox field that records consent to receive texts.
+
+## 1. Turn on the feature
+
+1. Open the **Setup** tab of the AutoSurvey app.
+2. Open **Optional Capabilities**.
+3. On the card **Text messages**, turn the switch on.
+
+The card names the permission sets **AutoSurvey Text Sending** and **AutoSurvey Text Phone Viewer**
+and the tab **Text Opt-outs**.
+
+## 2. Set up the sender
+
+In **Setup**, open **Text Messaging**.
+
+1. In **Sender**, set **How texts are sent** to **Twilio** or **My own Flow**. **Off** sends no text.
+2. In **Sending user**, choose the user in **Choose the sending user**. Click **Save sending user**.
+   All texts go out as this one user.
+3. Click **Assign permission set**. The user gets **AutoSurvey Text Sending**.
+4. Set **How texts leave the queue**:
+
+   | Choice | Result |
+   | --- | --- |
+   | **Event (texts leave within seconds)** | AutoSurvey sends each text a few seconds after it is queued. |
+   | **Sweeper only (texts leave every 15 minutes)** | A scheduled job sends the queued texts every 15 minutes. |
+
+5. The sending user signs in, opens this page and clicks **Activate sending**. Only the sending user
+   can activate sending.
+
+### Twilio
+
+You need the permission set **AutoSurvey Text Sending** to verify the account.
+
+1. In **Twilio account**, enter the **Account SID** and the **Auth Token** from your Twilio Console.
+2. Click **Save and verify**. Sending stays paused until Twilio accepts the two values.
+3. In **Send from**, enter a Twilio number or a Messaging Service SID. Click **Save send-from**.
+4. Click **Check credentials**.
+5. In **Webhook URLs**, copy the first address. In Twilio, paste it in the field "A message comes
+   in" of the number or the Messaging Service.
+
+### Your own Flow
+
+1. In Salesforce Setup, copy the template Flow **AutoSurvey: Text Sender (Template)**.
+2. Add the action of your SMS vendor to the copy. Activate the copy.
+3. In **Sender Flow**, enter the **Flow API name** of the copy. Click **Save Flow**.
+
+## 3. Set the text rules
+
+In **Text rules**:
+
+| Setting | What it does |
+| --- | --- |
+| **Contact field that means texting is OK** and **Lead field that means texting is OK** | The consent fields. AutoSurvey sends no text until you choose a field. |
+| **Do not text people marked Do Not Call** | AutoSurvey skips a person who has Do Not Call set. |
+| **Sending window (recipient's local time)** | The hours when a text can go out. The default is `Mon-Sat 0900-2000;Sun 1200-2000`. Set the window that your own rules require. |
+| **When the recipient's time zone is unknown** | **Use the org time zone**, or hold the text until the window is open in Eastern, Central, Mountain and Pacific time. |
+| **Default phone country (US or CA)** | The country for a number that has no `+`. |
+| **Default channel rule for sends** | **Email only**, **Text only**, **Email, else text** or **Text, else email**. |
+| **Brand name in texts** | The name that the text shows. 40 characters at most. |
+| **Ask to type the count above this many segments** | Above this size, the sender must type the number of texts to confirm the send. |
+| **Estimated cost per segment (USD)** | AutoSurvey uses it for the cost estimate that the sender sees. |
+| **Allow site guest automation to send texts** | Lets automation that runs as the site guest user send texts. |
+| **Survey link base (https)** | The address of your survey site, or a branded domain for it. The survey link in each text uses it. Click **Check link** to test it. |
+| **Answer to a HELP text** | The answer to a person who texts HELP or INFO, when Twilio did not answer. 160 characters at most. Blank: no answer. |
+| **Reviewer of text replies** | The user who reviews replies. |
+
+Click **Save rules**.
+
+## 4. Send a test text
+
+In **Send a test text to my mobile**, enter your **Mobile number** and click **Send test text**.
+**Health** then shows the time and the result of the last test.
+
+## 5. Send a survey by text
+
+When you send a survey to people or to a campaign, the send asks **How should we reach each person?**
+The choice shows when a sender is set up and you hold **Send Text Invitations**.
+
+| Choice | Who gets what |
+| --- | --- |
+| **Email only** | Each person gets an email. |
+| **Text only** | Each person with a mobile number and consent gets a text. |
+| **Email, else text** | A person with an email address gets an email. The others get a text. |
+| **Text, else email** | A person with a mobile number and consent gets a text. The others get an email. |
+
+Before you send, the send shows the number of texts, the number of segments and the estimated cost. You
+also tick a box that says the people agreed to receive texts.
+
+## Opt-outs
+
+A person who replies STOP gets no more survey texts. AutoSurvey also accepts STOPALL, UNSUBSCRIBE,
+CANCEL, END, QUIT, REVOKE and OPTOUT. The tab **Text Opt-outs** lists the numbers. You can add a
+number there with **Add to the list**, or import a CSV file.
 
 <Note>
-Interview Mode is in development. It is not available in installed AutoSurvey orgs yet. This page tells you what the interview does when it is available.
+If you remove a number from the list, Twilio continues to block it. Only a START reply from the
+person removes the block at Twilio.
 </Note>
 
-## When the interview asks
-
-The interview asks this question when your brief says that people are on site, in the field or on mobile, or that you text them.
-
-The question is: **Send the link by text message too?** The screen selects the recommended choice first. You can click a different choice.
-
-## The choices
-
-| Choice | What you see | What AutoSurvey changes |
-| --- | --- | --- |
-| **No, use email** (recommended) | AutoSurvey sends the invitation by email. | Nothing. |
-| **Yes, send by text message** | AutoSurvey sends the invitation by text. You set up the sender after Create. | Keeps the value on the draft. After Create, the card **Text message invitations** shows. |
-
-The interview does not set up text messages and does not send a text.
-
-## The Set up next card
-
-| Card part | Value |
-| --- | --- |
-| **What and why** | You chose to send invitations by text message. An admin must set up text messaging first. |
-| **Who** | An admin |
-| **Link** | **Open Text Messaging setup**. It opens AutoSurvey Setup at the text messaging section. It does not take a survey. |
-| **Example flows** | AutoSurvey_Text_Invitation and AutoSurvey_Text_Sender |
-| **Done** | The card has no done check. It stays in the list until you dismiss it. |
-
-## Limits
-
-- AutoSurvey does not set up the text sender for you. The example flows ship as examples. An admin sets them up.
+A user without **AutoSurvey Text Phone Viewer** sees only the last four digits of each number.
 
 ## Related
 
-- [AutoSurvey Setup](/admin/setup) — text messaging setup.
-- [Send a survey](/workflows/send-a-survey) — invitations.
-- [Interview Mode](/interview-mode) — how the interview works.
+- [Send a survey](/workflows/send-a-survey)
+- [Reminders](/reminders)
+- [Setup Home: Text Messaging](/admin/setup#text-messaging)

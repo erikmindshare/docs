@@ -5,7 +5,7 @@ description: Every card and control on a survey's Settings tab, what each one ch
 
 # Survey Settings
 
-Open a survey and click the **Settings** tab. It shows five cards: **How it runs**, **Answers**, **Scoring & alerts**, **Data** and **The questions sheet**. Each card shows its current values on one line. Click anywhere on a card to open it, change its controls, then click **Save** (or **Cancel**). One card is open at a time. Each card has a **Learn more** link to its guide.
+Open a survey and click the **Settings** tab. It shows five cards: **How it runs**, **Answers**, **Scoring & alerts**, **Data** and **The questions sheet**. While **Multi-language surveys** is on in Setup, it also shows the card **Languages**. Each card shows its current values on one line. Click anywhere on a card to open it, change its controls, then click **Save** (or **Cancel**). One card is open at a time. Each card has a **Learn more** link to its guide.
 
 Everyone who can see the survey can read the settings. A card opens only for a person with deploy access. If you can read but not edit, the tab says so; ask an AutoSurvey admin to make the change.
 
@@ -29,7 +29,7 @@ The settings that apply "at the next release" are copied onto the release when y
 | Control | What it does |
 | --- | --- |
 | **Screen flow** | A screen is a page of the survey. **Adapt to device** (recommended): one question per screen on phones, grouped pages on desktop. **Grouped pages**: several questions per page on every device. **One per screen**: one question per screen on every device. |
-| **Auto-advance** | After a rating, a scale or a single choice, the survey moves to the next question by itself. A text answer waits for **Next**. With **One per screen** this happens on every device; with **Adapt to device** it happens on phones only. It is not available with **Grouped pages**: the switch is off and cannot be changed. |
+| **Auto-advance** | After a rating, a scale or a single choice, the survey moves to the next question by itself. A text answer waits for **Next**. With **One per screen** this happens on every device; with **Adapt to device** it happens on phones only. It does not operate with **Grouped pages**: the switch is off and cannot be changed. |
 | **Long text answers: default lines** | How tall a long-text box is when the screen opens (1 to 30 lines). It grows as the person types. A question can set its own height in its Display properties; that setting wins for that question. |
 
 ## Answers
@@ -42,7 +42,7 @@ The settings that apply "at the next release" are copied onto the release when y
 
 ## Scoring & alerts
 
-This card decides when a response is marked negative or positive, and shows exactly which follow-up Flows run on that mark and whether each Flow is active. The rules and the Flows are described on their own page: [Scoring and alerts](/admin/scoring-and-alerts).
+This card decides when a response is marked negative or positive, and lists the active Flows on survey responses. The rules and the Flows are described on their own page: [Scoring and alerts](/admin/scoring-and-alerts).
 
 ## Data
 
@@ -63,6 +63,10 @@ This card decides when a response is marked negative or positive, and shows exac
 | **Share with someone** | **Share the sheet…** shares the sheet with a person. Google may otherwise ask them for access when they open it; sharing here removes that step. Applies at once. |
 
 A survey with no questions sheet says so; its questions are edited on the Questions tab. **Connect a sheet…** connects one. Sheet sync is an advanced option: the **Sheet sync** button in the survey header and the **Sheet sync** group in the survey's **⋯** menu hold the other sheet actions.
+
+## Languages
+
+The card shows only while **Multi-language surveys** is on in **Setup**, **Optional Capabilities**. Use it to add a language, to set the default language and to translate text answers. See [Languages](/languages).
 
 ## Related
 

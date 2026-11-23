@@ -1,41 +1,95 @@
 ---
-title: Time slots
-description: The Time slots topic of Interview Mode. What the choices do today, and how you add a time-slot question yourself.
+title: "Program Slot Booking"
+description: "Publish appointment times for a program and send each person a booking link. The person books, changes or cancels a time on a phone, with no account."
 ---
 
-# Time slots
+Staff lose time when they arrange intake appointments by phone and email. With **Program Slot
+Booking**, staff publish the open times one time. Each person gets a link, picks a time on a phone
+and can change or cancel it. A full time shows as **Full**.
 
-A time-slot question shows the open times. A full slot is hidden.
-
-<Note>
-Interview Mode is in development. It is not available in installed AutoSurvey orgs yet. This page tells you what the interview does when it is available.
-</Note>
+Program Slot Booking is a tool of its own, on the tab **Slot Booking**. It is not a question type
+in a survey.
 
 ## Before you start
 
-This topic belongs to the feature **Program Slot Booking**. It is off by default. An admin turns it on in AutoSurvey Setup. When the feature is off, the interview shows the topic as turned off.
+- An admin turns on the feature. Open the **Setup** tab, open **Optional Capabilities**, and turn on
+  the card **Program Slot Booking**. The feature is off until an admin turns it on.
+- The switch gives **AutoSurvey Slot Booking Admin** to the AutoSurvey admins. This set shows only the
+  tab **Slot Booking**.
+- An admin assigns **Slot Booking Staff** to the staff, and **Slot Booking Guest Access** to the guest
+  user of the Experience site. Without the guest set, a booking link does not open.
+- **Setup health** at the top of the tab shows each check.
 
-## When the interview asks
+## Add times
 
-The interview asks this question when your brief says that people pick a time, or names sessions or limited seats.
+1. Open the tab **Slot Booking**.
+2. Select the program in **Inventory**.
+3. On the tab **Times**, find **Generate slots** and fill in these fields:
 
-The question is: **Let people pick a time slot?** The screen selects the recommended choice first. You can click a different choice.
+   | Field | Meaning |
+   | --- | --- |
+   | **First day** | The date of the first slots. |
+   | **Days** | The number of days to make slots for. |
+   | **Start hour** | The hour of the first slot of each day. |
+   | **Per day** | The number of slots on each day. |
+   | **Minutes** | The length of one slot. |
+   | **Capacity** | The number of people who can book one slot. |
+   | **Staff** | The name of the staff member for the slots. |
 
-## The choices
+4. Click **Add draft slots**.
+5. Click **Publish inventory**.
 
-| Choice | What you see | What AutoSurvey changes |
-| --- | --- | --- |
-| **Yes, add a time-slot question** (recommended) | AutoSurvey adds a slot question. You set the slots after Create. | No setting changes. The answer goes to the AI at **Finish**. |
-| **No** | The survey has no slot question. | Nothing. |
+## Change the times
 
-This topic uses the AI at **Finish**. The AI gets your answer and its result text. It can reword, remove or add questions, change the answer options and change a question type. Each proposal is a change card that you keep or skip. If the AI proposes nothing, no change card shows.
+| To do this | Click |
+| --- | --- |
+| Publish one slot | **Publish** |
+| Close one slot | **Close** |
+| Change how many people can book a slot | **Capacity**, enter the **New capacity**, then **Save** |
+| Cancel a slot that has bookings | **Cancel slot**, enter the **Reason for the cancellation**, then **Cancel this time** |
+| Change all slots of one series | **Publish series**, **Unpublish series** or **Close series** |
+| Stop or start all booking for the program | **Close program** or **Open program** |
+
+## Send a booking link
+
+1. In **Booking link**, select the **Contact**.
+2. Enter the **Name shown on the page**.
+3. Click **Create booking link**. Send the link to the person.
+
+## What the person sees
+
+The page shows **Nearest open times**. The person picks a time. The page then says "Your time is
+held. Finish the questions below to complete your intake." When the intake is complete, the page
+shows **Intake complete**.
+
+The person can use **Change time** and **Cancel booking**. When no time is open, the person can
+click **Ask to be told when a time opens**.
+
+## The roster
+
+The tab **Roster** shows the people who booked the sessions of one **Day**. Mark each person
+**Attended**, **No-show** or **Excused**. You can also use **Move**, **Cancel booking** and **Withdraw**.
+**Download roster (CSV)** saves the list of one session.
+
+## The interest list
+
+The tab **Interest list** shows the people who asked to be told when a time opens.
+
+- **Book a time** books an open time for a person on the list.
+- **Remove from the list** takes a person off the list.
+- **Close the interest list** closes the list. AutoSurvey asks you to confirm.
+
+## Notices that did not send
+
+The tab **Notices** lists each notice that did not send after every attempt. Click **Try again** for
+one notice or **Try all again** for all.
 
 ## Limits
 
-- The AI cannot add a time-slot question. It has no time-slot question type. It can add a plain question, for example a choice list of times, but that question has no seat limit.
-- This topic adds no Set up next card. Add the time-slot question yourself in the survey builder after Create.
+- The **Inventory** list shows the first 1000 programs. Close or archive old programs to see the rest.
+- The board shows the first 500 times of a program.
 
 ## Related
 
-- [AutoSurvey Setup](/admin/setup) — the feature switches.
-- [Interview Mode](/interview-mode) — how the interview works.
+- [Setup Home](/admin/setup)
+- [Installation and permissions](/admin/installation-and-permissions)

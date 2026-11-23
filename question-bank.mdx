@@ -1,37 +1,61 @@
 ---
-title: Question bank
-description: The Question bank topic of Interview Mode. What the choices send to the AI, and the limits of the topic today.
+title: "Standard questions"
+description: "Keep a library of locked standard questions for the org. Authors insert them into any survey, and one trend shows the answers across all surveys."
 ---
 
-# Question bank
+When each author writes "How satisfied are you?" in a different way, you cannot compare the answers
+of two surveys. With **Standard questions**, an admin writes the question one time in the **Question
+Library**. Authors insert it into a survey. The wording and the scale stay the same, so one trend
+shows the answers of all surveys that use the question.
 
-AutoSurvey finds questions in your bank that match this survey. The same wording keeps reports comparable over time.
+## Before you start
 
-<Note>
-Interview Mode is in development. It is not available in installed AutoSurvey orgs yet. This page tells you what the interview does when it is available.
-</Note>
+- The card **Standard questions** in **Setup**, **Optional Capabilities** is on by default. An admin
+  can turn it off.
+- The switch gives the permission set **AutoSurvey Standard Questions** to the AutoSurvey admins.
+- To see answers in the library, a user also needs raw response access.
 
-## When the interview asks
+## Add a standard question
 
-The interview asks this question when your org has a question bank and some questions in it match this survey. The topic is in the group **Survey basics**. It does not show in the list of all topics.
+1. Open the **Setup** tab and open **Question Library**. The entry shows only while the feature is on.
+2. Click **New standard question**.
+3. Fill in the fields:
 
-The question is: **Reuse wordings from your question bank?** The screen selects the recommended choice first. You can click a different choice.
+   | Field | Meaning |
+   | --- | --- |
+   | **Code** | A short code for the question. 40 characters at most. You cannot change it later. |
+   | **Topic** | A group for the question. 80 characters at most. |
+   | **Question** | The text that the respondent reads. |
+   | **Help** | The help text below the question. |
+   | **Display type** | How the question shows. |
+   | **Scale from** and **Scale to** | The lowest and the highest value of a scale question. |
+   | **Options, one per line: value \| label \| score** | The answer options of a choice question. |
 
-## The choices
+4. Click **Save draft**.
+5. Select the question and click **Publish version 1**. Authors can insert only a published question.
 
-| Choice | What you see | What AutoSurvey changes |
-| --- | --- | --- |
-| **Yes, reuse my bank wordings** (recommended) | AutoSurvey uses bank wordings where they match. | No setting changes. The answer goes to the AI at **Finish**. |
-| **No** | AutoSurvey writes new wordings. | No setting changes. The answer goes to the AI at **Finish**. |
+## Change or retire a question
 
-This topic uses the AI at **Finish**. The AI gets your answer and its result text. It can reword, remove or add questions, change the answer options and change a question type. Each proposal is a change card that you keep or skip. If the AI proposes nothing, no change card shows.
+- Click **Edit** to make a new draft of a published question. Publish the new version.
+- AutoSurvey does not publish a draft that changes the scale or the scores. Thus a trend does not
+  mix two scales. Make a new standard question instead.
+- Click **Retire** to stop new use of the question.
 
-## Limits
+## Insert a standard question into a survey
 
-- The AI does not get the questions in your bank. It cannot copy a bank wording.
-- To use a bank question, add it from the question library in the survey builder. See [Question library and versioning](/concepts/question-library-and-versioning).
+1. Open the survey and open the **Questions** tab.
+2. Below the questions of a section, click **Insert a standard question…**. The button shows only when
+   the library has a published question.
+3. In **Search by code or wording**, find the question and click it.
+
+## See the answers
+
+Select a question in the **Question Library**. The page shows the answers from all surveys and the
+**Trend over time**. Only questions that stay linked to the library count. Without raw response
+access, the page says "You need the Raw Response Access permission to see the answers."
 
 ## Related
 
-- [Question library and versioning](/concepts/question-library-and-versioning) — the question bank.
-- [Interview Mode](/interview-mode) — how the interview works.
+- [Question library and versioning](/concepts/question-library-and-versioning)
+- [Edit questions](/workflows/edit-questions)
+- [Setup Home](/admin/setup)
