@@ -32,7 +32,7 @@ When **Change with AI** is on, AutoSurvey admins and survey authors can use the 
 | An AI header picture and icon | 2 credits |
 | A translation into a language | AI calls that use part of the monthly AI limit of the org |
 
-These steps use no AI call: **Next**, **Skip**, **Previous**, **Explore all options**, **Undo**, **Redo** and **Undo all**.
+These steps make no AI call of their own: **Next**, **Skip**, **Previous**, **Explore all options**, **Undo**, **Redo** and **Undo all**. But when **Next** saves an answer that changes which questions fit, the AI can select the next questions again in the background (see the table above).
 
 ### The depth and the AI level
 
@@ -77,7 +77,7 @@ The interview sends this text to the AI provider of the org:
 
 The interview sends no answer of a person who takes the survey. No respondent answer goes to the AI provider.
 
-AutoSurvey checks typed text before it sends it. If the check stops your text, you see: "What you typed was not sent to the AI. Change the words and try again."
+AutoSurvey checks typed text before it sends it. If the check stops the text of a request for more questions, you see: "What you typed was not sent to the AI. Change the words and try again." On **Update now** or **Update the survey**, AutoSurvey removes the stopped text, sends the rest, and shows: "Part of what you typed was removed before it went to the AI."
 
 ### Hosted key or your own key
 
@@ -91,7 +91,7 @@ For the full statement, see [Security & Privacy](/admin/security-and-privacy#ai-
 ### What stays in the org
 
 - The survey draft, your answers and the change list are Salesforce records in your org.
-- For each AI call of the interview, AutoSurvey stores one record in your org with the AI model, the time, the token counts and the user.
+- For each AI call of the interview, AutoSurvey stores one record in your org with the AI model, the time, the token counts and the user. AutoSurvey writes this record only when the user can create AI Generation records. If the write fails, AutoSurvey writes a log line only, and the call has no record.
 
 ### Surveys with no names
 
