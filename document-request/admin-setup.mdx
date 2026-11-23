@@ -1,6 +1,6 @@
 ---
 title: "Document Request Admin Setup"
-description: "Permission sets, custom permissions, templates, the Experience site, reminders, the review queue tab and list views."
+description: "The feature switch, permission sets, custom permissions, templates, the Experience site, email and reminders, the review queue tab and list views."
 ---
 
 <Warning>
@@ -9,55 +9,75 @@ description: "Permission sets, custom permissions, templates, the Experience sit
 
 This page tells an administrator how to set up Document Request in an org that has the feature. Read the [overview](/document-request/overview) first.
 
+## Turn on the feature
+
+Document Request is part of the feature **Participant Request Center**. The feature is off when you install the package. An admin turns it on in AutoSurvey Setup.
+
+When the feature is off:
+
+- The panel says "The Participant Request Center is turned off. An admin turns it on in AutoSurvey Setup."
+- A client link does not open.
+- The reminder pass and the renewal pass send nothing.
+
 ## Permission sets
 
 | Permission set | What it gives |
 | --- | --- |
-| `Document_Request_User` | Read access to the six Document Request objects. The Review and Send custom permissions. Access to the Apex classes for the panel, the review screen, the text invitation action, the signing screen and the verify card. The Document Request tab and the Document Review Queue tab, both visible. |
-| `AutoSurvey_Admin` | Read-only access to the Document Request objects and fields, and access to the verify card (Check now). **No** access to the panel or the review screen. **No** Review, Send or Waive permission. |
-| `Super_User` | Same as `AutoSurvey_Admin`. |
+| `Participant_Request_Center_User` (label: Participant Requests User) | Read access to the six Document Request objects and to the Request Center objects. The custom permissions `Send_Document_Requests`, `Review_Document_Requests`, `Participant_Grant_Manage`, `Participant_Receipt_Share` and `Participant_Self_Service_Decide`. Access to the Apex classes of the panel, the review screen, the review queue, the signing screen, the text invitation action and the verify card. The tabs Document Requests, Document Request Templates and Document Review Queue. The app AutoSurvey - Document Requests. |
+| `Document_Request_Author` | Create, read, edit and delete on Document Request templates and template items. Read on forms and examples. The Template Builder tab. |
+| `Document_Request_Template_Publisher` | The custom permission `Activate_Document_Request_Templates`. Read on templates and template items. The Template Builder tab. |
+| `AutoSurvey_Admin` | Read and View All on the request, item, attempt and event objects and on the Request Center objects. Read on templates and template items. The `Reminders_Live` custom permission. **No** Send, Review, Waive or link permission. |
+| `Super_User` | Read and View All on the request, item, attempt and event objects. Read on templates, template items and the Request Center objects. **No** Send, Review, Waive or link permission. |
 
 Rules to remember:
 
-- `Document_Request_User` gives no create, edit or delete on the objects. Staff change data only through the screens. The screens do the work in Apex.
-- `AutoSurvey_Admin` and `Super_User` do not give the Document Request screens. A user with only these permission sets sees this message on the panel and the review screen: "You need the Document Request permission sets to use Document Requests. Ask your admin to assign them."
-- An administrator who must work requests assigns `Document_Request_User` to themself, in **Setup → Users →** their user **→ Permission Set Assignments**.
-- Staff do not need `AutoSurvey_App_Access` for the Document Request panel when the AutoSurvey Contact Record Page is the org default for Contact. Do this step one time. See [The Contact page](#the-contact-page). If you do not set the org default, the panel shows only in the AutoSurvey app, and staff then also need `AutoSurvey_App_Access`.
+- `Participant_Request_Center_User` gives no create, edit or delete on the objects. Staff change data only through the screens. The screens do the work in Apex.
+- A user without one of the panel permissions sees this message on the panel: "You do not have access to the Participant Request Center on this record."
+- An administrator who must work requests assigns `Participant_Request_Center_User` to themself, in **Setup → Users →** their user **→ Permission Set Assignments**.
+- Staff do not need `AutoSurvey_App_Access` for the panel when the AutoSurvey Contact Record Page is the org default for Contact. Do this step one time. See [The Contact page](#the-contact-page). If you do not set the org default, the panel shows only in the AutoSurvey app, and staff then also need `AutoSurvey_App_Access`.
 - The six objects are: Document Request, Document Request Item, Document Request Attempt, Document Request Event, Document Request Template and Document Request Template Item.
 
-<Warning>
-Any user who has Read on the objects can see **every** request, not only their own. Assign `Document_Request_User` only to users who may see all requests. See [Known Gaps](/document-request/known-gaps).
-</Warning>
+<Note>
+A request, its items, its attempts and its events are **Private**. The owner of a request sees it. The reviewer of the request gets Read on the request, its items and its attempts. A user with View All (for example `AutoSurvey_Admin`) sees every request. Templates are Public Read/Write.
+</Note>
 
 ## Custom permissions
 
 | Custom permission | What it allows |
 | --- | --- |
-| `Review_Document_Requests` | Accept, Reject, Resend, Cancel, Reassign reviewer, the reminder pass. Also Waive for an **optional** item. |
-| `Send_Document_Requests` | Create a request from a template. Hand a request to the client on the same device. End a hand-off. To list templates, the user also needs Read on the template object. |
+| `Send_Document_Requests` | Create a request on the panel. Add a request to the request center, remove it, and add an item. Hand a request to the client on the same device (this also needs `Participant_Grant_Manage`). To create a request, the user also needs Read on the template object. |
+| `Review_Document_Requests` | Accept, Reject, Cancel, Reassign reviewer, Upload signed paper copy, Re-run a finalization. Also Waive for an **optional** item. |
+| `Participant_Grant_Manage` | Issue, reissue and revoke the client link. Change its expiry. Copy the link. Start a hand-off. The user also needs Edit on the record of the panel. |
+| `Participant_Access_Recover` | Change the access email. Issue a link to an address that is not the Contact email. An identity check note is necessary. |
 | `Waive_Required_Items` | Waive a **required** item. A reason is required. |
-| `Reminders_Live` | A break-glass gate for real reminder email. It ships in `AutoSurvey_Admin` and `Deploy_Admin`. |
+| `Activate_Document_Request_Templates` | Activate and retire a template. Every status change of a template needs it. |
+| `Reminders_Live` | A break-glass gate for real email. It ships in `AutoSurvey_Admin` and `Deploy_Admin`. |
 
-`Waive_Required_Items` is in **no** shipped permission set. To use it, create your own permission set and add this custom permission. Today the waive action does not also check the Review permission. See [Known Gaps](/document-request/known-gaps).
+`Waive_Required_Items` and `Participant_Access_Recover` are in **no** shipped permission set. To use them, create your own permission set and add the custom permission. Today the waive action does not also check the Review permission. See [Known Gaps](/document-request/known-gaps).
 
 ## Templates
 
-A template is a reusable list of items. Create templates on the **Document Request Templates** tab, in the app **AutoSurvey - Document Requests**, or use the seed. Add the items from the **Document Request Template Items** related list on the template record page. For a walk-through, see [Quick Start](/document-request/quick-start).
+A template is a reusable list of items. Create templates on the **Template Builder** tab, in the app **AutoSurvey - Document Requests**, or use the seed. You can start blank, start from an example, or copy a template. For a walk-through, see [Quick Start](/document-request/quick-start).
+
+Template rules:
+
+- A new template starts as Draft. The status moves from Draft to Active, from Draft to Retired, or from Active to Retired.
+- You can change a template and its items only while it is Draft. To change an Active template, use **Copy to draft**.
+- A template must pass the readiness check before it becomes Active.
+- An Active or Retired template cannot be deleted.
 
 ### Template fields
 
 | Field | Meaning |
 | --- | --- |
-| Name, Code | The name and a short code. |
+| Name, Code | The name and a short code. The panel uses the Active template with the code `DR_INTAKE`. If no Active template has this code, the panel uses the only Active template. |
 | Status | Draft, Active or Retired. **Only Active templates can be sent.** |
-| Intro Message | Text at the top of the client page. |
-| Default Due Days | Days from today to the default due date. The staff panel uses 14 if this is empty. |
-| Expiry Days | Days the client link works. The default is 30. |
-| Reminder First Delay, Repeat, Max | When reminders start, how often they repeat, and the most reminders. The service defaults are every 3 days and at most 5. |
-| Channel Email, Channel SMS | The channels. Email is the active channel. SMS is not active. |
+| Intro Message | A message for the client. The builder calls it **Message to the client**. |
+| Default Due Days | Days from today to the due date. The builder calls it **Due after (days)**. If it is empty, the due date is 7 days from today. |
+| Reminder First Delay Days, Reminder Repeat Days, Reminder Max | When reminders start, how often they repeat, and the most reminders. The service defaults are every 3 days and at most 5. If the first delay is empty, the first reminder comes after the repeat days. |
 | Allow Staff Device | Lets staff hand the request to a client on the same device. Off by default. |
-| Parent Object API Names | The objects the template can attach to. The seed uses `Contact`. |
-| Suite | The linked suite, if any. |
+| Revision | The revision number. The system sets it. |
+| Source Template | The template that **Copy to draft** copied. |
 
 ### Template item fields
 
@@ -68,10 +88,11 @@ A template is a reusable list of items. Create templates on the **Document Reque
 | Is Required | A required item must be accepted or waived (with the right permission). |
 | Review Rule | Staff review or Auto-accept. |
 | Form | The form for a Short Form or Scored Instrument item. |
-| Accept Extensions, Max File MB, Max Files | File limits. Max File MB sets the size limit for a File Upload item. The limit is never above 3.5 MB: a larger value or an empty value gives 3.5 MB. The accepted types are JPG, PNG and PDF only. |
-| Auto Check Profile | None, Document photo, Card photo, Any image or PDF. A check on the client device gives advice only. |
-| Attach To | Parent record, Request only or Both. |
-| Agreement Text | The text of a Signed Document item. |
+| Accept Extensions, Max File MB | File limits. Max File MB sets the size limit for a File Upload item. The limit is never above 3.5 MB: a larger value or an empty value gives 3.5 MB. The accepted types are JPG, PNG and PDF only. |
+| Auto Check Profile | None, Document photo, Card photo, Any image or PDF. The picture check runs on the client device. |
+| Check Policy | What the client page does when the picture check fails: `advise` (the client can send at once), `retake` (the client tries again; after the set number of failed checks, the client can send the file for staff review) or `require` (the page sends only a file that passes). Empty means `retake` with 2 tries. |
+| Typed Preset | The preset that set the check profile and the check policy: Photo ID, Insurance card, Proof of address, Proof of income or Signature check. |
+| Agreement Text, Agreement Language | The text of a Signed Document item, and its language. |
 | Document Code, Document Version | Printed on the signed document. |
 | Allow Proxy Signer | Lets a person sign for someone else. See the [Client Guide](/document-request/client-guide#sign-for-someone-else). |
 | Expires After Days | The renewal offset for an annual renewal. |
@@ -87,11 +108,11 @@ The signed document is a PDF. The PDF font cannot print every character. If the 
 
 ### Seed templates
 
-The seed adds five templates: Intake, Annual Renewal, Insurance Update, Program Enrollment and Service Agreement. All five have reminders at 2, 3 and 5, Email on, Allow Staff Device off, and expiry of 30 days. The seed needs deploy access to run.
+The seed adds five templates: Intake (code `DR_INTAKE`), Annual Renewal, Insurance Update, Program Enrollment and Service Agreement. All five have reminders at 2, 3 and 5 and Allow Staff Device off. The seed needs deploy access to run. To make a template Active, the seed needs the `Activate_Document_Request_Templates` permission.
 
 ## The Experience site page
 
-The client page is the `/documents` page of the AutoSurvey Experience site. The link looks like `/documents?t=<token>`.
+The client page is the `/requests` page of the AutoSurvey Experience site. The link looks like `/requests#t=<token>`. The token is after the `#`, so the browser does not send it to the server. A hand-off link looks like `/requests#h=<token>`.
 
 For the link to work in a message:
 
@@ -104,25 +125,22 @@ For the link to work in a message:
   </Step>
 </Steps>
 
-If no site link exists, staff see: "The client page has no site link. Ask your admin to publish the AutoSurvey site, then try again." A relative link never goes out in a reminder.
+If no site link exists, the panel says "The participant site is not set up, so no link can be made. Ask your Salesforce admin to set up the site." The review screen says "Link unavailable: the AutoSurvey site has no active web address, so no link can be copied or sent. Ask your admin to publish the site." A relative link never goes out in an email.
 
-The guest user of the site has no object access to the Document Request objects. The link token lets the page read one request. See [Security & Privacy](/document-request/security-and-privacy).
+The guest user of the site has no object access to the Document Request objects. The link token and the code from email let the page read the requests of one link. See [Security & Privacy](/document-request/security-and-privacy).
 
-## Reminders
+## Email and reminders
 
-- A reminder pass sends reminders to open requests that are due. It uses the same live-sending gate as other AutoSurvey reminders.
-- **Gate off (default):** the pass writes a dry-run log row and a "Reminder Skipped" event. No email leaves the org.
-- **Gate on:** one email per pass for each request. Live sending needs **both** the `Reminders_Live` custom permission and the org setting `Reminders_Live_Sending_Enabled`.
-- A reminder stops for these reasons: Complete, Cancelled, Link Expired, Opted Out, Cap Reached, Awaiting Review, No Email Address, Send Failed, Link Unavailable.
-- Resend restarts reminders that stopped for Link Expired or Link Unavailable.
-
-<Warning>
-The reminder pass and the renewal job are **not scheduled**. The review screen has a **Run reminder pass (demo)** button. It runs the pass for **every** request in the org, not only the request on the screen.
-</Warning>
+- The link email, the code email and the reminder email use one live-sending gate. It is the same gate as other AutoSurvey reminders.
+- **Gate off (default):** the system writes a dry-run log row. No email leaves the org. A reminder pass also writes a "Reminder Skipped" event.
+- **Gate on:** live sending needs **both** the `Reminders_Live` custom permission and the org setting `Reminders_Live_Sending_Enabled`. The site guest user sends the code email, so the guest user also needs `Reminders_Live`. Without it, the code email is a dry run.
+- The reminder pass runs every hour in the job "AutoSurvey - Essential Jobs (Hourly)". The renewal pass runs one time each night, at 06:00 org time. Both run only when the feature is on.
+- A reminder stops for these reasons: Complete, Cancelled, Link Expired, Opted Out, Cap Reached, Awaiting Review, No Email Address, Send Failed, Link Unavailable, Update Failed.
+- **Reissue link**, **Change expiry** and adding a request to the request center restart the reminders that stopped for Link Expired.
 
 ## The review queue tab
 
-The tab **Document Review Queue** shows the queue. It is visible through `Document_Request_User`. Other users do not see it unless you add it to their permission set.
+The tab **Document Review Queue** shows the queue. It is visible through `Participant_Request_Center_User`. Other users do not see it unless you add it to their permission set.
 
 ## List views
 
@@ -137,18 +155,18 @@ The request record page shows the review screen. The signed-document verify card
 
 ### The Contact page
 
-The Document Request panel is on the **AutoSurvey Contact Record Page**. The package ships this page. The AutoSurvey app uses it for Contact. Other apps (Sales, Service and your own apps) use the org default Contact page. A package cannot set the org default page when it is installed. An administrator must do it one time.
+The **Participant Request Center** panel is on the **AutoSurvey Contact Record Page**. The package ships this page. The AutoSurvey app uses it for Contact. Other apps (Sales, Service and your own apps) use the org default Contact page. A package cannot set the org default page when it is installed. An administrator must do it one time.
 
 Do one of these two procedures:
 
 1. **AutoSurvey Setup.** Open the AutoSurvey app. Open the **Setup** tab. Find the **Contact Record Page** card under **Recommended Checks**. Click **Activate**. AutoSurvey sets the AutoSurvey Contact Record Page as the org default for Contact on desktop and phone. This needs the AutoSurvey server connection. If Activate fails, use procedure 2.
 2. **Lightning App Builder.** In Setup, open **Object Manager**, then **Contact**, then **Lightning Record Pages**. Open **AutoSurvey Contact Record Page** and click **View**. Click **Activation**. On the **Org Default** tab, click **Assign as Org Default**. Select **Desktop and phone**. Click **Next**, then **Save**.
 
-After this step, a user with `Document_Request_User` sees the panel on a Contact in every app. The user does not need `AutoSurvey_App_Access`.
+After this step, a user with `Participant_Request_Center_User` sees the panel on a Contact in every app. The user does not need `AutoSurvey_App_Access`.
 
 <Note>
 - The panel is on the first tab of the page, **Survey History**, below the survey history list.
-- If your org already has its own Contact page as the org default, the procedure above replaces it. To keep your page, add the **Document Requests** component to it in Lightning App Builder instead. The component is available for Contact record pages.
+- If your org already has its own Contact page as the org default, the procedure above replaces it. To keep your page, add the **Participant Request Center** component to it in Lightning App Builder instead. The component is available for Contact record pages.
 - An app that assigns its own Contact page (an app default) uses that page, not the org default.
 </Note>
 

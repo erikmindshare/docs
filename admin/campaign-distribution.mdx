@@ -142,8 +142,9 @@ required. Step 3, **Compose email invitation**, holds the email. Step 5,
 **Send survey emails**, sends it.
 
 <Note>
-  Emails sent to a list carry an **unsubscribe link** automatically — insert it with
-  `%%UNSUBSCRIBE%%`. The page it lands on asks the recipient to confirm before anything happens, so
+  An email to a list carries an **unsubscribe link** only when its body holds the token
+  `%%UNSUBSCRIBE%%`. AutoSurvey replaces the token with the link. The default email body has no
+  such token, so add it to your body yourself. The page it lands on asks the recipient to confirm before anything happens, so
   a corporate mail scanner that follows links in the background cannot unsubscribe someone by
   accident. Recipients who unsubscribe are skipped by later sends.
 

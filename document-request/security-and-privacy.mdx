@@ -1,6 +1,6 @@
 ---
 title: "Document Request Security & Privacy"
-description: "How the client link works, how it is revoked, how data is erased, and how a signed document is checked."
+description: "How the client link and the code work, how a link is revoked, how data is erased, and how a signed document is checked."
 ---
 
 <Warning>
@@ -9,30 +9,33 @@ description: "How the client link works, how it is revoked, how data is erased, 
 
 ## The client link and its token
 
-- The link holds a random token. The token is 32 to 64 characters long.
-- The token is stored on a Survey Invitation record. It has a purpose: `DOCUMENT_REQUEST` for the client, or `DOCUMENT_REQUEST_HANDOFF` for a staff device.
-- The system refuses a token for one purpose where the other purpose is necessary.
-- The default life of a link is 30 days. A template can set a different number (Expiry Days). A hand-off link lives 30 minutes.
-- The page refuses a token that is missing, wrong, expired, replaced or cancelled. The client sees "This link is not valid.", "This link has expired. Ask the office that sent it for a new link." or "This link is no longer valid." The page gives no more detail.
-- The guest user of the site has **no** object access to the Document Request objects. The token lets the server read one request only. A client cannot get to the items of another request.
+- The client link is a Request Center link: `https://<site>/requests#t=<token>`. One link shows the requests of one person for one record (an enrollment). It shows at most 10 requests.
+- The token is 64 random characters. It is in the URL fragment (after `#`). A browser does not send the fragment to the server, so the server logs and the cached page do not hold the token. The page moves a token from an older `?t=` link into `#t=`.
+- The token is on a Survey Invitation record with the purpose `REQUEST_CENTER`. The record keeps only an HMAC of the token and an encrypted copy for **Copy link**. The plain token is not stored.
+- A staff-device hand-off has its own token, with the purpose `DOCUMENT_REQUEST_HANDOFF`. Its link is `/requests#h=<token>`. It shows one request only. It lives 30 minutes, and never longer than the client link.
+- The link alone shows nothing. The client must enter a 6-digit code that the system sends to the access email. The code works for 10 minutes. The session lasts 15 minutes and continues with activity, up to 2 hours.
+- The default life of a link is 180 days. Staff can choose an end date up to 365 days after the link was issued.
+- The page refuses a token that is missing, wrong, expired, replaced or revoked. The client sees "This link is no longer valid." and "Ask your case manager for a new one." The page gives no more detail.
+- The guest user of the site has **no** object access to the Document Request objects. The token and the code let the server read the requests of one link only. A client cannot get to the items of another request.
 - A repeated send with the same key makes one attempt only.
 - A complete request is read-only.
-- The token shows in the page address and in the page reference script tag of the site page. This was reviewed and accepted.
 
 ## Revoking a link
 
 | Action | What happens |
 | --- | --- |
-| Resend | The old invitation expires now (event "Link Revoked"). Any hand-off ends. A new invitation starts (event "Link Reissued"). |
-| Cancel | The invitation and the hand-off end. Reminders stop. |
-| Expire | The link stops at its expiry time. |
-| Erase | The system deletes the invitation with the request. See [Erasure](#erasure). |
+| Reissue link | The old link stops at once. Any hand-off ends. A new link goes to the access email. The access log records "Grant Reissued". |
+| Revoke link | The link stops at once. The access log records "Grant Revoked". |
+| Cancel request | The request center no longer shows the request. Any hand-off of the request ends. Reminders stop. The request trail records "Request Cancelled". |
+| Expire | The link stops at its end date. A nightly job marks it Expired. |
+| Erase | The system deletes the request records and files of a person. See [Erasure](#erasure). |
 
-A hand-off also ends when the client taps **Finish and hand back**, when staff select **End hand-off**, or after 30 minutes.
+A hand-off also ends when the client taps **I'm finished**, when staff select **End hand-off**, or after 30 minutes.
 
 ## What the system records
 
-- Each request has an audit trail of events (for example Link Reissued, Request Cancelled, Reminder Sent). Each event links to the event before it with a SHA-256 value. The review screen says "Event chain verified" or names the first break.
+- Each request has an audit trail of events (for example Request Opened, Item Accepted, Request Cancelled, Reminder Sent). Each event links to the event before it with a SHA-256 value. The review screen says "Event chain verified" or names the first break.
+- Each link has an access log (for example Grant Issued, Grant Reissued, Link Copied, Code Sent, Handoff Started). The panel shows the last 20 events.
 - Events do not hold email addresses.
 - Each attempt records where it was captured: Recipient device or Staff device. For a hand-off, events record the staff member who started it.
 - The client device reports the "auto check" result for a picture. The server does not verify it.
@@ -54,26 +57,26 @@ A file check value is stored on the attempt. It is not printed inside the file.
 
 ## Erasure
 
-`SurveyRespondentErasureService.eraseByEmail` deletes these records for a person:
+The package has code that erases the Document Request records of a person (`SurveyRespondentErasureService.eraseByEmail`). It deletes:
 
-- the requests (matched by request email or by Contact),
+- the requests (matched by Contact, by the email of a Contact, or by Lead),
 - their items, attempts and events,
-- the invitation and the reminder log rows,
+- the invitations and the reminder log rows,
 - every linked file, including the finished PDF.
 
-The system scrubs a form submission made through a form item. It does not delete it. The erasure report holds counts only.
+It scrubs a form submission made through a form item. It does not delete it. The erasure report holds counts only.
 
-<Note>
-There is **no screen** to start an erasure today. An administrator or developer runs it.
-</Note>
+<Warning>
+A customer cannot start this erasure today. There is no screen, no Flow action and no Apex method that the customer org can call. The text-message phone erasure (`AutoSurvey_EraseTextPhone`) does not erase Document Request records. See [Known Gaps](/document-request/known-gaps).
+</Warning>
 
-## Reminders and email
+## Email
 
-Live reminder email is off by default. It needs the `Reminders_Live` permission and the org setting. When it is off, the system only writes a dry-run log. The system does not send a reminder to an address that has opted out.
+Live email is off by default. This includes the link email, the code email and the reminder email. Live email needs the `Reminders_Live` permission and the org setting. When it is off, the system only writes a dry-run log. The system does not send a reminder or a link email to an address that has opted out. A code email and a "link closed" email ignore the opt-out.
 
 ## Access for staff
 
-Staff get access through `Document_Request_User` and custom permissions. See [Admin Setup](/document-request/admin-setup). Any user with Read access to the objects can see every request.
+Staff get access through `Participant_Request_Center_User` and custom permissions. See [Admin Setup](/document-request/admin-setup). A request is Private. Its owner and its reviewer see it. A user with View All on the objects (for example `AutoSurvey_Admin`) sees every request.
 
 ## See also
 

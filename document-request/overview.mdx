@@ -7,7 +7,7 @@ description: "What Document Request does, how a request moves from sent to revie
 **In development.** Document Request is a feature of the AutoSurvey package that is in development. The text, screens and limits on these pages can change. These pages make no promise about dates, pricing or availability.
 </Warning>
 
-Document Request lets your staff ask a client for documents and forms. The client opens a link on a phone. The client sends each item. Staff review the items.
+Document Request lets your staff ask a client for documents and forms. The requests show in the client's request center (the Participant Request Center). The client opens the request center link on a phone, enters a code from email, and sends each item. Staff review the items.
 
 <Note>
 All examples on these pages use fictional data. The example organization is Harbor Community Health. The example client is Jordan Rivera. The example staff are Alex Morgan (reviewer), Priya Natarajan and Sam Okafor. The example program is Family Support Services.
@@ -27,7 +27,7 @@ All examples on these pages use fictional data. The example organization is Harb
 
 <Steps>
   <Step title="Request">
-    A staff member creates a request for a Contact from a template. The request has a due date and an optional message. The client gets a link.
+    A staff member creates a request from a template on the **Participant Request Center** panel of a record. The request has a due date. The request shows in the client's request center. The client opens the request center with one link.
   </Step>
   <Step title="Item">
     The request holds one or more items. An item is one thing the client must give. Example: "Photo ID".
@@ -67,14 +67,15 @@ A template can change the review rule for an item to **Staff review** or **Auto-
 ## What "in development" means
 
 - The feature is not finished. Some parts are built but not switched on. See [Known Gaps](/document-request/known-gaps).
-- The client page says "In development". Staff screens show "(In development)" in some titles.
-- Live reminder email is off by default. A reminder pass writes a dry-run log and sends no email.
+- The client page says "In development." Some staff screens say "This feature is in development."
+- The feature switch **Participant Request Center** is off by default. An admin turns it on in AutoSurvey Setup.
+- Live email is off by default. This includes the link email, the code email and the reminder email. When live email is off, the system writes a dry-run log and sends no email.
 - The text-message (SMS) path is not active.
 - Nothing here is a promise of a date, a price or an offer.
 
 ## Where things are
 
-- **Contact record:** the "Document Requests (In development)" panel. Staff create and send requests here.
+- **Contact record:** the **Participant Request Center** panel. Staff issue the client link, create requests and add them to the request center here.
 - **Request record:** the review screen. Staff review items, copy the link, cancel, and reassign the reviewer here.
 - **Document Review Queue tab:** all items that wait for review.
-- **Client page:** an Experience site page that the client opens with the link.
+- **Client page:** the `/requests` page of the AutoSurvey Experience site. The client opens it with the link.

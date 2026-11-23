@@ -1,6 +1,6 @@
 ---
 title: "Document Request Staff Guide"
-description: "How staff create, send, review, resend, reassign and cancel document requests."
+description: "How staff issue the client link, create, review, reassign and cancel document requests."
 ---
 
 <Warning>
@@ -9,7 +9,26 @@ description: "How staff create, send, review, resend, reassign and cancel docume
 
 Read the [overview](/document-request/overview) for the flow.
 
-You need the `Document_Request_User` permission set. Your administrator gives it to you. See [Admin Setup](/document-request/admin-setup).
+You need the `Participant_Request_Center_User` permission set (label: Participant Requests User). Your administrator gives it to you. See [Admin Setup](/document-request/admin-setup).
+
+## The Participant Request Center panel
+
+The panel is on the Contact record, for example Jordan Rivera. It has these parts:
+
+- **Link:** the client link. It shows the status, "Sent to" (the masked access email), "Expires", "Last opened", "Opens" and "Reissues".
+- **Included in the participant's view:** the requests that the client sees in the request center. Each row shows the status, the number of visible items and the items that wait for review.
+- **Requests not in the request center:** the other requests of the record. Use **Add to request center** to show one to the client.
+- **Shared receipts** and **Self-service updates waiting for approval**.
+- **Access log (last 20 events)**.
+
+## Issue the link
+
+1. Select **Issue link**.
+2. Enter an **Access email (optional)**. If you leave it blank, the link goes to the Contact email. A different address needs the `Participant_Access_Recover` permission and an **Identity check note**.
+3. Choose an **Expiry date**. You can choose a date up to one year after the link is issued. The default is 180 days.
+4. Select **Confirm**. The panel shows "Link issued."
+
+You need the `Participant_Grant_Manage` permission. The client must enter a 6-digit code from email before the request center shows any request.
 
 ## Create and send a request
 
@@ -17,72 +36,57 @@ You need the `Document_Request_User` permission set. Your administrator gives it
   <Step title="Open the Contact">
     Open the Contact record, for example Jordan Rivera.
   </Step>
-  <Step title="Find the panel">
-    Find the panel **Document Requests (In development)**.
-  </Step>
   <Step title="Start a request">
-    Select **New request**. You need the Send permission.
+    In the **Participant Request Center** panel, select **New request for this enrollment**. You need the Send permission.
   </Step>
-  <Step title="Choose a template">
-    Choose a template. The panel lists its items. It marks each item as "Required" or "No form linked".
+  <Step title="Add it to the request center">
+    Keep **Add to the participant's request center** on. If the client has no active link, the system issues one.
   </Step>
-  <Step title="Set the due date">
-    Set the **Due date**. It must be tomorrow or later. The default is today plus the template Default Due Days (14 if empty).
-  </Step>
-  <Step title="Add a message">
-    Add a **Message** if you want. The limit is 2000 characters.
-  </Step>
-  <Step title="Send">
-    Select **Send**. The panel shows "Request sent".
+  <Step title="Create">
+    Select **Create request**. The panel shows "Request created."
   </Step>
 </Steps>
 
-If the list is empty, the panel says "No active templates. Ask an administrator to add one." Only Active templates show.
+The panel uses the Active template with the code `DR_INTAKE`. If no Active template has this code, it uses the only Active template. If it cannot choose a template, it says "No request was made because the panel cannot choose a template. Activate a Document Request template with the code DR_INTAKE, or keep only one template active. Ask your Salesforce admin for help."
 
-The panel shows the 10 newest requests. Each row shows:
+The due date is today plus the template Default Due Days. If that field is empty, the due date is 7 days from today. You become the reviewer of the request.
 
-- The link state: "Not opened", "Opened" or "Link expired".
-- The progress: "N of M accepted".
-- "N waiting for review".
+When the request goes into the request center, the system sends one email with the link. Live email is off in the default setup. Then the system writes a dry-run log and sends no email. If the email fails, the panel says "Request created. Email not sent · Try again." The text-message path is not active.
 
-Select **Show items** to see the items and **Hide items** to hide them.
-
-The system sends the link by email. The text-message path is not active. You can also copy the link on the request record page (see below) and give it to the client in another way.
+The request center shows at most 10 requests for one link.
 
 ## Copy or open the link
 
-Open the request record. Use **Copy link** to copy the client link. The screen says "Link copied". **Open link** opens the client page.
+On the panel, use **Copy link**. The panel shows "Link copied to the clipboard." The system records "Link Copied" in the access log, with your name.
+
+On the request record, the **Guest link** shows the full link. Use **Copy link** or **Open link**. You need the `Participant_Grant_Manage` permission and Edit access to the record of the request.
 
 ## Hand the device to the client
 
 Use this procedure when the client is in the office and uses your tablet.
 
-1. In the panel, select **Hand to client on this device**.
-2. The page opens in a new tab. The screen says "Hand-off started. Give the device to the client. The link works for 30 minutes."
-3. Give the device to the client.
-4. The client finishes and taps **Finish and hand back**.
+1. In the panel, on the request row, select **Hand to client on this device**.
+2. The row says "Hand-off active until" and the end time. Select **Open the client page**.
+3. Give the device to the client. The client enters a 6-digit code from email. The page shows only this one request.
+4. When the client finishes, the client taps **I'm finished**. This ends the hand-off.
 
-The button shows only when all of these conditions are true: you can create requests, the request is Open, and the template has **Allow Staff Device** on. All seeded templates have it off. The server refuses a hand-off when a condition is not met.
+The button shows only when all of these conditions are true: you have the Send and Link permissions and Edit access to the record, the request is Open and in the request center, and the template has **Allow Staff Device** on. All seeded templates have it off.
 
-To stop early, select **End hand-off**. The screen says "Hand-off ended". The hand-off also ends when you resend, when you cancel, or when 30 minutes pass. Attempts from a hand-off record "Staff device" as where they were captured.
+To stop early, select **End hand-off**. The hand-off also ends when you cancel the request, when the link is reissued or revoked, or after 30 minutes. Attempts from a hand-off record "Staff device" as where they were captured.
 
-## Resend the link
+## Reissue or revoke the link
 
-Select **Resend** on an Open request. Resend:
+Select **Reissue link** and then **Confirm**. The panel says "Reissue makes a new link and sends it to the access email. The old link stops working at once." Then it shows "Link reissued. The old link no longer works." Reissue ends any active hand-off. The system records "Grant Reissued" in the access log.
 
-- stops the old link (the system records "Link Revoked"),
-- ends any active hand-off,
-- makes a new link (the system records "Link Reissued").
+Select **Revoke link**, choose a reason, and select **Confirm**. The link stops at once. The panel shows "Link revoked."
 
-The panel says "Link resent. The old link no longer works. A new link is ready." You can resend only an Open request. You need the Review permission.
+To change the end date, select **Change expiry**.
 
 ## Reminders
 
 The system can remind the client by email. Live reminder email is off in the default setup. The review screen says so: "Live reminder email is off. A reminder pass writes a dry-run log and sends no email. This feature is in development."
 
-<Warning>
-The button **Run reminder pass (demo)** runs the pass for **every** request in the org. Do not use it in a shared org unless you intend to. See [Known Gaps](/document-request/known-gaps).
-</Warning>
+The reminder pass runs every hour. There is no button to run it.
 
 ## Review an item
 
@@ -97,7 +101,7 @@ Open the request record. Each item that waits for review shows the attempt.
 
 1. Select **Reject**.
 2. Choose a reason. Suggested reasons: Blurry or cut off; Wrong document; Out of date; Missing page or side; Unreadable file; Signature missing; Other. The system keeps any reason that is not blank (up to 255 characters).
-3. Add a **Message to the recipient** if you want (up to 1000 characters).
+3. Add a **Message to the respondent** if you want (up to 1000 characters).
 4. Select **Send back**. The screen says "Item sent back".
 
 If you do not choose a reason, the screen says "Choose a reason before you send the item back."
@@ -111,7 +115,7 @@ Select **Waive** and then **Waive item**. The reason field says "Reason (require
 - Waiving an optional item needs the Review permission.
 - Waiving a required item needs the `Waive_Required_Items` permission. A reason is required.
 
-A request with a waived item ends with "All done. Thank you." on the client page.
+On the client page, a waived item shows "No longer needed".
 
 ## Upload a signed paper copy
 
@@ -139,7 +143,7 @@ You need the Review permission. The button is hidden for Cancelled or Complete r
 2. Enter a reason if you want. The system keeps the first 255 characters.
 3. Select **Yes, cancel request**, or **Keep request** to go back.
 
-The screen says "Request cancelled". Cancel works on a Draft or Open request. It stops the client link, ends any hand-off, and stops reminders. The system records "Request Cancelled".
+The screen says "Request cancelled". Cancel works on a Draft or Open request. You need the Review permission. The request center no longer shows the request. Cancel ends any hand-off and stops reminders. The system records "Request Cancelled".
 
 ## Verify a signed document
 
@@ -168,4 +172,4 @@ You can also use the list views on the Document Request Item object. See [Admin 
 
 ## Draft requests
 
-The panel creates Open requests. This page does not describe a way to create a Draft request in the screens.
+The panel creates Open requests. The screens have no way to create a Draft request.

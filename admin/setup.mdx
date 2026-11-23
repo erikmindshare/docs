@@ -22,6 +22,7 @@ On a new install, the **Finish Initial Setup** card shows a **Complete Setup** b
 - Creates or repairs the internal connection and the Guest Response Queue.
 - Assigns you the **Self Org Access** and **Self Org JWT Access** permission sets.
 - Adds the sample surveys.
+- Assigns the **AutoSurvey Guest Access** permission set to the guest user of each active Experience site in your org, so that people can answer a survey on the site.
 - Tests the connection to the AutoSurvey server, and connects the org to the server if it is not connected yet. When the server asks for proof, Salesforce first asks you to verify the org.
 
 ### If Setup Home cannot load for you
@@ -270,14 +271,20 @@ lands **hidden** until an admin shares it once.
 | **How to fix** | Click **Share with all internal users**. The button disappears once the folder is shared. |
 | **Status values** | **PASS** = folder shared with internal users. **NOT TESTED** / **FAIL** = still hidden. Click the share button. |
 
-## Optional Capabilities
+<a id="optional-capabilities"></a>
 
-AutoSurvey works without any of these. Each capability unlocks an extra way to collect responses, and lists what it needs and where to set it up. The section is collapsed by default. Click **Show section** to open it.
+## Features (Optional Capabilities)
 
-- **Show survey suites**: an org-wide switch. A suite holds several forms of one survey. Turn it on when you need variations by audience or wave. Until it is on, AutoSurvey says "survey" everywhere. **Learn more** opens the audiences-and-waves guide.
+In AutoSurvey 2.3 this tab of Setup Home is named **Features**. Earlier versions name it **Optional Capabilities**.
+
+AutoSurvey works without any of these. Each capability unlocks an extra way to collect responses, and lists what it needs and where to set it up. Open the **Features** tab in the **Add more** group of Setup Home.
+
+- **Audiences and rounds**: an org-wide switch. With it on, a survey can have one form for each audience and each round. Turn it on when you need variations by audience or wave. It changes no word on the screen: AutoSurvey always says "survey". **Learn more** opens the audiences-and-waves guide.
 - **Email invitations**: needs a verified send-from address, the survey base URL, email deliverability, and domain authentication (DKIM). Click **Set up email** to open the email setup steps on this page.
 - **Public and member surveys**: needs Digital Experiences turned on.
 - **AI survey generation**: needs AI models in the AutoSurvey model catalog.
+
+The section has more cards than this list: 27 in AutoSurvey 2.3. Each card has a switch and says what it does. New in 2.3: **One question editor**, **Logic tools**, **Brand tools**, **Accessibility checks** and **Capacity rules**. Each of these is off by default. In 2.3 the card **AI images** is named **Allow AI image generation**. It works only while **AI features** is on, and it is on by default.
 
 Each item shows **Ready**, **Setup needed**, or **Couldn't verify**, with an **Open Setup** link where the fix is in Salesforce Setup.
 
