@@ -1,0 +1,67 @@
+---
+title: Refine a survey that exists
+description: Use Interview Mode on a survey that is created, and learn what the interview can change after the first release of a survey.
+---
+
+A survey is created, and then the plan changes: the team wants one more question, a different tone, or a reminder. You do not want to build the survey again. The interview can open on a survey that exists. It reads the survey as it is now, and each update changes the survey.
+
+## Open the interview on a survey
+
+<Steps>
+  <Step title="Open the survey">
+    Go to the **Questions** tab of the survey.
+  </Step>
+  <Step title="Find the panel">
+    The panel **Refine this survey** is above the list of questions. It says: "Answer a few questions, and AutoSurvey updates the survey. You can undo each change."
+  </Step>
+  <Step title="Select how to refine">
+    Click **Answer a few questions (recommended)** to start the interview. Or click **Overall instructions** to say what to change in your own words.
+  </Step>
+</Steps>
+
+After you answered questions one time, the panel has **Review my answers** and **Answer more questions**. After an update, its title is **Refine again**.
+
+The interview works as it does for a new survey. See [Answer, update and undo](/interview/answer-update-undo). Three things are different:
+
+- The update writes to the survey, not to a draft. The interview stays open after the update, so you see the change list, **Not applied** and **Undo**.
+- **Return to survey** closes the interview.
+- If a different person or a different screen changed the questions after the interview read them, the update is refused. Open the interview again. This protects the work of the other person.
+
+The panel shows only when you can edit the questions of the survey.
+
+## Before the first release
+
+Before the first release, the interview can add, change and remove questions. One exception: AutoSurvey does not remove a question that has answers.
+
+A survey that has a Google Sheet is a special case. Before the first release, the panel says: "The questions of this survey are in its Google Sheet. Until the first release, AutoSurvey writes each change to the Sheet."
+
+## After the first release
+
+A released survey has answers, reports and fields that use its questions. Thus the interview can make only these changes:
+
+| The interview can | The interview cannot |
+| --- | --- |
+| Change a setting, for example reminders, the close date or the bot check. | Add a question. |
+| Change the text of a question. | Remove a question. |
+| | Change the type of a question. |
+| | Change the choices of a question. Stored answers, scores and show and hide rules use the values of the choices. |
+
+The interview shows only the features that are settings. A feature that only changes the wording of the survey is not in the list.
+
+If an update or an Undo needs a bigger change, AutoSurvey refuses it with this message: "This survey is released. The interview can change settings and the text of questions. Make a new survey for a bigger change." No part of the survey changes.
+
+For a bigger change, the message tells you to make a new survey.
+
+## Surveys that the interview does not open
+
+| Survey | Message |
+| --- | --- |
+| A released survey that has a Google Sheet | "This survey has a Google Sheet. Change its questions in the Sheet." |
+| A survey that has audiences or rounds | The panel shows a message that the interview cannot change the questions of this survey. The message starts with "This survey has audiences or rounds." |
+| A survey with no questions that the interview can read | "This survey has no questions that the interview can read." |
+
+## Related
+
+- [Answer, update and undo](/interview/answer-update-undo)
+- [Interview problems and messages](/interview/problems)
+- [Edit questions](/workflows/edit-questions)

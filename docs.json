@@ -76,9 +76,21 @@
         ]
       },
       {
-        "group": "Interview topics",
+        "group": "Interview Mode",
         "pages": [
           "interview-mode",
+          "interview/start",
+          "interview/answer-update-undo",
+          "interview/looks",
+          "interview/features",
+          "interview/cost-limits-privacy",
+          "interview/refine-a-survey",
+          "interview/problems"
+        ]
+      },
+      {
+        "group": "Interview topics",
+        "pages": [
           "rounds",
           "audiences",
           "lead-capture",

@@ -1,0 +1,141 @@
+---
+title: Answer, update and undo
+description: How to answer the questions of Interview Mode, how Update the survey applies your answers, how to read the change list, and how to undo a change.
+---
+
+You do not want an AI to change your survey without your control. In Interview Mode, an answer is only saved. The questions change when you click **Update the survey**. Then you see each change, and you can undo each one.
+
+## One screen of the interview
+
+Each screen asks one thing. A screen has these parts:
+
+| Part | What it tells you |
+| --- | --- |
+| The question and the choices | A choice with the badge **Recommended** is the suggestion of the AI. A choice with **From your brief** comes from your brief. |
+| **Why we ask** | One sentence that says why the AI asks this for your survey. |
+| **Show the wording from your brief** | The words of your brief that caused the question. |
+| The result line below a choice | What that choice changes in the survey. |
+| **See how it works** and **Full documentation** | Links to the help page of the feature. |
+
+Some screens have a box for your own words: **Something else**, **Type something else** or **Add a detail**.
+
+### The buttons
+
+| Button | What it does |
+| --- | --- |
+| **Next** | Saves the answer and shows the next screen. If you selected nothing, **Next** skips the screen. |
+| **Skip** | Goes to the next screen. The AI does not use this question now. |
+| **Previous** | Goes back one screen. |
+| **Don't ask me about … again in this survey** | The interview does not ask this again for this survey. On the last screen, **Ask me about this again** puts it back. |
+| **Build it with what I told you** | Stops the questions. The AI builds the survey from your answers so far. |
+| **Stop and go to Review** | Pauses the interview. Your saved answers stay. |
+
+### No, I do not want this
+
+A question that the AI wrote from your brief has the choice **No, I do not want this**. Select it when you do not want that thing in the survey. The AI then does not add it.
+
+**Skip** is different. **Skip** decides later. To say no, select **No, I do not want this**.
+
+## The list of steps
+
+The list beside the screen shows each step. Click a step to open it again and change the answer. Each answered step has a mark:
+
+| Mark | What it means |
+| --- | --- |
+| **Waits for Update** | Saved. The survey does not use this answer. Click **Update the survey** to apply it. |
+| **Applied** | The survey uses this answer. |
+| **Done** | Saved. The AI uses this answer when it changes the survey. |
+| **Set at Create** | Saved. When you select **Create survey**, AutoSurvey sets this choice. |
+| **Kept for later** | Saved. AutoSurvey keeps the answer for a step after Create. |
+| **Needs a Flow** | Saved. No active Flow does this step. On the **Settings** tab, turn on a follow-up Flow, or ask your admin. |
+
+The list also has these controls:
+
+| Control | What it does |
+| --- | --- |
+| **Update now** | Shows when answers wait. It sends them to the AI in one AI call, and the AI changes the survey. It is the same update as **Update the survey**. |
+| **Overall instructions** | Opens the text box for your own words. |
+| The list below the steps | The features that the interview did not select for your survey. Click **+ Add** to get the question for one of them. |
+| **Change these** | Lets you correct the facts that the AI read from your brief. |
+| **Go to the end →** | Opens the last screen. |
+| **Return to where I stopped** | Goes back to the screen where you were. |
+
+## The last screen
+
+The last screen has the heading **We have enough**, **You answered every topic** or a heading that counts the screens that you skipped. It lists your answers in groups: **Already in the survey**, **Saved, with no change to the questions**, and the answers that wait.
+
+| Control | What it does |
+| --- | --- |
+| **Overall instructions (optional)** | A text box. Type more changes in your own words. |
+| **Ask me more** | The AI reads the survey and your answers again, and asks up to 3 more questions. One AI call. |
+| **Use the recommendations for the rest** | Uses the recommended choice for each screen that you did not answer. |
+| **Explore all options** | Shows the other things that AutoSurvey can do. See [Features that the interview offers](/interview/features). It uses no AI call. |
+| **Start over** | Makes a new survey from your description, with or without your answers. It erases all the questions. One AI call. |
+| **Update the survey** | Applies the answers that wait. The button counts them, for example **Update the survey with 3 answers**. |
+
+## Update the survey
+
+Click **Update the survey**. The AI reads your answers and your instructions, and writes the changes to the questions. This takes about 20 to 40 seconds. You can open **Questions** while you wait.
+
+The update applies at once. It has no approval step. Your control is the change list and **Undo**.
+
+## The change list
+
+After an update, open the view **Questions**. The change list is above the questions. Its heading counts the changes, for example **The update made 4 changes**.
+
+| On a row | What it means |
+| --- | --- |
+| **Added**, **Changed** or **Removed** | What the update did to the question. |
+| **Was:** | The text of the question before the update. |
+| **Now required** or **Now optional** | The update changed if people must answer. |
+| **Options:** | The choices of the question after the update. |
+| **Undo** | Puts this one question back. The row then shows **Undone** and **Redo**. |
+
+Below the rows:
+
+- **Not applied:** lists each change that AutoSurvey did not make, with the reason.
+- A line tells you how many questions did not change.
+
+**Undo all** puts the survey back as it was before the update. **Dismiss** hides the list.
+
+A question that the interview added is at the end of the survey and has the mark **New**. You can move it after you create the survey.
+
+If the heading is **No question changed**, the survey matched your answers before the update.
+
+### When Undo cannot run
+
+Undo applies to the last update. If you or a different person changed the survey after the update, Undo is refused, because it would write over the later edit. See [Interview problems and messages](/interview/problems).
+
+## Overall instructions
+
+Use **Overall instructions** to say what you do not like: one question, a part, or the tone of the whole survey.
+
+- Put exact words in quotes, and the AI uses them as you wrote them. Example: Add the question "Which doctor did you see?".
+- Or give the idea, and let the AI write the words. Example: Add a question about price.
+
+Click **Update the survey**. The update applies at once, and **Questions** shows each change with **Undo**. The box holds a maximum of 20,000 characters.
+
+### Change one question
+
+In the view **Questions**, click **✎ Change this question** on a question. Say what to change, or click an example: **Make it shorter**, **Use simpler words**, **Add a "Not sure" choice** or **Ask it as a rating**. Then click **Change this question**. The line below the heading tells you if the AI changes only this question, or if it can also change other questions.
+
+## Create the survey
+
+When the survey is correct, click **Create survey**. The survey ID cannot change after that.
+
+If answers wait for an update, AutoSurvey asks first. The dialog lists the answers and says: "Update first, or create the survey without these answers."
+
+| Button | What it does |
+| --- | --- |
+| **Update, then create** | Applies the answers, then creates the survey. |
+| **Create without them** | Creates the survey. The answers that wait are not in the survey. |
+| **Cancel** | Goes back. |
+
+Before Create, the summary **When you select “Create survey”** lists the choices that AutoSurvey sets at Create, for example a close date or reminders. If AutoSurvey cannot set one of them, the **Questions** tab shows a to-do card under **Set up next** after Create.
+
+## Related
+
+- [Start an interview](/interview/start)
+- [Select a look](/interview/looks)
+- [Features that the interview offers](/interview/features)
+- [Interview problems and messages](/interview/problems)

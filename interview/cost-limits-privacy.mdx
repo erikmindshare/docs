@@ -1,0 +1,114 @@
+---
+title: What it costs, limits and privacy
+description: Which steps of Interview Mode use an AI call, the limits that AutoSurvey applies, and which text goes to the AI provider with a hosted key or with your own key.
+---
+
+Before you let authors use an AI feature, you want to know three things: what uses your AI allowance, what the limits are, and which text leaves the org. This page answers those questions for Interview Mode.
+
+## What it costs
+
+Interview Mode has no price of its own. Each AI request uses the AI of the org:
+
+- With the **Hosted** AI provider, each request counts against the monthly allowance of the org.
+- With **Bring your own key**, each request is a call on your own OpenAI or Anthropic account. No allowance applies.
+
+An admin sets the AI provider in **AutoSurvey Setup**, **AI Models & Tiers**. See [AutoSurvey Setup Home](/admin/setup).
+
+When **Change with AI** is on, AutoSurvey admins and survey authors can use the interview. Thus authors can use the AI allowance of the org.
+
+### The steps that use an AI call
+
+| Step | AI calls |
+| --- | --- |
+| The AI writes the first survey from your brief | Yes. This step is the same with no interview. |
+| The interview opens and selects its questions | A maximum of one |
+| You save an answer that changes which questions fit | The AI can select the next questions again in the background |
+| **Update now** or **Update the survey** | One |
+| **Yes, ask more** or **Ask me more** | One for each click |
+| **Change this question** | One |
+| **Customize with AI** on the look step | One |
+| **Start over** | One, to build a new survey |
+| **Generate questions for each group** | One run on the Premium AI level for each group. The screen shows the cost and asks you to confirm before it runs. |
+| An AI header picture and icon | 2 credits |
+| A translation into a language | AI calls that use part of the monthly AI limit of the org |
+
+These steps use no AI call: **Next**, **Skip**, **Previous**, **Explore all options**, **Undo**, **Redo** and **Undo all**.
+
+### The depth and the AI level
+
+The depth (**Quick**, **Standard**, **Thorough**) sets how many questions the AI asks you. It does not change the AI model.
+
+The AI level of the org sets the AI model. For a complex survey, the interview can offer the Premium AI level for one survey. When AutoSurvey has a cost estimate, the offer shows the cost of each AI run on Premium and on your current level. You select **Yes, use Premium** or **No, keep my tier**. The AI never changes the AI level by itself.
+
+## Limits that AutoSurvey applies
+
+| Limit | Value |
+| --- | --- |
+| Length of a brief | 20,000 characters |
+| Length of **Overall instructions** | 20,000 characters, with the text of your earlier typed answers |
+| Length of a typed answer or a detail | 20,000 characters |
+| Length of the reason in a message to an admin | 500 characters |
+| Length of the description of a picture | 255 characters |
+| Questions about the goal | **Quick** 3, **Standard** 5, **Thorough** 8 |
+| **Ask me more** | 3 more questions for each click. 14 questions about the goal in all for one survey. |
+| Features that **Quick** asks about | 3, and the look |
+| Languages that you can select | 10 |
+| Adaptive questions that you can accept | 3. For one more, describe the question that you want. |
+| Who can use the interview on a draft | The author who owns the draft |
+| **Undo** | The last update. Undo is refused if the survey changed after that update. |
+
+A box shows the number of characters that are left when your text is near the limit.
+
+Two more limits apply to a survey that exists:
+
+- After the first release, the interview can change settings and the text of questions only. See [Refine a survey that exists](/interview/refine-a-survey).
+- The interview cannot change the questions of a survey that has audiences or rounds, or of a released survey that has a Google Sheet.
+
+## Privacy
+
+### What goes to the AI provider
+
+The interview sends this text to the AI provider of the org:
+
+- Your brief.
+- The survey: the questions, the choices and the help texts.
+- Your interview answers, and the text that you type in the boxes.
+- The list of the features that the interview can ask about.
+
+The interview sends no answer of a person who takes the survey. No respondent answer goes to the AI provider.
+
+AutoSurvey checks typed text before it sends it. If the check stops your text, you see: "What you typed was not sent to the AI. Change the words and try again."
+
+### Hosted key or your own key
+
+| AI provider setting | Where the text goes |
+| --- | --- |
+| **Hosted** | AutoSurvey uses its managed key. The AutoSurvey server counts the tokens that each call uses. |
+| **Bring your own key** | The AI call goes from your org to your provider. Your key stays in your org. |
+
+For the full statement, see [Security & Privacy](/admin/security-and-privacy#ai-features).
+
+### What stays in the org
+
+- The survey draft, your answers and the change list are Salesforce records in your org.
+- For each AI call of the interview, AutoSurvey stores one record in your org with the AI model, the time, the token counts and the user.
+
+### Surveys with no names
+
+If you select **Do not ask for a name or email** for anonymous answers, AutoSurvey checks each update. A question that can show who a person is (for example the area, the shift, the role, the age or the postcode) is removed or not added, unless your brief asks for it. The change list tells you:
+
+- "Removed: can identify a respondent in an anonymous survey. Add it back by hand if you need it."
+- "Not added: … It can identify a respondent in an anonymous survey. Add it by hand if you need it."
+
+A personal invitation still links each answer to the person. To collect answers with no name, use a public link.
+
+### A message to an admin
+
+When you copy a message for an admin, the reason that you type is part of the message. Check that it has nothing confidential.
+
+## Related
+
+- [Interview Mode](/interview-mode)
+- [Security & Privacy](/admin/security-and-privacy)
+- [AutoSurvey Setup Home](/admin/setup)
+- [Anonymous answers](/anonymous-surveys)

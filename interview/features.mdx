@@ -1,0 +1,126 @@
+---
+title: Features that the interview offers
+description: The list of features that Interview Mode can ask about, what each choice changes, the features that you set up by hand, and what occurs when a feature is off in the org.
+---
+
+AutoSurvey has many features: reminders, languages, alerts, a bot check and more. A new author does not know all of them, and does not know which ones a survey needs. The interview reads your brief and asks only about the features that fit your survey. You can see all the others in one list.
+
+## How the interview selects the features
+
+The AI reads your brief and the survey. It puts each feature in one of these places:
+
+- **A screen of the interview.** The feature fits your survey. The AI asks you about it.
+- **A list below the steps.** The feature does not fit your brief. Click **+ Add** to get its question.
+- **Explore all options**, on the last screen. This list shows the other things that AutoSurvey can do, in six groups. Click one to set it. On such a screen, the button is **Apply**, and **Cancel** goes back.
+
+A feature that does not exist in your org is not in these lists.
+
+## The features, by group
+
+The groups are the groups of **Explore all options**.
+
+### Who answers
+
+| Feature | What your choice does | Where you change it later |
+| --- | --- | --- |
+| **Lead capture** | Adds questions that ask who the person is: a name, an email and a consent box. With **Yes, ask who they are, and make a Lead**, you then select the fields, and Create sets up a Lead from each response. | **Settings** tab, **Data**, **Create a record from each response** |
+| **Anonymous answers** | With **Do not ask for a name or email**, the survey does not ask who the person is. A personal invitation still links each answer to the person. To collect answers with no name, use a public link. | — |
+| **Audiences** | **One survey with a 'Which best describes you?' question** adds one question that asks which group the person is in. **Separate questions for each group** makes one version of the survey for each group. | **Questions** tab, **⋯** menu, **Manage audiences & waves** |
+| **Rounds** | AutoSurvey makes the rounds, so you can send the same survey again and compare the results. | **Questions** tab, **⋯** menu, **Manage audiences & waves** |
+| **Retakes** | Sets if a person can answer the same invitation more than one time. | The Salesforce Campaign, **Campaign Distribution** |
+
+### How it looks
+
+| Feature | What your choice does | Where you change it later |
+| --- | --- | --- |
+| **Design** | Sets the look of the survey. See [Select a look](/interview/looks). | **Design** tab, **Theme** |
+| **Logo and colors** | With **Yes, after Create**, a to-do card on the **Questions** tab opens **Design**, where you add the logo. | **Design** tab |
+| **Screens on each device** | Sets how many questions show at one time: **Adapt to device**, **One question per screen** or **Pages**. | **Settings** tab, **How it runs** |
+| **Move on after a click** | When one question shows on the screen, the survey goes to the next question after the person selects an answer. | **Settings** tab, **How it runs** |
+| **Welcome and thank-you text** | Keeps the default text, or lets you write your own text in **Design** after Create, or sends people to a page when they finish. | **Design** tab, **Header & text** |
+
+### How people get it
+
+| Feature | What your choice does | Where you change it later |
+| --- | --- | --- |
+| **Reminders** | **One reminder** sets one reminder on day 3. **Two reminders** sets reminders on day 3 and day 7. Create makes the schedule, when your account can do it. | **Send** tab, **Follow-up reminders** |
+| **Languages** | You select the languages. Create adds each language and translates the survey text with AI, when your account can do it. You can select a maximum of 10 languages. | **Settings** tab, **Languages** |
+| **Text messages** | AutoSurvey keeps your choice. Before a survey can send texts, an admin must do 2 steps in **Text Messaging**: select a text sender, then activate sending. | **Setup** tab, **Text Messaging** |
+| **Close date** | You select the date and the time on the screen. Create sets the close date, when your account can do it. | **Results** tab, **Stop accepting responses** |
+| **Campaign link** | After Create, a to-do card links the survey to a Salesforce Campaign. You select the campaign and click **Link**. | The Salesforce Campaign, **Campaign Surveys** |
+| **Time slots** | The AI adds a choice question with the times from your brief. That question does not keep a seat, and it has no limit for each time. | **Questions** tab |
+
+### What happens to the answers
+
+| Feature | What your choice does | Where you change it later |
+| --- | --- | --- |
+| **Low-score alert** | A low score makes a Task for the person or the queue that you select: the survey owner, a user, a queue, or the owner of the person's Contact or Lead. A Flow makes the Task. Until that Flow is on, no Task is made, and a to-do card shows the step. | **Settings** tab, **Scoring & alerts** |
+| **Answers to records** | Each response can update the Salesforce record that the survey is linked to. After Create, a card opens the survey settings, where you select a field for each answer. | **Settings** tab, **Data**, **Answers written to records** |
+| **Document request** | A to-do card on the **Questions** tab opens the **Template Builder**. A document request is separate from the survey. | **Template Builder** tab |
+
+### Quality and safety
+
+| Feature | What your choice does | Where you change it later |
+| --- | --- | --- |
+| **Bot check** | Sets the check that keeps robots out: a hidden check, a hidden check with a tick box when many people start at the same time, a tick box on each visit, or no check. | — |
+| **Rewards** | A to-do card on the **Questions** tab takes you to **Shield Settings**. Rewards need a payment account, a budget and an approver. | **Shield Settings** tab |
+| **Words to avoid** | You select words and subjects. AutoSurvey does not use these words in the questions and does not ask about these subjects, when it writes the survey and each time it changes the survey from the interview. | **Survey settings**, **AI guidance**, **Words to avoid** |
+
+The interview can also ask four basic questions: **Survey type**, **Who answers it**, **Length** and **Tone**. The AI reads these from your brief, and you can correct them.
+
+### Translations and review
+
+When you add a language, the AI translates the survey text. When you release the survey again, people who take the survey see the translated text, also if nobody reviewed it. You can check each translation on the **Settings** tab, but you do not have to. Legal text is different: a person must review it or confirm it before the release.
+
+## Features that you set up by hand
+
+The interview does not set up these features. Set them up in the survey after Create.
+
+| Feature | Where you do it |
+| --- | --- |
+| Show and hide questions | **Questions** tab: open the question, then **Logic**. See [Show and hide questions](/show-hide-logic). |
+| Question bank | The interview does not read the question bank. The AI writes its own wording. See [Question bank](/question-bank). |
+| AI follow-up questions | See [AI follow-up questions](/ai-follow-ups). |
+| Google Sheets sync | See [Google Sheets sync](/google-sheets-sync). |
+| A version for each audience and round | **Questions** tab, **⋯** menu, **Manage audiences & waves**. See [Audiences](/audiences). |
+| Kiosk | See [Kiosk](/kiosk). |
+| Review before Submit | See [Review before Submit](/review-page). |
+| Save and come back | See [Save and come back](/save-return). |
+| AI themes on open answers | See [AI themes on open answers](/ai-themes). |
+
+**Explore all options** also has a list of things that AutoSurvey does not do. For each one, the list tells you what you can do in its place. Example: different wording of a question for each round.
+
+## When a feature is off in the org
+
+Some features have a switch in **AutoSurvey Setup**, **Features**. If the switch is off, the screen tells you: "… is off for your company (this Salesforce org)." You can continue: select a choice, and AutoSurvey keeps it. The survey works without the feature until the feature is on.
+
+What you see depends on your account:
+
+| Your account | What the screen gives you |
+| --- | --- |
+| You are an AutoSurvey admin | The button **Turn on …**. For some features, the button turns the feature on from this screen: you see who gets access, the cost, the effect on surveys that exist, the data that leaves the org, and how to turn it off. Then you click **Turn on for the org** or **Not now**. For other features, **AutoSurvey Setup** opens in a new tab at the card of the feature. |
+| You are not an admin | The line **Ask …** with the name that your admin set, and the button **Copy the message**. The message tells the admin which switch to turn on. You can add a reason in **Why you want it** (a maximum of 500 characters). Send the message to the admin yourself. |
+
+A feature that you turn on is an org setting. It is not only for this survey.
+
+The features that an admin can turn on from the interview screen are **Participant Request Center**, **Multi-language surveys**, **Fraud & Quality Shield**, **Record writes** and **Audiences and rounds**.
+
+## The to-do cards after Create
+
+Some choices need a step that the interview cannot do, or a step that only an admin can do. After Create, the **Questions** tab shows them.
+
+**From the interview** shows the choices that Create did not apply, for example a close date, reminders or a language. Each item says what you selected and if it is set.
+
+| Item | What you do |
+| --- | --- |
+| **Needs you** | Click the button on the item, for example **Add Spanish and translate**. Some items have **Undo**. |
+| **Needs an admin** | Click **Copy the message**, and send the message to the admin. You can release the survey without the step. |
+
+**Set up next** shows one card for each other step. A card has a title, one sentence that says what to do and why, the line **Who does it:** with **You, or an admin** or **An admin**, and a link to the page where you do the step. **Mark as done**, **Don't suggest this again** and a dismiss button are on the card.
+
+## Related
+
+- [Answer, update and undo](/interview/answer-update-undo)
+- [Refine a survey that exists](/interview/refine-a-survey)
+- [Interview problems and messages](/interview/problems)
+- [Languages](/languages)

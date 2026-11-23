@@ -1,0 +1,103 @@
+---
+title: Interview problems and messages
+description: The messages that Interview Mode can show, the cause of each message and what to do. Use this page when the interview does not open, an update is refused or Undo cannot run.
+---
+
+When the interview stops, it shows a message. This page lists each message with its cause and the step to take. Find your message with the search of the browser (Ctrl+F or Cmd+F).
+
+In each case that this page lists as refused, AutoSurvey changes nothing in the survey.
+
+## The interview does not show or does not open
+
+| Message | Cause | What to do |
+| --- | --- | --- |
+| "AI help to refine this survey is off in this org." | The feature **Change with AI** is off. | An AutoSurvey admin opens **AutoSurvey Setup**, **Features** and sets **Change with AI** to **On**. |
+| A short message that says that you cannot use the interview | One of the conditions in [Who can use it](/interview-mode#who-can-use-it) is not true. Or the AI model of the AI level cannot run the interview. | Ask your AutoSurvey admin to check the permission set **AutoSurvey_AI_Refine** and the AI models in **AI Models & Tiers**. If you selected Premium for this survey, select **No, keep my tier**. |
+| A short message that says that you cannot use **Change with AI** | Your account does not have the access that this step needs. | Ask your AutoSurvey admin for author access and the permission set **AutoSurvey_AI_Refine**. |
+| "This draft belongs to another author." | You can use the interview only on a draft that you own. | Ask the owner to make the change, or make your own survey. |
+| "The draft is ready, but the questions could not open. Open Review to continue." | The AI wrote the survey, but the interview did not start. | Click **Open Review**. Then click **Answer a few questions** on the start card. |
+| "The interview could not start." | The first call of the interview failed. | Click **Answer a few questions** again. |
+| "The interview could not load: …" | The screen of the interview did not load. | Click **Try again**. |
+| "The interview cannot open for this survey." or "The interview did not open. Try again." | The interview did not open on a survey that exists. | Click the button again. If the message stays, read the rows below. |
+| "This survey has a Google Sheet. Change its questions in the Sheet." | The survey has a Google Sheet and was released. | Change the questions in the Google Sheet. |
+| A message that starts with "This survey has audiences or rounds." | The forms of the survey have an audience or a round. | Change the questions with **Manage audiences & waves** on the **Questions** tab. |
+| "This survey has no questions that the interview can read." | The survey has no questions, or the interview could not read them. | Add questions first. |
+| "The AI did not return a draft. Your brief is still here. Try again, or start in a different way." | The AI call for the first survey failed. | Click **Write my survey** again. |
+
+## A feature is off
+
+| Message | Cause | What to do |
+| --- | --- | --- |
+| "… is off for your company (this Salesforce org)." | The switch of the feature is off. | Select a choice and continue. AutoSurvey keeps your choice. An admin can turn the feature on. See [When a feature is off in the org](/interview/features#when-a-feature-is-off-in-the-org). |
+| "Your account cannot turn it on." | You are not an AutoSurvey admin, or the screen gives a second reason. | Click **Copy the message** and send the message to the admin. |
+| "Turning a feature on or off changes permission set assignments. You need the Salesforce permission Assign Permission Sets. Ask your Salesforce admin." | Your account does not have the Salesforce permission **Assign Permission Sets**. | Ask your Salesforce admin for the permission, or ask the admin to turn the feature on. |
+| "The switch is on. The access set-up did not finish." | The feature is on, but some people did not get its permission set. | Click **Finish the access set-up**. |
+| "AutoSurvey could not turn it on. Try again, or open it in Setup." | The call failed. | Click the button again, or click **Open it in Setup**. |
+| "This feature is off. It is in Set up next." | An answer needs a feature that is off. The update did not make that change. | After Create, do the step on the card under **Set up next**. |
+| "Text messages: Not set up in this org" | Text messaging is not set up. | An admin does 2 steps in **Text Messaging**: select a text sender, then activate sending. |
+
+## An answer or your text is not saved
+
+| Message | Cause | What to do |
+| --- | --- | --- |
+| "This survey changed in another tab." | The same draft is open in two browser tabs, and the other tab saved a change. | Use one tab. The interview loads your answers again. Check your text, then click the button again. |
+| "The answer could not be saved. Try again." | The save call failed. | Click **Next** again. |
+| "What you typed was not sent to the AI. Change the words and try again." | The safety check of AutoSurvey stopped your text. | Write the request in different words. |
+| "… over the limit of 20,000. Make the text shorter." | Your text is longer than 20,000 characters. | Make the text shorter. |
+| "Overall instructions are over 20,000 characters with the text of your earlier answers. Make them shorter, then finish." | The instructions and your typed answers are longer than 20,000 characters together. | Make the instructions shorter. |
+| "Type a full web address that starts with https://." | The address of the finish page is not a full address. | Type the full address, for example `https://www.example.com/thanks`. |
+| "The AI could not ask more questions. Try again." | The AI call of **Ask me more** failed. | Click **Ask me more** again. |
+| "The AI found no more questions to ask." | The AI has no question that changes the survey. | Continue to **Update the survey**. |
+
+## An update is refused or makes no change
+
+| Message | Cause | What to do |
+| --- | --- | --- |
+| "The survey could not be updated. The survey did not change." | The AI call or the save failed. | Click **Update the survey** again. |
+| "The changed survey did not pass its checks. Nothing was changed." | The change from the AI broke a rule of the survey, for example it removed text that is locked. | Click **Update the survey** again. If the message returns, make the request smaller. |
+| "The survey changed after these changes were made. Make them again." | A different person, the question editor or an import changed the questions after the interview read them. | Open the interview again. It reads the survey as it is now. Then make the update again. |
+| "This survey is released. The interview can change settings and the text of questions. Make a new survey for a bigger change." | The update tried to add or remove a question, or to change a type or the choices, on a released survey. | Ask only for a change of text or a setting. See [Refine a survey that exists](/interview/refine-a-survey#after-the-first-release). |
+| "A question with answers cannot be removed, because its answers would lose their question. Keep the question, or make a new survey." | The update tried to remove a question that has answers. | Keep the question. |
+| "You do not have edit access to a field this change needs." or "You do not have the permission this change needs." | Your account cannot write a field or a setting that the change needs. | Ask your AutoSurvey admin. |
+| **No question changed** | The survey matched your answers before the update. | No step is necessary. |
+| A line under **Not applied:** | AutoSurvey did not make one change. The line gives the reason. | Read the reason. Make the change by hand, or ask again in **Overall instructions**. |
+| "This takes longer than usual." | The update runs for more than 40 seconds. | Wait. You can look at **Questions** while you wait. |
+
+## Undo cannot run
+
+| Message | Cause | What to do |
+| --- | --- | --- |
+| "The survey changed after Apply. Undo would write over a later edit." | You or a different person changed the survey after the update. | Change the question by hand, or ask for the change in **Overall instructions**. |
+| "A feature in this change is now off, so Undo cannot run." | The update used a feature, and an admin turned the feature off after that. | Ask the admin to turn the feature on, then click **Undo** again. |
+| "This change is not in the last update." | Undo applies to the last update only. | Change the question by hand. |
+| "Undo could not run. This question did not change." or "Undo could not run. The survey did not change." | The call failed. | Click **Undo** again. |
+
+## The look and the pictures
+
+| Message | Cause | What to do |
+| --- | --- | --- |
+| "The AI could not suggest a look. Try again." | The AI call of **Customize with AI** failed. | Click **Customize with AI** again, or select a look from the list. |
+| "The design could not be saved. Try again." | The save call failed. | Click **Keep this design** again. |
+| "The current design could not be read. Reload the page." | AutoSurvey could not read the design of the survey. | Reload the page. |
+| "Describe the look you want: a style, colours or a subject." | You selected **Yes** for the pictures, and the box for the look is empty. | Type a description. |
+
+## Premium, groups and adaptive questions
+
+| Message | Cause | What to do |
+| --- | --- | --- |
+| "AutoSurvey could not change the tier. The survey stays on your tier." | The Premium choice was not saved. | Continue on your AI level, or click the button again. |
+| "The cost of the Premium AI is not known now, so Generate cannot run." | AutoSurvey has no cost estimate for the Premium AI level. | Ask your AutoSurvey admin to check **AI Models & Tiers**. |
+| "Save the groups first. Then Generate can make their questions." | The groups are not saved. | Click **Save the groups and rounds**. |
+| "You accepted 3 adaptive questions. To add one more, describe the question you want." | You can accept a maximum of 3 adaptive questions that AutoSurvey suggests. | Type the question that you want in **Describe the adaptive question you want**. |
+| "The survey changed, so this adaptive question no longer fits. Look for another." | The survey changed after the AI suggested the question. | Click **Look for another**. |
+
+## If the message is not on this page
+
+Write down the message and the step where it showed. Then ask your AutoSurvey admin, or see [Troubleshooting](/support/troubleshooting).
+
+## Related
+
+- [Interview Mode](/interview-mode)
+- [Answer, update and undo](/interview/answer-update-undo)
+- [Refine a survey that exists](/interview/refine-a-survey)
+- [Error reference](/support/error-reference)

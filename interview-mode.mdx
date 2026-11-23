@@ -1,133 +1,149 @@
 ---
 title: Interview Mode
-description: Interview Mode asks a few questions about a survey draft, then shows the changes as cards. You keep the cards that you want and click Apply.
+description: Interview Mode asks you questions about a new survey, and each answer changes the questions or a setting. This page tells you why you use it, who can use it and how to turn it on.
 ---
 
-# Interview Mode
+A first AI survey from one paragraph is a guess. The AI does not know who gets the survey, what you do with a low score, or which words your company does not use. You then change the survey by hand, one question and one setting at a time.
 
-Interview Mode asks you a few questions about a survey draft. It reads your brief and the draft, and it asks only about the topics that your survey needs. At **Finish**, it shows the changes as cards. You keep the cards that you want and click **Apply**.
+Interview Mode removes that work. After the AI writes the first survey, it asks you about the things that it could not know. Each answer changes the questions or a setting. You see each change, and you can undo it.
 
-<Note>
-Interview Mode is in development. It is not available in installed AutoSurvey orgs yet. This page tells you what the interview does when it is available.
-</Note>
+## An example
+
+Harbor Community Health wants a survey after each clinic visit. Jordan Rivera writes this brief:
+
+> After a clinic visit, ask the patient how it went. I want to learn if the wait was acceptable and if the nurse explained the next steps. Reach the nurse manager when a score is low.
+
+The AI writes the survey. Then it asks Jordan, for example:
+
+- Who follows up on a low score: the survey owner, a user, a queue, or the owner of the Contact?
+- Do people get a reminder after three days?
+- Which look does the survey use?
+
+Jordan answers the questions and clicks **Update the survey**. The change list shows each question that changed. Jordan clicks **Undo** on one change, and then creates the survey.
+
+## What the AI does, and what you decide
+
+| The AI | You |
+| --- | --- |
+| Reads your brief and the survey. | Write the brief. |
+| Selects the questions to ask you. It asks only about the things that your survey needs. | Answer, or click **Skip**. You can stop at each step. |
+| Recommends a choice on many screens. | Select the choice. A recommended choice is a suggestion only. |
+| Writes the changes to the questions when you click **Update the survey**. | Read the change list. Click **Undo** on a change that you do not want. |
+| Recommends a look for the survey. | Select the look, or keep the standard look. |
+
+The interview ends when you click **Create survey**. You release the survey and send it yourself.
 
 ## Who can use it
 
-The interview shows only for a user who has all of these:
+You see the interview only when all of these are true:
 
-- Author access and edit access to surveys.
-- The **Change with AI** feature turned on in the org.
-- The **AutoSurvey_AI_Refine** permission set.
+- You have author access and edit access to surveys.
+- The feature **Change with AI** is on in the org.
+- You have the permission set **AutoSurvey_AI_Refine**.
+- The AI model of the org can run the interview.
 
-You can use the interview only on a draft that you own.
+You can use the interview only on a survey draft that you own.
 
-## Where the interview starts
+## Turn it on
 
-| Place | What you see |
-| --- | --- |
-| **Review** step of a new survey, before Create | A card: **Would you like help refining this survey?** It has **Answer a few questions** (Recommended), **Describe changes in my own words** and **No, it looks good**. |
-| The survey builder, after Create | A **Refine this survey** panel above the question list. |
+**Change with AI** is on in a new installation. When it is on, AutoSurvey gives the permission set **AutoSurvey_AI_Refine** to the AutoSurvey admins and to the survey authors.
 
-## The interview screens
+If the feature is off, the survey shows this message: "AI help to refine this survey is off in this org." To turn it on:
 
-Each screen asks about one topic. A screen shows the question, the choices, **What it does**, **Why we ask** and, when a page exists, **Learn more**. The recommended choice has the **Recommended** badge. Some topics have no pre-selection, so you must click a choice.
+1. Open **AutoSurvey Setup**.
+2. Go to **Features**.
+3. Set **Change with AI** to **On**.
 
-On each screen you can also:
+Only an AutoSurvey admin can change this switch. Each AI request of an author uses the AI allowance of the org. See [What it costs, limits and privacy](/interview/cost-limits-privacy).
 
-- Click **Skip** to go to the next topic.
-- Click **Don't ask me about this again**. The interview does not ask you about that topic again.
-- Click **Build it with what I told you**. AutoSurvey keeps the answer on this screen and goes to **We have enough**.
+### Two settings for the admin
 
-The step list beside the screens shows the topics. You can click an answered topic to change the answer. **Not planned** lists the topics that the interview did not plan, and **Ask me about this** adds one. **Go to the end →** opens the last screen.
+| Setting | Where | What it does |
+| --- | --- | --- |
+| **Default interview depth** | **AutoSurvey Setup**, **Features**, the card **Interview depth** | Sets how many questions the interview asks about a new survey. It does not change the AI model. An author can change the depth for one survey. |
+| **Who helps survey authors** | **AutoSurvey Setup** | The interview tells an author who to ask when a feature is off, or when the account cannot do a step. Type a **Contact name or team**, for example "the Salesforce team". Do not type an email address. If you leave it blank, the interview shows the names of AutoSurvey admins. Select **Do not show names of AutoSurvey admins** to hide the names. |
 
-If a topic needs a feature that is turned off in your org, the screen says so. If you can turn features on, a button opens AutoSurvey Setup in a new tab. If you cannot, **Copy a message to your admin** copies a message for your admin. **Continue without it for now** goes on.
+## The steps
 
-## We have enough
+<Steps>
+  <Step title="Write a brief">
+    Say what you want to learn, or paste your questions. See [Start an interview](/interview/start).
+  </Step>
+  <Step title="The AI writes the survey">
+    This usually takes less than one minute.
+  </Step>
+  <Step title="Answer the questions">
+    Each screen asks one thing. See [Answer, update and undo](/interview/answer-update-undo).
+  </Step>
+  <Step title="Select a look">
+    See [Select a look](/interview/looks).
+  </Step>
+  <Step title="Update, review and create">
+    Click **Update the survey**. Read the change list. Then click **Create survey**.
+  </Step>
+</Steps>
 
-The last screen is **We have enough**. It says: "AutoSurvey makes the changes from your answers. You choose which to keep."
+You can also use the interview on a survey that exists. See [Refine a survey that exists](/interview/refine-a-survey).
 
-| Control | What it does |
-| --- | --- |
-| **Anything else to change? (optional)** | A text box. Type more changes in your own words. |
-| **Finish** | AutoSurvey makes the change cards from your answers and your text. |
-| **Explore all options** | Shows all the other topics, in six groups: Who answers, How it looks, How people get it, What happens to the answers, Quality and safety, and AI. It also lists the **Set up next** items and the **Not built** topics. **Back to We have enough** returns. |
-| **Rebuild the whole survey with everything I told you** | Makes a new survey from your description, every answer you gave and the text above. |
+## Questions from your brief
 
-The screen also lists the questions that you did not see yet, and the topics that you muted. **Ask me about this again** unmutes a topic.
+The AI reads your brief and the survey. It can then ask a few questions about what your brief says. These are the questions from your brief. They are not feature settings. Your answer helps the AI when it updates the survey.
 
-To leave the interview, click **Stop and go back to my survey**.
+Example: your brief says "reach the nurse manager". The AI can ask who gets a low score.
 
-## Change cards and Apply
+- The choices are written by the AI for your brief. For some questions you can select more than one choice.
+- **No, I do not want this** tells the AI not to add that thing to the survey.
+- **Skip** decides later. The AI does not use the question now.
+- Some questions ask for one fact that only you know, for example the address of a page.
 
-After **Finish**, the screen **The changes from your answers** shows one card for each change. Each card has a title, a reason and a **Keep** box. The screen also shows warnings, for example a change that AutoSurvey could not make.
+The number of these questions depends on the depth. See [The three depths](/interview/start#the-three-depths).
 
-- Clear **Keep** on a card that you do not want.
-- Click **Apply 1 change** or **Apply N changes**. AutoSurvey makes only the kept changes. The button is off when no card is kept.
-- Click **← Back to We have enough** to go back without a change.
+## The list of steps
 
-A change that needs a feature that is off does not change the survey. It goes to the **Set up next** list.
+The list beside the screens shows each step of the interview and a mark for each answer. Click a step to change its answer. The list also has **Update now**, **Overall instructions**, **Build it with what I told you** and **Go to the end →**.
 
-**Before Create**, **Apply** changes the draft. A survey setting waits on the draft, and Create writes it to the survey. After an Apply on the Review step, the card reads **Refine again?** and has one change box.
+For each mark and each control, see [The list of steps](/interview/answer-update-undo#the-list-of-steps).
 
-**After Create**, **Apply** changes the survey.
+## Ask more questions
 
-The interview screen has no **Undo** button after **Apply**.
+If the AI rates your survey complex, the interview can offer more questions. The panel gives the reasons, for example many groups of people.
 
-## Describe changes in your own words
+- **Yes, ask more**: the AI asks up to 3 more questions now. This is one AI call.
+- **No, keep it as it is**: the interview continues with the questions that it has.
 
-**Describe changes in my own words** opens **Describe the changes**. Type what to change, for example "Add a question about price." Click **Propose changes**. The screen **The changes from your words** shows the change cards. You keep the cards that you want and click **Apply**, as above.
+You can also click **Ask me more** on the last screen of the interview.
 
-## Set up next
+## Premium for this survey
 
-Some choices need work that the interview cannot do. After Create, the survey builder shows a **Set up next** list. Each card has:
+If the AI rates your survey complex, the interview can offer the Premium AI level for this one survey. The panel gives the reasons. When AutoSurvey has a cost estimate, the panel shows the cost of each AI run.
 
-- A title, and one sentence that says what to do and why.
-- Who does it: **You, or an admin** or **An admin**.
-- A link to the page where you do it. Some pages open with the survey. Other pages tell you which survey to pick.
-- The example flows of the package, when there are some.
-- A state: **Done**, **Needs setup** or **Feature is off**. AutoSurvey reads the real setting to find **Done**.
-- **Dismiss** and **Don't suggest this again**. **Don't suggest this again** applies to this survey only.
+- **Yes, use Premium**: a stronger AI model makes the interview plan, the changes and any rebuild of this survey. Only this survey uses it.
+- **No, keep my tier**: the interview continues with the AI model of your current AI level.
 
 ## Survey basics
 
-The interview can also ask four basic questions about the survey.
+The interview can ask four basic questions. The AI reads the answers from your brief, and you correct them if they are wrong.
 
-**Survey type.** The type picks the question style and the default report. If you type a type that AutoSurvey does not know, the AI uses the general survey guidance.
+| Question | What it changes |
+| --- | --- |
+| **Survey type** | The guidance that the AI uses for the questions. |
+| **Who answers it** | The questions and the tone fit this group of people. |
+| **Length** | How many questions the survey has. A shorter survey gets more answers. |
+| **Tone** | How the questions sound, for example friendly or professional. Each tone shows a sample question. |
 
-**Who answers it.** The people who answer decide how the AI words the questions. For example, a question for staff can be more direct than a question for customers. The "what decision" question is now a goal question that the AI writes for your brief.
+## Words to avoid
 
-**Length.** A shorter survey gets more answers. A longer survey gets more detail. The AI changes the questions to fit the length that you pick.
+Some surveys must not use some words, or must not ask about some subjects. The interview can ask you for them. You select **Avoid the words or topics I select** or **Nothing to avoid**.
 
-**Tone.** The tone changes the wording of every question. Each choice shows a sample question, so you can see the difference.
+AutoSurvey then does not use these words and does not ask about these subjects, when it writes the survey and each time it changes the survey from the interview. The **Quick** depth does not ask this question.
 
-## Topic pages
+## Related
 
-- [Rounds](/rounds)
-- [Audiences](/audiences)
-- [Lead capture](/lead-capture)
-- [Low-score alerts](/alerts/low-score)
-- [Bot check](/bot-check)
-- [Rewards](/rewards)
-- [Retakes](/retakes)
-- [Anonymous answers](/anonymous-surveys)
-- [Design, logo and colors](/design)
-- [Screen flow and auto-advance](/screen-flow)
-- [Thank-you page and redirect](/thank-you-page)
-- [Languages](/languages)
-- [Reminders](/reminders)
-- [Text messages](/text-messages)
-- [Close date](/close-date)
-- [Campaign link](/campaign-link)
-- [Time slots](/time-slots)
-- [Answers to records](/records)
-- [Document request](/document-request)
-- [Question bank](/question-bank)
-- [Show and hide questions](/show-hide-logic)
-- [Where answers are stored](/answer-storage)
-- [Kiosk](/kiosk)
-- [Fill in what you know](/prefill)
-- [Review before Submit](/review-page)
-- [Save and come back](/save-return)
-- [AI follow-up questions](/ai-follow-ups)
-- [AI themes on open answers](/ai-themes)
-- [Google Sheets sync](/google-sheets-sync)
+- [Start an interview](/interview/start)
+- [Answer, update and undo](/interview/answer-update-undo)
+- [Select a look](/interview/looks)
+- [Features that the interview offers](/interview/features)
+- [What it costs, limits and privacy](/interview/cost-limits-privacy)
+- [Refine a survey that exists](/interview/refine-a-survey)
+- [Interview problems and messages](/interview/problems)
+- [Prompt to Survey](/workflows/prompt-to-flow)
