@@ -1,147 +1,157 @@
 ---
 title: "Installation & Permissions"
-description: "What to assign to admins, to staff answering surveys, to community members, and to the guest user behind a public link."
+description: "Which permission set group to give each person: admin, author, operator, reporting user, support user and respondent. Also the sets for guests, members and each optional feature."
 ---
 
+Each person needs the correct access before the person can open AutoSurvey. AutoSurvey installs a
+permission set group for each role. Give each person one role. A person can hold two roles, for
+example Author and Reporting.
 
-AutoSurvey ships **two permission set groups** and a set of individual permission sets. Almost
-everyone should get a group.
+## The role groups
 
-## Start here: the two groups
+| Assign this group | To | What the person can do | What the person cannot do |
+| --- | --- | --- | --- |
+| **AutoSurvey Full Admin** | The person who sets up and runs AutoSurvey | Open Setup and change org settings. Create, design and edit surveys. Release, publish, send, assign, pause, close and retire. Read results, answers and who answered. Export raw responses. | Reveal masked answers. Delete submissions. |
+| **AutoSurvey Author** | The person who writes surveys | Open the Workspace. Create, design and edit surveys. Save drafts, themes and translations. Generate questions with AI. | Release, publish or send. Read submissions or answers. Open Setup. |
+| **AutoSurvey Operator** | The person who runs surveys | Open the Workspace to read. Release, publish, send, assign, pause, close and retire. Mark data quality. Read the Results totals. | Edit a survey. Read individual answers. Open Setup. |
+| **AutoSurvey Support** | A support user who fixes survey data | Read and fix data in every survey. Reveal masked answers. Delete submissions. Export raw responses. Edit, release, publish, send, pause, close and retire surveys. | Open Setup. Change org settings. |
+| **AutoSurvey Reporting** | An analyst who reads results | Reports and list views in every survey, and CX Analytics. | Change a record. Open the Workspace. Open Setup. See who answered. |
+| **AutoSurvey Respondent** | Internal staff who answer surveys | See the **My Surveys** inbox. Open and submit a survey that is assigned to them. | Open the Workspace. Read results. Open Setup. |
 
-| Assign this | To | What they get |
-| --- | --- | --- |
-| **AutoSurvey Full Admin** | Anyone who builds, publishes or configures surveys | Everything: the app, the data model, publishing, deploys, and full field access |
-| **AutoSurvey Respondent** | Internal staff who *answer* surveys | The **My Surveys** inbox and the survey runner |
+- At least one person must hold **AutoSurvey Full Admin**.
+- **AutoSurvey Support** can read and delete every response. Give it to a small number of trusted users.
+- To show who answered to a reporting user, add **AutoSurvey Raw Response Access**.
+- To release, an operator also needs the System Administrator profile or the
+  `AutoSurvey_Admin_Salesforce_Permissions` set that your org makes. A Salesforce Platform user cannot
+  release.
 
 <Warning>
-  **Assign the groups, not the sets inside them.** The Respondent group exists because its two
-  members are useless apart: with **My Surveys** alone, the inbox lists a survey and shows a
-  **Take survey** button that cannot open it. The Full Admin group's description says the same
-  thing — assign it instead of the seven admin sets individually.
+Assign the group, not the sets in it. For example, **My Surveys** alone shows a **Take survey**
+button that cannot open the survey.
 </Warning>
 
-## AutoSurvey never assigns these for you
+## Who assigns the groups
 
-<Warning>
-  **Setup Home checks your admin permissions. It never grants them.** The admin-access check reads
-  what your user already holds and reports what is missing; it performs no assignment. A System
-  Administrator assigns every admin set and group on this page by hand, from
-  **Setup → Permission Sets → Manage Assignments**.
+A System Administrator assigns each group in **Setup → Permission Set Groups**. Setup Home shows the
+roles and checks your access. It does not assign a role. See
+[Permission Sets](/admin/setup#permission-sets).
 
-  The only exceptions are the two sign-in sets, which grant no object, field or Apex access.
-  **Complete Setup** assigns **Self Org Access** and **Self Org JWT Access** to the admin who
-  clicks it. **Grant sign-in access** on the **AutoSurvey Sign-In** row assigns **Self Org Access**
-  to the user who clicks it.
-</Warning>
+There are three exceptions. None of them gives you a role.
 
-One set stops setup outright if it is missing: **PBO Service Access**
-(`atsv__PBO_Service_Access`). It carries the external credential AutoSurvey uses to reach the
-AutoSurvey server, so the **AutoSurvey Server Connection** check fails without it. The failure names the
-set and says the same thing:
+- **Complete Setup** assigns the two sign-in sets, **Self Org Access** and **Self Org JWT Access**, to
+  the admin who clicks it. It also gives the AutoSurvey admins the sets of the features that are on by
+  default.
+- **Grant sign-in access** on the **AutoSurvey Sign-In** row assigns **Self Org Access** to the user
+  who clicks it.
+- A switch on a card in **Optional Capabilities** gives the set of the feature to the AutoSurvey admins.
 
-> Your user does not have access to the AutoSurvey server credential, so no request was
-> sent. … Ask a System Administrator to assign the "PBO Service Access" permission set
-> (`atsv__PBO_Service_Access`) … AutoSurvey does not assign permission sets for you.
+## The AutoSurvey server connection
 
-<Note>
-  **AutoSurvey Full Admin carries `PBO_Service_Access`. The three individual admin sets do not.**
-  If you assigned `AutoSurvey_Admin`, `Deploy_Admin` and `AutoSurvey_Survey_Admin` one at a time
-  instead of assigning the group, AutoSurvey Server Connection keeps failing until you add
-  `PBO_Service_Access` as well. Assigning the group is the shorter route.
-</Note>
+The set **PBO Service Access** (`atsv__PBO_Service_Access`) lets a user reach the AutoSurvey server.
+Without it, the **AutoSurvey Server Connection** check fails and names the set. The Full Admin, Author,
+Operator and Support groups contain it. The Reporting and Respondent groups do not. The set
+**AutoSurvey Admin** alone does not give this access.
 
-## Everyone who releases surveys: the sign-in sets
+## People who release surveys
 
-AutoSurvey signs in to your org as the user who releases a survey, to add the survey's reporting
-fields. Each user who releases surveys needs:
+AutoSurvey signs in to your org as the user who releases a survey, to add the reporting fields of
+the survey.
 
-| Assign | Why |
-| --- | --- |
-| **Self Org JWT Access** | Marks the users who release surveys and add reporting fields. Setup Home badges it **Required**. |
-| **Self Org Access** | Lets AutoSurvey use the **Self Org** credential to call back into your own org |
+1. The user holds **Self Org Access**. The Full Admin, Operator and Support groups contain it.
+2. The user clicks **Authorize AutoSurvey** one time on the **AutoSurvey Sign-In** row of Setup Home,
+   then clicks **Allow**. Until then, the first release fails. See
+   [Setup Home](/admin/setup#self-org-sign-in).
 
-Each of these users also approves the AutoSurvey sign-in app once: on Setup Home, on the
-**AutoSurvey Sign-In** row, click **Authorize AutoSurvey**, then click **Allow**. Until then, the
-first release fails. See [Setup Home](/admin/setup#self-org-sign-in).
+You do not need to assign **Self Org JWT Access**. It is deprecated and gives no access.
 
 ## Respondents outside your staff
 
-| Who they are | Assign |
+| Who | Assign |
 | --- | --- |
-| **Community / portal members** signed in to your Experience site | **Member Runtime** — read-only runtime plus My Surveys |
-| **Anyone with the link**, no login | **AutoSurvey Guest Access** — assign to the site's **guest user**, not to a person |
+| Members who are signed in to your Experience site | **Member Runtime** |
+| All people with the link, with no login | **AutoSurvey Guest Access**, on the guest user of the site |
+| People who open a booking link | **Slot Booking Guest Access**, on the guest user of the site, only when **Program Slot Booking** is on |
 
 <Note>
-  Guest access is a property of the Experience site, not of an individual. If a public survey isn't
-  working for respondents, the guest user's permissions are the first thing to check — and the
-  **Public link** row's readiness checks on the Get responses surface check it for you.
+Guest access belongs to the Experience site, not to a person. If a public survey does not open, check
+the permissions of the guest user first. The **Public link** row on the Send tab checks them for you.
 </Note>
 
-## Narrower roles
+## Sets for one task
 
-Reach for these when Full Admin is more than someone needs:
-
-| Permission set | Grants |
+| Permission set | What it gives |
 | --- | --- |
-| **Super User** | Configuration, runtime data and deployment workflows, including **View All Records** on the AutoSurvey objects and **Modify All Records** on survey assignments — but not the org-wide View All Data or Modify All Data permissions |
-| **AutoSurvey Raw Response Access** | Individual, unaggregated response data and the restricted raw-response reports. Grant deliberately |
-| **Global Reporting** | Read-only access to the reporting objects. Generated by AutoSurvey — don't hand-edit it |
-| **AutoSurvey List View Access** | Lets someone create their own private list views on objects they can already see |
+| **AutoSurvey Raw Response Access** | Each response with who answered, the raw-response reports, and raw CSV and ZIP exports. |
+| **AutoSurvey List View Access** | A user can make private list views on objects that the user can already see. |
+| **OpenAI BYOK Access** and **Anthropic BYOK Access** | Use of your own AI provider key. |
+| **GetFeedback API Access** | Import from a private GetFeedback account. |
+| **SurveyMonkey API Access** | Import from a private SurveyMonkey account. |
 
-## Connections you only need if you use them
+## Sets for the optional features
 
-Each of these unlocks one connection and does nothing otherwise:
+Each optional feature has a card in **Setup**, **Optional Capabilities**. See
+[Optional Capabilities](/admin/setup#optional-capabilities).
 
-| Permission set | Needed for |
+- The set in the column "The switch gives" goes to the AutoSurvey admins when you turn the feature on.
+  If you turn the feature off, AutoSurvey removes that set from every user. You can also assign
+  **AutoSurvey Shield Admin** and **AutoSurvey Rewards Manager** to other people. Do not assign the
+  other sets in this column by hand.
+- An admin assigns the sets in the column "An admin assigns" to the people who need them.
+
+| Feature card | The switch gives | An admin assigns |
+| --- | --- | --- |
+| **Text messages** | None | **AutoSurvey Text Sending**, to the one sending user, on the **Text Messaging** tab. **AutoSurvey Text Phone Viewer**, to see full phone numbers. |
+| **Multi-language surveys** | **AutoSurvey Multi-language** | None |
+| **Program Slot Booking** | **AutoSurvey Slot Booking Admin**: the tab only | **Slot Booking Staff**, to the staff who run sessions. **Slot Booking Notice Sender**, to one integration user, for live booking notices. |
+| **Participant Request Center** | The group **Participant Request Center (feature)**: the two template sets, and no participant data | **Participant Requests User**, to case workers. **Document Request Author** and **Document Request Template Publisher**, to other staff who write or activate templates. |
+| **Fraud & Quality Shield** | **AutoSurvey Shield Admin**: policies, rules and bindings | **AutoSurvey Shield Reviewer**: approve or reject a held submission |
+| **Shield Rewards** | **AutoSurvey Rewards Manager**: the connection, reward rules, budgets and the approval mode | **AutoSurvey Rewards Approver**: approve reward spend. **AutoSurvey Rewards Corrector**: fix a failed or misdirected reward. **AutoSurvey Rewards Worker**: the integration user only. |
+| **Change with AI** | **AutoSurvey Change with AI** | None |
+| **AI images** | **AutoSurvey AI Images** | None |
+| **Record writes** | **AutoSurvey Record Writes** | None |
+| **AI you control** | **AutoSurvey AI You Control** | None |
+| **Intake to Record** | **AutoSurvey Intake to Record** | None |
+| **Calculated values** | **AutoSurvey Calculated Values** | None |
+| **AI reads answers** | **AutoSurvey AI Reads Answers** | None |
+| **Workspace environments** | **AutoSurvey Workspace Environments** | None |
+| **Standard questions** | **AutoSurvey Standard Questions** | None |
+
+## Custom permissions for one action
+
+| Custom permission | Lets a person |
 | --- | --- |
-| **OpenAI BYOK Access** / **Anthropic BYOK Access** | Using your own AI provider key |
-| **GetFeedback API Access** | Importing from a private GetFeedback account |
-| **SurveyMonkey API Access** | Importing from a private SurveyMonkey account |
+| **Publish Survey** | Make a release live. |
+| **Close Survey**, **Pause Collection**, **Retire Survey** | Change the state of a survey. |
+| **Send Invitations**, **Assign Recipients** | Send a survey and choose who gets it. |
+| **Send Text Invitations** | Send a survey by text message. The person also needs **Send Invitations**. |
+| **Reminders Live** | Let reminder schedules send email. An admin must also turn on **Send reminder email for real** in AutoSurvey Settings. Until then, reminders run as a dry run. |
+| **Choose AI Models** | Choose the AI model for each step of one survey build. It does not change the tiers of the org. |
+| **Delete Submission** | Delete a response. |
+| **Reveal Masked Answers** | See the contents of a masked answer. |
+| **Mark Data Quality** | Mark the data quality of a response. |
+| **AutoSurvey: Raw Response Access** | Read individual response data. |
+| **Deploy Surveys** | Run metadata deploy operations. |
 
-## Delegating single actions
+Use a custom permission to give a person one action, for example a coordinator who can send
+invitations and cannot publish.
 
-Some actions are gated by their own **custom permission**, so you can grant one without granting the
-role around it:
+## Sets that you do not assign
 
-| Custom permission | Lets someone |
-| --- | --- |
-| **Publish Survey** | Take a release live |
-| **Close Survey** / **Pause Collection** / **Retire Survey** | Change a survey's lifecycle state |
-| **Send Invitations** / **Assign Recipients** | Send a survey out and choose who gets it |
-| **Reminders Live** | Let reminder schedules actually send. An admin must also turn on **Send reminder email for real** in AutoSurvey Settings; until then, reminders run as a dry run |
-| **Choose AI Models** | Choose the AI model for each step of one survey build in the New Survey wizard (the Custom tier). It never changes the org's tiers |
-| **Delete Submission** | Delete a response |
-| **Reveal Masked Answers** | See the contents of a masked answer |
-| **Mark Data Quality** | Flag a response's data quality |
-| **AutoSurvey: Raw Response Access** | Read individual response data |
-| **Deploy Surveys** | Run metadata deploy operations |
-
-<Tip>
-  These are how you give someone exactly one capability — a coordinator who may send invitations but
-  not publish, or an analyst who may read raw responses but not delete them.
-</Tip>
-
-## The sets you should leave alone
-
-Several permission sets exist as building blocks and aren't meant to be assigned directly:
-
-* The seven inside **AutoSurvey Full Admin**, and the two inside **AutoSurvey Respondent** — assign
-  the group.
-* **Setup Bootstrap**, a minimal set for whoever runs first-time setup: the setup-gating permission,
-  plus just what Setup Home needs before the full admin sets are assigned — the app and its tabs,
-  Apex access for the setup pages, the AutoSurvey server connection, and two Suite fields.
-* **AutoSurvey Flat Object Access**, which intentionally contains no permissions in the core package.
-* **AutoSurvey SuiteKey Reporting TEMPLATE**, which is a pattern to copy per suite, not a set to
-  assign.
+- The sets in a role group. Assign the group.
+- **Setup Bootstrap**, except for the person who runs the first setup. It is the smallest access that
+  opens Setup Home.
+- **Default Admin Field Access**, **Config Version Fields Access**, **AutoSurvey Flat Object Access**
+  and **Self Org JWT Access**. They are deprecated and give nothing new.
+- **AutoSurvey SuiteKey Reporting TEMPLATE**. AutoSurvey copies it for each survey.
+- **Participant Request Center (feature)**. The Setup Home switch assigns and removes this group.
 
 <Note>
-  AutoSurvey is a managed package, so its API names carry the `atsv__` namespace prefix in Setup —
-  `atsv__AutoSurvey_Admin`, `atsv__Suite__c`. Labels don't show it; searches sometimes need it.
+AutoSurvey is a managed package. In Setup, its API names start with `atsv__`, for example
+`atsv__AutoSurvey_Admin`. Labels do not show the prefix.
 </Note>
 
 ## Related
 
-* [Objects, Permissions, Layouts](/admin/objects-permissions-layouts) — what publishing creates
-* [Setup Home](/admin/setup) — the checks that confirm setup is complete
-* [Security & Privacy](/admin/security-and-privacy) · [Who can see your surveys](/admin/security-and-privacy)
+- [Objects, Permissions, Layouts](/admin/objects-permissions-layouts)
+- [Setup Home](/admin/setup)
+- [Security & Privacy](/admin/security-and-privacy)
