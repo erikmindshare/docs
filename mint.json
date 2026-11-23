@@ -104,7 +104,7 @@
       ]
     },
     {
-      "group": "Document Request (in development)",
+      "group": "Document Request",
       "pages": [
         "document-request/overview",
         "document-request/quick-start",
@@ -116,7 +116,7 @@
       ]
     },
     {
-      "group": "Interview topics (in development)",
+      "group": "Interview topics",
       "pages": [
         "interview-mode",
         "rounds",
