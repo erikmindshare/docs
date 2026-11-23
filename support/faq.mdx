@@ -56,9 +56,14 @@ do is depend on an answer they haven't reached yet. See
 
 ## Is any of my data sent to an AI provider?
 
-Only the **survey design content you write**, and only if you use the optional AI authoring
-features. **Respondent answers are never sent to an AI service.** Analytics and export run entirely
-inside your org. See [Security & Privacy](/admin/security-and-privacy).
+The AI features that build a survey send only the **survey design content you write**. They send
+no respondent answer.
+
+By default, no respondent answer goes to an AI service. Three optional features send the text of
+answers to a Salesforce Einstein model in your org: translation of text answers, AI follow-up
+questions and the Fraud & Quality Shield AI review. Each of these features is off until an admin
+turns it on. Analytics and export run entirely inside your org. See
+[AI features](/admin/security-and-privacy#ai-features).
 
 ## Does AutoSurvey have an API?
 
