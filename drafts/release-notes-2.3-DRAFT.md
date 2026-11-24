@@ -191,6 +191,7 @@ Default: Off.
 Limits (the table text is not complete in 2.3):
 - The table lists "AI follow-ups" under "Features that use no AI". This is not correct. AI follow-ups send the question and the respondent's answer to an Einstein model.
 - The Fraud & Quality Shield Einstein review is not in the table. It does not read the "AI features" switch.
+  - gh#6502 changes this, but it is not on dev yet (branch claude/gh6502-shield-ai-off at 436d132be3, qa-1 signed). With gh#6502, the Shield Einstein review sends answer text only when AI is On and "AI reads answers" is On. If gh#6502 is not in the 2.3 cut, delete this line and step 7 of "What an admin must do after the upgrade". <!-- src: gh#6502 qa-1 sign-off comment; ShieldAiReviewer.aiAllowed() = AsaAiRoutes.aiOn() && AsaAnswerAiGate.isAllowed() at 436d132be3 -->
 - The table says that with the store setting Off, AutoSurvey does not store prompts and replies. Queued survey generation stores them in all cases.
 
 ### 11. Start a survey from a file
@@ -374,6 +375,7 @@ The Features card owns each set. It assigns the set to the AutoSurvey admins whe
 4. If a Flow or Apex of your org sets a Survey Submission to Submitted, test it before you set a response limit. With "Capacity rules" On and a response limit set, that direct update is refused.
 5. If you translate AutoSurvey labels, translate the 6 new labels: Survey_Already_Responded, Survey_Not_Yet_Open, Survey_Option_Full, Survey_Option_Full_Tag, Survey_Restore_Key_Held, PRC_Panel_FeatureOff.
 6. Do not assign the deprecated permission set "AutoSurvey AI Images".
+7. If the Fraud & Quality Shield AI review is On in your org, turn ON "AI reads answers" (it starts Off). Until you do, the Shield sends no answers to Einstein: new review events get the status NotRun. Queued events are sent when both switches are On. (gh#6502, only if it is in the 2.3 cut.)
 
 No action is needed for the Platform Cache partition "QuestionEditor". The code works with no cache room: a miss reads the live data. <!-- src: src/cachePartitions/QuestionEditor.cachePartition-meta.xml:3; src/classes/AsaQuestionEditorSnapshot.cls:23, :143, :157 -->
 
