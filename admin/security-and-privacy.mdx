@@ -189,7 +189,7 @@ Anthropic:
 | --- | --- | --- |
 | **AI reads answers** (translation of text answers) | Only while the switch **AI reads answers** is on. The default is off. AutoSurvey reads the switch again at each send. | The text answers to translate. |
 | **AI follow-up questions** | Only while **AI follow-up questions** and **AI reads answers** are both on. The default is off. | The survey question, the answer of the person, and the goal that the survey owner wrote. |
-| **Fraud & Quality Shield** AI review | Only when a Shield policy has AI review on. The default is off. An hourly job sends the reviews. | The open-text answers of a response that the Shield reviews. |
+| **Fraud & Quality Shield** AI review | Only while a Shield policy has AI review on and the switch **AI reads answers** is on. Each default is off. An hourly job sends the reviews. | The open-text answers of a response that the Shield reviews. |
 
 Analytics ("Insights") and export run inside your org with no AI. In
 **BYOK** mode, AI calls go directly from your org to your provider; in **hosted** mode AutoSurvey
