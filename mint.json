@@ -121,7 +121,6 @@
         "interview-mode",
         "rounds",
         "audiences",
-        "lead-capture",
         "alerts/low-score",
         "bot-check",
         "rewards",
@@ -141,12 +140,9 @@
         "question-bank",
         "show-hide-logic",
         "answer-storage",
-        "kiosk",
         "prefill",
-        "review-page",
         "save-return",
         "ai-follow-ups",
-        "ai-themes",
         "google-sheets-sync"
       ]
     },

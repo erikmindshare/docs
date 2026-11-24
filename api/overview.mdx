@@ -65,10 +65,13 @@ responses are queryable there with it alone.
   the package and can be assigned normally.
 </Note>
 
-**AutoSurvey Raw Response Access**
-grants no object access of its own; it unlocks the restricted raw-response report folder and raw
-CSV/ZIP exports inside Salesforce, so an API integration user typically does not need it. See
-[Installation & Permissions](/admin/installation-and-permissions).
+**AutoSurvey Raw Response Access** grants the **AutoSurvey: Raw Response Access** custom permission,
+which unlocks the restricted raw-response report folder and raw CSV/ZIP exports inside Salesforce.
+It also grants Read on Survey Submission (`atsv__Survey_Submission__c`) and read-only field access to
+five of its fields: Data Quality and the four identity fields **Survey Responder Email**,
+**Responder Contact**, **Responder Lead** and **Responder User**. So a user with this set can read
+who answered. Assign it only to people who may see respondent identity. An API integration user
+typically does not need it. See [Installation & Permissions](/admin/installation-and-permissions).
 
 ## Related
 
