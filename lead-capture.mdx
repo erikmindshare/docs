@@ -1,0 +1,70 @@
+---
+title: Lead capture
+description: The Lead capture topic of Interview Mode. When the interview asks it, the choices, and what Create sets up.
+---
+
+# Lead capture
+
+Lead capture asks the people who answer who they are: a name, an email and a consent box. A Lead is a Salesforce record for a person who can become a customer. Next you pick the fields and where they go. Use it for prospects and event guests. Do not use it for staff or anonymous surveys.
+
+If you choose to make a Lead, AutoSurvey makes a Lead from each response. No Lead is made without consent.
+
+## When the interview asks
+
+- The topic needs no feature switch.
+- The interview asks it for prospects, event sign-ups, webinars, marketing and public links. It is not for staff surveys or anonymous surveys.
+- When your brief asks for a name with an email or a phone number, the interview puts this topic first in the plan. A brief that says anonymous or "no names" does not do this.
+- The topic has no pre-selection. Click a choice to use it. If you click **Next** with no choice, the interview skips the topic.
+- Your first answer to this topic, or a changed answer, makes the interview plan the next questions again.
+
+## The choices
+
+To change the choice later, open the **Settings** tab, then **Data**, then **Create a record from each response**.
+
+| Choice | What you see |
+| --- | --- |
+| **Yes, ask who they are, and make a Lead** (recommended for prospects and events) | Next you pick the fields and where they go. Create then sets up a Lead from each response. |
+| **Yes, ask who they are, but do not make a Lead** | The name and email stay with the response only. Next you pick the fields and where they go. |
+| **No, do not ask who answers** (recommended for staff and anonymous surveys) | AutoSurvey does not ask who answers, and it makes no Lead. |
+
+### The contact questions
+
+After a **Yes** choice, the next screen asks: "Where do you ask, and what do you ask? Select the place of the contact questions and the fields. AutoSurvey adds one question for each field, in table order, with its Required flag."
+
+- The fields: first name, last name, email, phone, company, title and a consent question. You set each one as required or not.
+- The place: at the start or at the end of the survey.
+- For **Yes, ask who they are, and make a Lead**, the last name must be required, and the consent question must be in the list. A Lead needs a last name, and no consent means no Lead.
+- The consent question is never required. A person can say no to contact and still submit.
+
+The change list then shows one group, **Contact questions**, that adds these questions. A question that the survey has already is not added again.
+
+### What Create sets up
+
+For **Yes, ask who they are, and make a Lead**, Create writes the Lead setup of the survey:
+
+- Each response makes a Lead record. You are the owner.
+- Each contact question goes to its Lead field. Consent has no Lead field.
+- A Lead needs a Company. If the survey asks for the company, that answer goes to Company. Else the survey name is the Company.
+
+Create does not change a survey that already makes another record from each response. If you cannot edit the survey's record settings, Create writes no setup. The change list then tells you to ask an admin to turn on **Create a record from each response** in the survey settings. If the **Intake to Record** feature is off, the change list says so. An admin turns it on in Setup Home, Features.
+
+For **Yes, ask who they are, but do not make a Lead**, Create adds the contact questions only.
+
+## The Set up next card
+
+A **Yes, ask who they are, and make a Lead** answer adds the card **Leads from answers**.
+
+| Card part | Value |
+| --- | --- |
+| **What and why** | The card lists the answers that go to Lead fields, the Company and the lead owner. |
+| **Who** | You, or an admin |
+| **Link** | **Open the survey settings** |
+| **Done** | When the survey uses the org's assignment rules, or when you click **Keep: leads go to me**. |
+
+The card button **Use the org's assignment rules** shows only when the org has an active Lead assignment rule. AutoSurvey does not make the Lead assignment rules. Salesforce does.
+
+## Related
+
+- [Set up next](/interview-mode#set-up-next) — how the Set up next cards work.
+- [Answers to records](/records) — other records from each response.
+- [Interview Mode](/interview-mode) — how the interview works.
